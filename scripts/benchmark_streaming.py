@@ -27,6 +27,7 @@ import time
 import psutil
 
 from industrial_mlops.config import PipelineConfig
+from industrial_mlops.contracts import parse_time
 from industrial_mlops.operations import file_hash, source_manifest, write_json
 from industrial_mlops.store import Store, canonical
 from qualify_native import Services
@@ -35,12 +36,15 @@ from qualify_native import Services
 ROOT = Path(__file__).resolve().parents[1]
 CASES = (
     {"name": "h02-p1-w1", "hours": 2, "partitions": 1, "workers": 1},
-    {"name": "h08-p1-w1", "hours": 8, "partitions": 1, "workers": 1},
-    {"name": "h08-p3-w1", "hours": 8, "partitions": 3, "workers": 1},
-    {"name": "h08-p3-w2", "hours": 8, "partitions": 3, "workers": 2},
+    {"name": "h24-p1-w1", "hours": 24, "partitions": 1, "workers": 1},
+    {"name": "h24-p3-w1", "hours": 24, "partitions": 3, "workers": 1},
+    {"name": "h24-p3-w2", "hours": 24, "partitions": 3, "workers": 2},
 )
 BOOTSTRAP = "127.0.0.1:19092"
 TRACKING_URI = "http://127.0.0.1:5000"
+ALERT_EXECUTION_FIELDS = frozenset({
+    "created_at", "predicted_at_epoch", "inference_ms", "arrival_to_prediction_ms",
+})
 
 
 def require(condition, message):
@@ -55,10 +59,11 @@ def emit(stage, **fields):
 def protocol(config, shadow=False):
     return {
         "schema_version": 1,
+        "protocol_id": "streaming-alert-invariance-24h-v2",
         "scope": "one host; real JVM Kafka, local Spark, HTTP MLflow and SQLite sink; synthetic data",
         "variants": list(CASES), "machines": 4, "sites": 2, "seed": 42,
         "start": "2026-06-01T00:00:00Z", "anomalies": True,
-        "input_reuse": "all three 8h variants use the identical JSONL bytes",
+        "input_reuse": "all three 24h variants use the identical JSONL bytes",
         "max_offsets_per_trigger": 200, "max_worker_wall_seconds": 300,
         "total_wall_budget_seconds": 600, "work_budget_seconds": 580,
         "cleanup_budget_reserved_seconds": 20,
@@ -69,10 +74,20 @@ def protocol(config, shadow=False):
             "source count equals producer acknowledgements", "persisted invariants all true",
             "availableNow drains and final observed source lag is zero",
             "all finalized features have predictions from the selected numerical model version",
-            "8h variants have identical canonical features and scores within 1e-12",
+            "24h variants have identical canonical features and scores within 1e-12",
+            "each 24h variant persists nonzero alerts and exercises cooldown suppression",
+            "24h variants have identical alert business bodies and per-prediction cooldown outcomes",
+            "alert evidence matches persisted features and the cooldown schedule matches business availability times",
             "requested topic partitions and actual Spark launch master agree",
             "training source, artifacts and implementation source remain unchanged",
         ],
+        "alert_comparison": {
+            "retained": "all persisted alert body fields except explicitly listed execution timing fields; event_time and available_at remain",
+            "excluded_execution_fields": sorted(ALERT_EXECUTION_FIELDS),
+            "actual_schema_note": "current alert bodies contain predicted_at_epoch, inference_ms and arrival_to_prediction_ms; no created_at",
+            "cooldown": "for every above-threshold prediction, record emitted/not_emitted from persisted alert membership; independently replay the configured cooldown in business availability order",
+            "comparison": "exact canonical hashes and equality of alert identities, evidence, observations, score, threshold, model and cooldown outcomes",
+        },
         "timing_scope": {
             "throughput": "raw sink rows / fresh worker wall time, including Python/JVM startup and shutdown",
             "query_elapsed": "stream() receipt elapsed; excludes initial SparkSession construction",
@@ -225,19 +240,69 @@ def quantiles(values):
 
 def canonical_snapshot(store, directory):
     features = [json.loads(row[0]) for row in store.db.execute("SELECT body FROM features ORDER BY feature_id")]
+    full_predictions = [json.loads(row[0]) for row in store.db.execute("SELECT body FROM predictions ORDER BY feature_id")]
     predictions = []
-    for row in store.db.execute("SELECT body FROM predictions ORDER BY feature_id"):
-        body = json.loads(row[0])
+    for body in full_predictions:
         predictions.append({key: body[key] for key in (
             "feature_id", "event_id", "feature_signature", "model_name", "model_version",
             "run_id", "mode", "threshold", "score",
         )})
+    alerts = [{key: value for key, value in json.loads(row[0]).items() if key not in ALERT_EXECUTION_FIELDS}
+              for row in store.db.execute("SELECT body FROM alerts ORDER BY alert_id")]
+    alerts_by_feature = {alert["feature_id"]: alert for alert in alerts}
+    features_by_id = {feature["feature_id"]: feature for feature in features}
+    predictions_by_id = {prediction["feature_id"]: prediction for prediction in full_predictions}
+    evidence_consistent = all(
+        alert["feature_id"] in features_by_id
+        and alert["evidence"] == {
+            "feature_id": alert["feature_id"],
+            "source_event_ids": features_by_id[alert["feature_id"]]["source_event_ids"],
+        }
+        and alert["observations"] == features_by_id[alert["feature_id"]]["values"]
+        and all(alert.get(key) == value for key, value in predictions_by_id[alert["feature_id"]].items()
+                if key not in ALERT_EXECUTION_FIELDS)
+        for alert in alerts
+    )
+    eligible = sorted((prediction for prediction in full_predictions if prediction["score"] >= prediction["threshold"]),
+                      key=lambda prediction: (
+                          prediction["dataset_id"], prediction["site_id"], prediction["machine_id"],
+                          parse_time(prediction["available_at"]), parse_time(prediction["event_time"]),
+                          prediction["feature_id"],
+                      ))
+    expected_alerts, last_emitted, cooldown = set(), {}, []
+    for prediction in eligible:
+        key = tuple(prediction[name] for name in ("dataset_id", "site_id", "machine_id"))
+        available = parse_time(prediction["available_at"])
+        previous = last_emitted.get(key)
+        expected_emit = previous is None or available - previous >= store.config.alert_cooldown_seconds
+        alert = alerts_by_feature.get(prediction["feature_id"])
+        cooldown.append({
+            **{name: prediction[name] for name in (
+                "feature_id", "event_id", "dataset_id", "site_id", "machine_id", "event_time",
+                "available_at", "model_version", "run_id", "score", "threshold",
+            )},
+            "cooldown_seconds": store.config.alert_cooldown_seconds,
+            "previous_expected_alert_available_at_epoch": previous,
+            "expected_outcome": "emitted" if expected_emit else "suppressed_by_cooldown",
+            "persisted_outcome": "emitted" if alert else "not_emitted",
+            "alert_id": alert["alert_id"] if alert else None,
+        })
+        if expected_emit:
+            expected_alerts.add(prediction["feature_id"])
+            last_emitted[key] = available
+    cooldown.sort(key=lambda row: row["feature_id"])
+    business_checks = {
+        "alert_evidence_consistent": evidence_consistent,
+        "cooldown_schedule_matches": expected_alerts == set(alerts_by_feature),
+        "unique_alert_features": len(alerts_by_feature) == len(alerts),
+    }
     hashes = {}
-    for name, rows in (("features", features), ("scores", predictions)):
+    for name, rows in (("features", features), ("scores", predictions), ("alerts", alerts), ("cooldown", cooldown)):
         path = directory / f"canonical-{name}.jsonl"
         path.write_text("".join(canonical(row) + "\n" for row in rows), encoding="utf-8")
         hashes[name] = file_hash(path)
-    return hashes, {row["feature_id"]: row for row in predictions}
+    return (hashes, {row["feature_id"]: row for row in predictions},
+            {row["alert_id"]: row for row in alerts}, {row["feature_id"]: row for row in cooldown}, business_checks)
 
 
 def backlog(receipt, streaming):
@@ -308,8 +373,15 @@ def run_case(case, input_path, work, services, model, config, deadline, shadow):
     result["backlog_progress"] = backlog(receipt, streaming)
     with Store(db, config, readonly=True) as store:
         verification, counts = store.verify(), store.counts()
-        hashes, scores = canonical_snapshot(store, directory)
+        hashes, scores, alerts, cooldown, business_checks = canonical_snapshot(store, directory)
         result.update({"verification": verification, "counts": counts, "canonical_sha256": hashes})
+        result["alert_business"] = {
+            "alerts": len(alerts), "above_threshold_predictions": len(cooldown),
+            "persisted_not_emitted": sum(row["persisted_outcome"] == "not_emitted" for row in cooldown.values()),
+            "expected_cooldown_suppressed": sum(row["expected_outcome"] == "suppressed_by_cooldown" for row in cooldown.values()),
+            "excluded_execution_fields": sorted(ALERT_EXECUTION_FIELDS),
+            "checks": business_checks,
+        }
         result["latency_ms"] = {
             "inference": quantiles(row[0] for row in store.db.execute("SELECT inference_ms FROM predictions")),
             "broker_to_prediction": quantiles(row[0] for row in store.db.execute("SELECT arrival_to_prediction_ms FROM predictions")),
@@ -332,12 +404,15 @@ def run_case(case, input_path, work, services, model, config, deadline, shadow):
         "candidate_identity": bool(scores) and all(row["model_version"] == str(model.model_version) and row["run_id"] == model.run_id for row in scores.values()),
         "latencies_present": all(value["samples"] == counts["predictions"] for value in result["latency_ms"].values()),
         "bounded_batches": bool(result["batches"]) and max(row["rows_received"] for row in result["batches"]) <= 200,
-        "backlog_exercised": case["hours"] != 8 or receipt["acknowledged"] > 200 and len(result["batches"]) > 1,
+        "backlog_exercised": case["hours"] != 24 or receipt["acknowledged"] > 200 and len(result["batches"]) > 1,
+        "nonzero_alerts": case["hours"] != 24 or counts["alerts"] > 0,
+        "cooldown_suppression_exercised": case["hours"] != 24 or result["alert_business"]["persisted_not_emitted"] > 0,
+        **business_checks,
         "resources_observed": result["resources"]["samples"] > 1 and result["resources"]["sampler_errors"] == 0,
     }
     result["status"] = "passed" if all(result["checks"].values()) else "failed"
     write_json(directory / "metrics.json", result)
-    return result, scores
+    return result, scores, alerts, cooldown
 
 
 def cleanup(services):
@@ -429,7 +504,7 @@ def main():
         verified.check_returncode()
         shutil.copy2(tools / "spark-jars/verification.json", work / "evidence/jar-verification.json")
         inputs = {}
-        for hours in (2, 8):
+        for hours in (2, 24):
             dataset = generate_dataset(seed=42, machines=4, sites=2, hours=hours,
                                        start=plan["start"], anomalies=True,
                                        horizon_seconds=config.horizon_seconds, lateness_seconds=config.lateness_seconds)
@@ -451,15 +526,15 @@ def main():
         report["selected_model"] = {"version": str(model.model_version), "run_id": model.run_id,
                                     "digest": model.model_digest, "qualified": model.qualified,
                                     "mode": "shadow" if args.shadow else "approved"}
-        reference, reference_scores = None, None
+        reference, reference_scores, reference_alerts, reference_cooldown = None, None, None, None
         comparisons = []
         for case in CASES:
             emit("running_benchmark_variant", **case)
-            result, scores = run_case(case, inputs[case["hours"]], work, services, model, config, deadline, args.shadow)
+            result, scores, alerts, cooldown = run_case(case, inputs[case["hours"]], work, services, model, config, deadline, args.shadow)
             report["workloads"].append(result)
-            if case["hours"] == 8:
+            if case["hours"] == 24:
                 if reference is None:
-                    reference, reference_scores = result, scores
+                    reference, reference_scores, reference_alerts, reference_cooldown = result, scores, alerts, cooldown
                 else:
                     keys_equal = scores.keys() == reference_scores.keys()
                     differences = [abs(scores[key]["score"] - reference_scores[key]["score"]) for key in scores] if keys_equal else []
@@ -470,6 +545,10 @@ def main():
                                         "same_input": result["input_sha256"] == reference["input_sha256"],
                                         "canonical_features_equal": result["canonical_sha256"]["features"] == reference["canonical_sha256"]["features"],
                                         "canonical_scores_exact": result["canonical_sha256"]["scores"] == reference["canonical_sha256"]["scores"],
+                                        "nonzero_alerts_both_variants": bool(alerts) and bool(reference_alerts),
+                                        "canonical_alerts_equal": result["canonical_sha256"]["alerts"] == reference["canonical_sha256"]["alerts"] and alerts == reference_alerts,
+                                        "alert_identities_equal": alerts.keys() == reference_alerts.keys(),
+                                        "canonical_cooldown_equal": result["canonical_sha256"]["cooldown"] == reference["canonical_sha256"]["cooldown"] and cooldown == reference_cooldown,
                                         "score_identity_equal": identity_equal,
                                         "maximum_absolute_score_difference": max(differences) if differences else None,
                                         "scores_within_tolerance": bool(differences) and max(differences) <= 1e-12})
@@ -480,6 +559,8 @@ def main():
             "all_variants_passed": len(report["workloads"]) == 4 and all(row["status"] == "passed" for row in report["workloads"]),
             "fixed_input_parity": len(comparisons) == 2 and all(all(row[key] for key in (
                 "same_input", "canonical_features_equal", "score_identity_equal", "scores_within_tolerance")) for row in comparisons),
+            "alert_business_parity": len(comparisons) == 2 and all(all(row[key] for key in (
+                "nonzero_alerts_both_variants", "canonical_alerts_equal", "alert_identities_equal", "canonical_cooldown_equal")) for row in comparisons),
             "source_unchanged": source_manifest(ROOT)["identity"] == source["identity"],
             "runner_unchanged": file_hash(Path(__file__)) == runner_hash and file_hash(ROOT / "scripts/qualify_native.py") == helper_hash,
             "training_source_unchanged": training_source_manifest() == expected_training,
