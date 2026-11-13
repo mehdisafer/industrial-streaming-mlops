@@ -117,8 +117,9 @@ def source_lag(store: Store, bootstrap: str, topic: str) -> dict:
         if not partition_ids:
             return {"status": "unavailable", "reason": "topic_metadata_unavailable"}
         partitions = [TopicPartition(topic, part) for part in sorted(partition_ids)]
-        ends = consumer.end_offsets(partitions, timeout_ms=5000)
-        starts = consumer.beginning_offsets(partitions, timeout_ms=5000)
+        # kafka-python 2.3.x takes its bound from request_timeout_ms here.
+        ends = consumer.end_offsets(partitions)
+        starts = consumer.beginning_offsets(partitions)
         committed = {row["partition_id"]: row["last"] for row in store.db.execute(
             "SELECT partition_id,MAX(offset_id) last FROM raw_records WHERE topic=? GROUP BY partition_id",
             (topic,))}

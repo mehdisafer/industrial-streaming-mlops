@@ -372,6 +372,9 @@ def main():
         if interrupter.is_alive() or "failure" in outage:
             raise RuntimeError(f"broker interruption exercise did not finish: {outage}")
         write_json(work / "evidence" / "active-broker-outage.json", {"outage": outage, "stream": active_run})
+        report["checks"]["active_worker_consumed_recovery_input"] = (
+            active_run["verification"]["counts"]["raw"] == sum(
+                p["receipt"]["acknowledged"] for p in publications))
         consume()
         with Store(db_path, config, readonly=True) as store:
             report["checks"]["active_broker_outage_recovery"] = bool(
@@ -405,6 +408,11 @@ def main():
             report["checks"]["final_invariants"] = report["final_verification"]["valid"]
             report["checks"]["all_source_receipts_balance"] = store.counts()["raw"] == sum(
                 p["receipt"]["acknowledged"] for p in publications)
+            from industrial_mlops.streaming import source_lag
+            report["source_lag"] = source_lag(store, "127.0.0.1:19092", topic)
+            report["checks"]["final_source_lag_zero"] = (
+                report["source_lag"].get("status") == "observed"
+                and report["source_lag"].get("offsets_behind") == 0)
             snapshot = store.snapshot()
             write_json(work / "evidence" / "dashboard-snapshot.json", snapshot)
             latencies = [row[0] for row in store.db.execute("SELECT inference_ms FROM predictions")]
