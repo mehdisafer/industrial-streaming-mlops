@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mehdisafer/industrial-streaming-mlops/schemas/feature.v1.json",
+  "title": "Feature version 1",
+  "description": "Immutable trailing-window feature; available_at is actual watermark finalization time. Only values in FEATURE_NAMES enter the model.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "feature_id",
+    "event_id",
+    "dataset_id",
+    "site_id",
+    "machine_id",
+    "event_time",
+    "available_at",
+    "feature_version",
+    "values",
+    "source_event_ids",
+    "feature_signature"
+  ],
+  "properties": {
+    "feature_id": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "event_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "dataset_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "site_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "machine_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "event_time": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?(?:Z|\\+00:00)$"
+    },
+    "available_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?(?:Z|\\+00:00)$"
+    },
+    "feature_version": {
+      "const": "v1"
+    },
+    "values": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "temperature_mean",
+        "temperature_max",
+        "vibration_mean",
+        "vibration_max",
+        "pressure_mean",
+        "temperature_slope",
+        "vibration_slope",
+        "sample_count"
+      ],
+      "properties": {
+        "temperature_mean": {
+          "type": "number"
+        },
+        "temperature_max": {
+          "type": "number"
+        },
+        "vibration_mean": {
+          "type": "number"
+        },
+        "vibration_max": {
+          "type": "number"
+        },
+        "pressure_mean": {
+          "type": "number"
+        },
+        "temperature_slope": {
+          "type": "number"
+        },
+        "vibration_slope": {
+          "type": "number"
+        },
+        "sample_count": {
+          "type": "integer",
+          "minimum": 2
+        }
+      }
+    },
+    "source_event_ids": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      }
+    },
+    "feature_signature": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}

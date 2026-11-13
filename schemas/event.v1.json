@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mehdisafer/industrial-streaming-mlops/schemas/event.v1.json",
+  "oneOf": [
+    {
+      "$ref": "sensor.v1.json"
+    },
+    {
+      "$ref": "label.v1.json"
+    },
+    {
+      "$ref": "heartbeat.v1.json"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "window_seconds": 1800,
+  "lateness_seconds": 120,
+  "horizon_seconds": 1800,
+  "min_points": 4,
+  "alert_cooldown_seconds": 1800,
+  "false_alert_budget_per_machine_day": 2.0,
+  "min_recall": 0.7,
+  "min_lead_seconds": 300,
+  "max_p95_inference_ms": 1000.0,
+  "max_batch_rows": 10000,
+  "feature_version": "v1",
+  "temperature_min_c": -40.0,
+  "temperature_max_c": 180.0,
+  "vibration_max_mm_s": 30.0,
+  "pressure_max_bar": 30.0,
+  "max_payload_bytes": 65536,
+  "max_batch_bytes": 16777216
+}
