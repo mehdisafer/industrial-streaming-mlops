@@ -97,17 +97,22 @@ jobs:
         if: always()
         run: |
           mkdir -p evidence/integration
-          if test -f evidence/integration/.owns-compose-project && ! test -f evidence/integration/.cleanup-complete; then
-            docker compose ps --all --format json > evidence/integration/ci-fallback-containers.json
-            docker compose logs --no-color > evidence/integration/ci-fallback-container.log 2>&1
+          if test -f evidence/integration/.owns-compose-project &&
+             test "$(cat evidence/integration/.owns-compose-project)" = "$COMPOSE_PROJECT_NAME" &&
+             ! test -f evidence/integration/.cleanup-complete; then
+            docker compose --project-name "$COMPOSE_PROJECT_NAME" ps --all --format json > evidence/integration/ci-fallback-containers.json || true
+            docker compose --project-name "$COMPOSE_PROJECT_NAME" logs --no-color > evidence/integration/ci-fallback-container.log 2>&1 || true
             docker image inspect industrial-streaming-mlops:local apache/kafka:3.9.2 > evidence/integration/ci-fallback-images.json || true
           fi
           git rev-parse HEAD > evidence/integration/commit.txt
       - name: Stop the isolated stack
         if: always()
         run: |
-          if test -f evidence/integration/.owns-compose-project && ! test -f evidence/integration/.cleanup-complete; then
-            docker compose --profile streaming --profile tools down --timeout 45
+          if test -f evidence/integration/.owns-compose-project &&
+             test "$(cat evidence/integration/.owns-compose-project)" = "$COMPOSE_PROJECT_NAME" &&
+             ! test -f evidence/integration/.cleanup-complete; then
+            docker compose --project-name "$COMPOSE_PROJECT_NAME" --profile streaming --profile tools down --timeout 45 > evidence/integration/ci-fallback-cleanup.log 2>&1
+            printf '%s\n' "$COMPOSE_PROJECT_NAME" > evidence/integration/.cleanup-complete
           fi
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
