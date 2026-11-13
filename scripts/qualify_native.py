@@ -39,6 +39,7 @@ class Services:
             "PYSPARK_PYTHON": sys.executable, "PYSPARK_DRIVER_PYTHON": sys.executable,
             "OPENBLAS_NUM_THREADS": "1", "OMP_NUM_THREADS": "1", "MKL_NUM_THREADS": "1",
             "MLFLOW_DISABLE_AGENT_HINT": "1", "MLFLOW_HTTP_REQUEST_TIMEOUT": "5",
+            "MLFLOW_DISABLE_TELEMETRY": "true", "DO_NOT_TRACK": "true",
             "MLFLOW_HTTP_REQUEST_MAX_RETRIES": "0", "KAFKA_HEAP_OPTS": "-Xms256m -Xmx512m",
             "SPARK_KAFKA_JARS": str(tools / "spark-jars"),
         })
@@ -67,6 +68,25 @@ class Services:
             self.stop(name)
         for handle in self.handles:
             handle.close()
+
+    def worker(self, name, command, *, timeout=420):
+        """A deployment-style fresh Python/JVM worker for each lifecycle run."""
+        self.start(name, [sys.executable, "-m", "industrial_mlops", "stream", *command])
+        child = self.children[name]
+        try:
+            returncode = child.wait(timeout=timeout)
+            if returncode:
+                raise RuntimeError(f"worker {name} exited {returncode}; see {name}.log")
+        except subprocess.TimeoutExpired:
+            self.stop(name, hard=True)
+            raise
+        finally:
+            self.children.pop(name, None)
+            # A stopped Python worker must not leave a gateway in its owned process group.
+            try:
+                os.killpg(child.pid, signal.SIGTERM)
+            except ProcessLookupError:
+                pass
 
     def wait_port(self, name, port, timeout=60):
         deadline = time.monotonic() + timeout
@@ -129,6 +149,35 @@ class Services:
             completed.check_returncode()
         self.start("kafka", [str(kafka / "kafka-server-start.sh"), str(properties)])
         self.wait_port("kafka", 19092)
+        # A listening socket can precede usable controller metadata. Do not publish
+        # until an actual broker request has completed within the bounded deadline.
+        from kafka import KafkaAdminClient
+        deadline, last_error = time.monotonic() + 60, None
+        while time.monotonic() < deadline:
+            if self.children["kafka"].poll() is not None:
+                raise RuntimeError("Kafka exited before metadata readiness")
+            admin = None
+            try:
+                admin = KafkaAdminClient(
+                    bootstrap_servers="127.0.0.1:19092", request_timeout_ms=5000,
+                    api_version_auto_timeout_ms=5000,
+                )
+                cluster = admin.describe_cluster()
+                if not cluster.get("brokers") or cluster.get("controller_id", -1) < 0:
+                    raise RuntimeError("broker/controller metadata is not available")
+                admin.list_topics()
+                write_json(self.work / "evidence" / "kafka-ready.json", {
+                    "checked_at": time.time(), "cluster": cluster,
+                    "scope": "successful Kafka cluster and topic metadata requests",
+                })
+                return
+            except Exception as exc:
+                last_error = exc
+                time.sleep(.5)
+            finally:
+                if admin is not None:
+                    admin.close()
+        raise TimeoutError(f"Kafka metadata did not become ready: {last_error}")
 
 
 def emit(stage, **fields):
@@ -185,7 +234,7 @@ def main():
         from industrial_mlops.modeling import train_and_register
         from industrial_mlops.registry import RegistryClient
         from industrial_mlops.simulator import generate_dataset
-        from industrial_mlops.streaming import produce, stream
+        from industrial_mlops.streaming import produce
 
         if args.reuse_training_from:
             emit("reusing_registered_models_with_matching_training_source")
@@ -224,13 +273,19 @@ def main():
             return dataset
 
         def consume(path=db_path, cp=checkpoint, query="qualification", **extra):
-            result = stream(
-                bootstrap="127.0.0.1:19092", topic=topic, db_path=str(path), checkpoint=str(cp),
-                tracking_uri=uri, config=config, query_id=query, available_now=True,
-                duration_seconds=300, max_offsets=1000, workers=2, **extra,
-            )
-            write_json(work / "evidence" / f"{query}-{len(list((work / 'evidence').glob(query + '-*')))}.json", result)
-            return result
+            number = len(list((work / "evidence").glob(query + "-*.log")))
+            name = f"{query}-{number}"
+            receipt = work / "evidence" / f"{name}.json"
+            command = [
+                "--bootstrap", "127.0.0.1:19092", "--topic", topic, "--db", str(path),
+                "--checkpoint", str(cp), "--tracking-uri", uri, "--query-id", query,
+                "--available-now", "--duration-seconds", "300", "--max-offsets", "1000",
+                "--workers", "2", "--report", str(receipt),
+            ]
+            for key, value in extra.items():
+                command.extend(["--" + key.replace("_", "-"), str(value)])
+            services.worker(name, command)
+            return json.loads(receipt.read_text())
 
         emit("publishing_telemetry_with_poison_late_and_duplicate_cases")
         publish(42, args.hours, "2026-05-01T00:00:00Z", "initial")
@@ -276,12 +331,15 @@ def main():
                     and store.counts()["predictions"] == initial_counts["predictions"]
                     and store.counts()["alerts"] == initial_counts["alerts"])
         emit("killing_and_restarting_broker_during_active_query")
-        query_started = threading.Event()
+        ready_path = work / "active-query-ready.json"
         outage = {}
 
         def interrupt_broker():
             try:
-                if not query_started.wait(timeout=30):
+                deadline = time.monotonic() + 60
+                while not ready_path.exists() and time.monotonic() < deadline:
+                    time.sleep(.2)
+                if not ready_path.exists():
                     raise TimeoutError("active query did not start before broker exercise")
                 time.sleep(2)
                 outage["stopped_at"] = time.time()
@@ -301,12 +359,15 @@ def main():
 
         interrupter = threading.Thread(target=interrupt_broker, daemon=True)
         interrupter.start()
-        active_run = stream(
-            bootstrap="127.0.0.1:19092", topic=topic, db_path=str(db_path),
-            checkpoint=str(checkpoint), tracking_uri=uri, config=config, query_id="qualification",
-            available_now=False, duration_seconds=45, max_offsets=1000, workers=2,
-            on_started=lambda _: query_started.set(),
-        )
+        active_receipt = work / "evidence" / "active-query.json"
+        services.worker("active-query", [
+            "--bootstrap", "127.0.0.1:19092", "--topic", topic, "--db", str(db_path),
+            "--checkpoint", str(checkpoint), "--tracking-uri", uri,
+            "--query-id", "qualification", "--duration-seconds", "45",
+            "--max-offsets", "1000", "--workers", "2", "--ready-file", str(ready_path),
+            "--report", str(active_receipt),
+        ], timeout=180)
+        active_run = json.loads(active_receipt.read_text())
         interrupter.join(timeout=60)
         if interrupter.is_alive() or "failure" in outage:
             raise RuntimeError(f"broker interruption exercise did not finish: {outage}")
@@ -407,13 +468,13 @@ def main():
                 raise ValueError("unexpected original binding during restore relocation")
             binding["db_path"] = str(restored_db)
             write_json(binding_path, binding)
-            restored_run = stream(
-                bootstrap="127.0.0.1:19092", topic=topic, db_path=str(restored_db),
-                checkpoint=str(restored / "checkpoints"), tracking_uri=uri, config=config,
-                query_id="qualification", available_now=True, duration_seconds=120,
-                max_offsets=1000, workers=2,
-            )
-            write_json(work / "evidence" / "restored-checkpoint-run.json", restored_run)
+            restored_receipt = work / "evidence" / "restored-checkpoint-run.json"
+            restored_services.worker("restored-worker", [
+                "--bootstrap", "127.0.0.1:19092", "--topic", topic, "--db", str(restored_db),
+                "--checkpoint", str(restored / "checkpoints"), "--tracking-uri", uri,
+                "--query-id", "qualification", "--available-now", "--duration-seconds", "120",
+                "--max-offsets", "1000", "--workers", "2", "--report", str(restored_receipt),
+            ], timeout=210)
             with Store(restored_db, config, readonly=True) as store:
                 report["checks"]["restored_checkpoint_resume"] = (
                     store.counts() == report["final_verification"]["counts"])

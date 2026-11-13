@@ -22,6 +22,8 @@ x-app: &app
     MLFLOW_HTTP_REQUEST_TIMEOUT: "5"
     MLFLOW_HTTP_REQUEST_MAX_RETRIES: "0"
     MLFLOW_DISABLE_AGENT_HINT: "1"
+    MLFLOW_DISABLE_TELEMETRY: "true"
+    DO_NOT_TRACK: "true"
     PIPELINE_DB: /state/pipeline/monitor.db
     KAFKA_BOOTSTRAP_SERVERS: kafka:9092
     KAFKA_TOPIC: ${KAFKA_TOPIC:-telemetry}

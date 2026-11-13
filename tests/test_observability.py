@@ -6,7 +6,7 @@ These tests do not claim Kafka, MLflow or provider integration qualification.
 import copy
 import json
 
-from industrial_mlops.contracts import canonical_json, parse_time
+from industrial_mlops.contracts import canonical_json, iso_time, parse_time
 from industrial_mlops.features import causal_feature_rows, feature_signature
 from industrial_mlops.modeling import evaluate_scores
 from industrial_mlops.monitoring import reference_profile
@@ -46,6 +46,20 @@ def fill_store(store, dataset, model):
         for index, event in enumerate(dataset["events"])
     ]
     store.process_batch(records, "monitoring-unit", 0, model)
+
+
+def transport_delayed_label_fixture():
+    """Delay one label's delivery after every outcome has already matured."""
+    dataset = generate_dataset(machines=1, sites=1, hours=1)
+    features = causal_feature_rows(dataset["events"])
+    first_feature = min(features, key=lambda feature: parse_time(feature["available_at"]))
+    historical_cutoff = max(parse_time(event["ingested_at"]) for event in dataset["events"]) + 1
+    delayed = next(event for event in dataset["events"]
+                   if event["kind"] == "label" and event["prediction_event_id"] == first_feature["event_id"])
+    delayed["ingested_at"] = iso_time(historical_cutoff + 3600)
+    dataset["events"].sort(key=lambda event: parse_time(event["ingested_at"]))
+    assert parse_time(delayed["available_at"]) < historical_cutoff < parse_time(delayed["ingested_at"])
+    return dataset, features, delayed, historical_cutoff
 
 
 def test_rolling_window_uses_emitted_alerts_and_preserves_prior_cooldown(tmp_path):
@@ -92,6 +106,47 @@ def test_future_labels_are_not_counted_even_when_already_persisted(tmp_path):
         assert performance["status"] == "awaiting_labels"
         assert performance["observed_alerts"] == 0
         assert performance["observed_failures"] == 0
+
+
+def test_monitor_excludes_mature_label_until_its_actual_ingestion_time(tmp_path):
+    dataset, features, delayed, cutoff = transport_delayed_label_fixture()
+    model = UnitPredictor(features)
+    with Store(tmp_path / "monitor.db") as store:
+        fill_store(store, dataset, model)
+        counts_before = store.counts()
+        # The delayed label belongs to an actually emitted alert, so its early
+        # inclusion would also contaminate alert-quality statistics.
+        assert store.db.execute(
+            "SELECT COUNT(*) FROM alerts a JOIN predictions p USING(feature_id) WHERE p.event_id=?",
+            (delayed["prediction_event_id"],),
+        ).fetchone()[0] == 1
+        historical = monitor_store(store, model, as_of=cutoff)["performance"]
+        assert historical["scored_features"] == len(features)
+        assert historical["mature_labels"] == len(features) - 1
+        assert historical["pending_labels"] == 1
+        assert historical["observed_alerts"] == counts_before["alerts"] - 1
+        arrived = monitor_store(store, model, as_of=parse_time(delayed["ingested_at"]))["performance"]
+        assert arrived["mature_labels"] == len(features)
+        assert arrived["pending_labels"] == 0
+        assert arrived["observed_alerts"] == counts_before["alerts"]
+        assert store.counts() == counts_before
+
+
+def test_snapshot_hides_only_transport_delayed_label_until_ingestion(tmp_path):
+    dataset, features, delayed, cutoff = transport_delayed_label_fixture()
+    model = UnitPredictor(features)
+    with Store(tmp_path / "monitor.db") as store:
+        fill_store(store, dataset, model)
+        before = {prediction["event_id"]: prediction
+                  for prediction in store.snapshot(as_of=cutoff)["predictions"]}
+        assert len(before) == len(features)
+        assert before[delayed["prediction_event_id"]]["label"] is None
+        assert all(prediction["label"] is not None for event_id, prediction in before.items()
+                   if event_id != delayed["prediction_event_id"])
+        after = {prediction["event_id"]: prediction
+                 for prediction in store.snapshot(as_of=parse_time(delayed["ingested_at"]))["predictions"]}
+        assert after[delayed["prediction_event_id"]]["label"] == delayed
+        assert all(prediction["label"] is not None for prediction in after.values())
 
 
 def test_detected_drift_does_not_promote_activate_or_mutate_pipeline(tmp_path):

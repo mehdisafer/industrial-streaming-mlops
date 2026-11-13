@@ -8,6 +8,8 @@ LABEL org.opencontainers.image.source="https://github.com/mehdisafer/industrial-
       org.opencontainers.image.revision="${SOURCE_REVISION}"
 
 ENV PYTHONUNBUFFERED=1 \
+    MLFLOW_DISABLE_TELEMETRY=true \
+    DO_NOT_TRACK=true \
     PYTHONDONTWRITEBYTECODE=1 \
     UV_LINK_MODE=copy \
     UV_PYTHON_DOWNLOADS=never \

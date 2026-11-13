@@ -9,6 +9,10 @@ on:
 permissions:
   contents: read
 
+env:
+  MLFLOW_DISABLE_TELEMETRY: "true"
+  DO_NOT_TRACK: "true"
+
 concurrency:
   group: verify-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -93,13 +97,18 @@ jobs:
         if: always()
         run: |
           mkdir -p evidence/integration
-          docker compose ps --all --format json > evidence/integration/containers.json
-          docker compose logs --no-color > evidence/integration/container.log 2>&1
-          docker image inspect industrial-streaming-mlops:local apache/kafka:3.9.2 > evidence/integration/images.json || true
+          if test -f evidence/integration/.owns-compose-project && ! test -f evidence/integration/.cleanup-complete; then
+            docker compose ps --all --format json > evidence/integration/ci-fallback-containers.json
+            docker compose logs --no-color > evidence/integration/ci-fallback-container.log 2>&1
+            docker image inspect industrial-streaming-mlops:local apache/kafka:3.9.2 > evidence/integration/ci-fallback-images.json || true
+          fi
           git rev-parse HEAD > evidence/integration/commit.txt
       - name: Stop the isolated stack
         if: always()
-        run: docker compose --profile streaming --profile tools down --timeout 45
+        run: |
+          if test -f evidence/integration/.owns-compose-project && ! test -f evidence/integration/.cleanup-complete; then
+            docker compose --profile streaming --profile tools down --timeout 45
+          fi
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         if: always()
         with:

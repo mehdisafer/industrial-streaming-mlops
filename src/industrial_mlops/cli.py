@@ -52,6 +52,7 @@ def parser() -> argparse.ArgumentParser:
             child.add_argument("--failpoint", choices=["before_commit", "after_commit"])
             child.add_argument("--fail-batch", type=int, default=0)
             child.add_argument("--fail-marker")
+            child.add_argument("--ready-file", help="write query identity after a worker query starts")
         if name in ("promote", "activate"):
             child.add_argument("--version", required=True)
         if name == "activate":
@@ -106,12 +107,16 @@ def execute(args, config: PipelineConfig):
                        max_events=args.max_events, rate=args.rate)
     if args.command == "stream":
         from industrial_mlops.streaming import stream
+        def ready(query):
+            if args.ready_file:
+                write_json(args.ready_file, {"query_id": str(query.id), "run_id": str(query.runId)})
         return stream(
             bootstrap=args.bootstrap, topic=args.topic, db_path=args.db, checkpoint=args.checkpoint,
             tracking_uri=args.tracking_uri, config=config, query_id=args.query_id,
             available_now=args.available_now, duration_seconds=args.duration_seconds,
             max_offsets=args.max_offsets, workers=args.workers, failpoint=args.failpoint,
             fail_batch=args.fail_batch, fail_marker=args.fail_marker,
+            on_started=ready,
         )
     if args.command == "dashboard":
         from industrial_mlops.dashboard import serve
