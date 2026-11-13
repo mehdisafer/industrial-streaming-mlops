@@ -1,0 +1,67 @@
+bundle:
+  name: industrial-streaming-mlops
+  databricks_cli_version: '>= 0.218.0'
+
+include:
+  - resources/*.yml
+
+sync:
+  include:
+    - src/industrial_mlops/**
+    - config/pipeline.json
+    - databricks/job.py
+  exclude:
+    - .venv/**
+    - .state/**
+    - evidence/**
+    - upload/**
+
+variables:
+  cluster_id:
+    description: Existing, authorized dedicated qualification compute. No compute is created.
+  catalog:
+    description: Existing writable Unity Catalog catalog.
+  schema:
+    description: Existing schema for the isolated qualification tables.
+  table_prefix:
+    description: Unique SQL identifier for this qualification; reuse only with its original checkpoint and model.
+  output_root:
+    description: Existing authorized /Volumes/catalog/schema/volume/project directory for evidence.
+  checkpoint_root:
+    description: Durable checkpoint location on an existing authorized volume or cloud location.
+  kafka_bootstrap_servers:
+    description: Kafka endpoint reachable from the existing Databricks compute.
+  kafka_topic:
+    description: Existing synthetic-data topic. Every machine must keep its Kafka partition.
+  kafka_secret_scope:
+    description: Existing secret scope; this bundle never creates or exports secrets.
+  kafka_secret_key:
+    description: Existing secret containing the SASL JAAS configuration.
+  model_name:
+    description: Trusted registered sklearn model with this project's qualification and feature tags.
+  model_version:
+    description: Explicit positive numerical model version; aliases are not accepted.
+  registry_uri:
+    description: Authorized registry URI; UC requires a catalog.schema.model name.
+    default: databricks-uc
+  tracking_uri:
+    description: Authorized tracking server accessible from the compute.
+    default: databricks
+  code_sha:
+    description: Forty-character Git commit of the uploaded source.
+  max_records:
+    description: Hard bound on the complete replay dataset; overflow fails without dropping raw records.
+    default: '50000'
+  max_offsets:
+    description: Maximum Kafka records per micro-batch.
+    default: '1000'
+  expected_records:
+    description: Expected total records for the selected topic and checkpoint; zero means no count acceptance assertion.
+    default: '0'
+
+targets:
+  qualification:
+    default: true
+    mode: production
+    workspace:
+      root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}

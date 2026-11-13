@@ -32,7 +32,9 @@ def digest(value: Any) -> str:
 
 def source_bytes(record: dict) -> bytes:
     if record.get("value_base64") is not None:
-        return base64.b64decode(record["value_base64"], validate=True)
+        # Spark's base64 expression can insert MIME CR/LF wrapping at 76 columns.
+        encoded = record["value_base64"].replace("\r", "").replace("\n", "")
+        return base64.b64decode(encoded, validate=True)
     return record["value"].encode("utf-8", errors="surrogatepass") if record["value"] is not None else b""
 
 

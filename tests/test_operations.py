@@ -78,6 +78,15 @@ def test_kafka_tombstone_is_distinct_from_empty_payload(tmp_path):
             store.process_batch([{"topic": "t", "partition": 0, "offset": 0, "value": ""}], "q", 1)
 
 
+def test_spark_mime_wrapped_base64_preserves_bytes(tmp_path):
+    import base64
+    from industrial_mlops.store import source_bytes
+    payload = b'{"kind":"sensor","padding":"' + b"x" * 500 + b'"}'
+    wrapped = base64.encodebytes(payload).decode()
+    assert "\n" in wrapped
+    assert source_bytes({"value": "", "value_base64": wrapped}) == payload
+
+
 def test_store_config_change_requires_migration(tmp_path):
     from industrial_mlops.config import PipelineConfig
     path = tmp_path / "db"
