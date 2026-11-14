@@ -1,0 +1,28 @@
+{
+  "benchmark03_additionally_records": {
+    "psutil": "7.2.2"
+  },
+  "benchmark03_receipt_sha256": "d5e1b43e3ee0896098ca26e7d7cbf9a643b038a4d2c8a8873b440d7935b4bb61",
+  "benchmark03_receipt_source": "state/streaming-benchmark-03/evidence/benchmark.json",
+  "benchmark03_runner_sha256": "5ac9fb4de43d42f2b47c3e050b01e922eddea9526e73bc6c9b2387865c50d795",
+  "benchmark03_source_git_commit": "349ec4c892c15b0deeeb34c81a2cc8baeecbf656",
+  "git_commit_provenance": "Identifiers are preserved from original runtime receipts. This package does not claim a local Git-object comparison.",
+  "native08_receipt_sha256": "7f83c06f4e6e4b0d309276f42e895eea1d569df50f7fa0d9c2acc14c0f42b5a3",
+  "native08_receipt_source": "state/native-qualification-08/evidence/qualification.json",
+  "native08_runner_sha256": "8b395533b92e8cc5886803227fa756de6e757c972bedb73f733b3e11b050e40d",
+  "native08_source_git_commit": "56bf4370bf0b1835b59da815006216976e19e5a7",
+  "platform_equal": true,
+  "python_equal": true,
+  "scope": "Comparison of already completed receipts; no services executed while packaging",
+  "shared_package_versions": {
+    "kafka-python": "2.3.2",
+    "mlflow": "3.17.2",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "pyspark": "3.5.9",
+    "scikit-learn": "1.8.0"
+  },
+  "shared_package_versions_equal": true,
+  "source_identity": "working-tree-sha256:8756108fa9d3f07592b2a40e51f9da1a07baa2314bda77e413af08b23d930866",
+  "source_identity_equal": true
+}

@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-13T23:57:19.224639+00:00",
+  "scope": "Actual workflow scope run block executed against a temporary local Git repository; event contexts supplied as fixture environment values. No hosted GitHub Actions, Docker, broker, Spark or MLflow execution.",
+  "hosted_workflow_executed": false,
+  "container_execution": false,
+  "workflow_file": ".github/workflows/ci.yml",
+  "workflow_sha256": "83ddcaeb98d1548648a4664dba71068c087525a63015383e534c5ff6c3ddfee3",
+  "scope_run_block_sha256": "457dd0dfcca3724cb0ecbb6ac4c7ffed3357c0e6d1837994cc2e5e002034ff08",
+  "base_expression": "${{ github.event.before || github.event.pull_request.base.sha }}",
+  "head_expression": "${{ github.event.pull_request.head.sha || github.sha }}",
+  "expression_check": "YAML expression strings asserted; fixture derives their string first-nonempty values. GitHub expression engine itself not executed.",
+  "official_sources": [
+    {
+      "url": "https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json",
+      "sha256": "6c33400fa143601698c8cd5ec9cbf2e1213b736ea79e8433994d47933d078aba",
+      "bytes": 14274031,
+      "schema": "components.schemas.webhook-pull-request-synchronize",
+      "observed_required": [
+        "action",
+        "number",
+        "before",
+        "after",
+        "pull_request",
+        "repository",
+        "sender"
+      ],
+      "observed_properties": {
+        "before": {
+          "type": "string"
+        },
+        "after": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#pull_request",
+      "finding": "pull_request GITHUB_SHA is a merge commit; pull_request.head.sha identifies the head branch commit."
+    },
+    {
+      "url": "https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency",
+      "finding": "Job-level concurrency supports github context; default single pending job and one running job per group; cancel-in-progress:true opts into cancelling a running job."
+    }
+  ],
+  "static_checks": {
+    "yaml_parse": "passed",
+    "all_run_blocks_bash_syntax": "passed",
+    "job_concurrency_and_conditions": "passed"
+  },
+  "fixture_commits": {
+    "initial": "e2f6033977cd21d824d9a2b51967e5bb15654845",
+    "code": "3fa13fa1ed63f97d4279c23881af7104031bf776",
+    "readme_only": "f80947184bf7d8c53e375e8246a3ab6b8144a7e9",
+    "second_code": "6583a50ef369546c99ee14c971dbebb20463480f",
+    "advanced_base": "784b150d9fb04ef564b047790a3457b4f3dd3bbf",
+    "synthetic_merge": "976b93ec68497dc290c16ddbbb9112cdb7b9b77f"
+  },
+  "checks": [
+    {
+      "name": "initial-pr-opened",
+      "event": "pull_request",
+      "action": "opened",
+      "base_sha": "e2f6033977cd21d824d9a2b51967e5bb15654845",
+      "head_sha": "3fa13fa1ed63f97d4279c23881af7104031bf776",
+      "expected_integration": true,
+      "observed_output": "integration=true",
+      "status": "passed"
+    },
+    {
+      "name": "pr-reopened",
+      "event": "pull_request",
+      "action": "reopened",
+      "base_sha": "e2f6033977cd21d824d9a2b51967e5bb15654845",
+      "head_sha": "f80947184bf7d8c53e375e8246a3ab6b8144a7e9",
+      "expected_integration": true,
+      "observed_output": "integration=true",
+      "status": "passed"
+    },
+    {
+      "name": "readme-only-pr-synchronize",
+      "event": "pull_request",
+      "action": "synchronize",
+      "base_sha": "3fa13fa1ed63f97d4279c23881af7104031bf776",
+      "head_sha": "f80947184bf7d8c53e375e8246a3ab6b8144a7e9",
+      "expected_integration": false,
+      "observed_output": "integration=false",
+      "status": "passed"
+    },
+    {
+      "name": "source-pr-synchronize",
+      "event": "pull_request",
+      "action": "synchronize",
+      "base_sha": "f80947184bf7d8c53e375e8246a3ab6b8144a7e9",
+      "head_sha": "6583a50ef369546c99ee14c971dbebb20463480f",
+      "expected_integration": true,
+      "observed_output": "integration=true",
+      "status": "passed"
+    },
+    {
+      "name": "readme-only-main-push",
+      "event": "push",
+      "action": "",
+      "base_sha": "3fa13fa1ed63f97d4279c23881af7104031bf776",
+      "head_sha": "f80947184bf7d8c53e375e8246a3ab6b8144a7e9",
+      "expected_integration": false,
+      "observed_output": "integration=false",
+      "status": "passed"
+    },
+    {
+      "name": "source-main-push",
+      "event": "push",
+      "action": "",
+      "base_sha": "f80947184bf7d8c53e375e8246a3ab6b8144a7e9",
+      "head_sha": "6583a50ef369546c99ee14c971dbebb20463480f",
+      "expected_integration": true,
+      "observed_output": "integration=true",
+      "status": "passed"
+    },
+    {
+      "name": "manual-dispatch-full",
+      "event": "workflow_dispatch",
+      "action": "",
+      "base_sha": "3fa13fa1ed63f97d4279c23881af7104031bf776",
+      "head_sha": "f80947184bf7d8c53e375e8246a3ab6b8144a7e9",
+      "expected_integration": true,
+      "observed_output": "integration=true",
+      "status": "passed"
+    },
+    {
+      "name": "initial-push-zero-base",
+      "event": "push",
+      "action": "",
+      "base_sha": "0000000000000000000000000000000000000000",
+      "head_sha": "3fa13fa1ed63f97d4279c23881af7104031bf776",
+      "expected_integration": true,
+      "observed_output": "integration=true",
+      "status": "passed"
+    },
+    {
+      "name": "missing-base-conservative-full",
+      "event": "pull_request",
+      "action": "opened",
+      "base_sha": "",
+      "head_sha": "3fa13fa1ed63f97d4279c23881af7104031bf776",
+      "expected_integration": true,
+      "observed_output": "integration=true",
+      "status": "passed"
+    },
+    {
+      "name": "negative-control-original-pr-base-first",
+      "expected_original_defect": true,
+      "observed_output": "integration=true",
+      "status": "passed"
+    },
+    {
+      "name": "negative-control-synthetic-merge-head",
+      "expected_original_defect": true,
+      "observed_output": "integration=true",
+      "status": "passed"
+    }
+  ],
+  "check_count": 11,
+  "all_checks_passed": true,
+  "limitations": [
+    "Temporary Git repository removed after execution. Original per-case output is retained in this receipt.",
+    "A before SHA absent from fetched Git history still fails the scope step; no automatic hosted recovery was tested."
+  ],
+  "prior_receipt": {
+    "path": "state/final-checks/ci-scope-checks-before-job-concurrency.json",
+    "sha256": "3dd55293f4c5f923cc6537c6e7f51b8c051d8eb2287100bd8ff17cd544082b22"
+  },
+  "concurrency_checks": {
+    "status": "passed",
+    "method": "Static assertions on parsed actual workflow; no hosted scheduler execution",
+    "workflow_concurrency_absent": true,
+    "checks_timeout_minutes": 20,
+    "checks_has_no_matrix": true,
+    "heavy_job_condition": "needs.checks.outputs.integration == 'true'",
+    "heavy_job_group": "integration-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}",
+    "heavy_cancel_in_progress": false,
+    "heavy_timeout_minutes": 35,
+    "heavy_has_no_matrix": true,
+    "queue_policy": "Default single pending job per group; one active integration and one pending integration per PR/ref. Further relevant updates may replace the pending job; the active job is not cancelled.",
+    "docs_only_behavior": "The actual scope block returns false, so the heavy job condition is false; documentation events have no workflow-level cancellation group.",
+    "previous_cancellation_caveat": "Addressed by removing workflow concurrency and retaining concurrency only on the conditional heavy job."
+  },
+  "readme_review": "README has no cancellation-policy caveat or hosted scheduling claim to remove; README unchanged to keep this fix scoped to CI."
+}

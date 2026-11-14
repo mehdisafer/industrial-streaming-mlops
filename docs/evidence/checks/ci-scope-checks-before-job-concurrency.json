@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-13T23:54:57.177631+00:00",
+  "scope": "Actual workflow scope run block executed against a temporary local Git repository; event contexts supplied as fixture environment values. No hosted GitHub Actions, Docker, broker, Spark or MLflow execution.",
+  "hosted_workflow_executed": false,
+  "container_execution": false,
+  "workflow_file": ".github/workflows/ci.yml",
+  "workflow_sha256": "6c3d7be84f003e990bc5a2a143882f7c60523d64b016bd45b7482685175ed581",
+  "scope_run_block_sha256": "457dd0dfcca3724cb0ecbb6ac4c7ffed3357c0e6d1837994cc2e5e002034ff08",
+  "base_expression": "${{ github.event.before || github.event.pull_request.base.sha }}",
+  "head_expression": "${{ github.event.pull_request.head.sha || github.sha }}",
+  "expression_check": "YAML expression strings asserted; fixture derives their string first-nonempty values. GitHub expression engine itself not executed.",
+  "official_sources": [
+    {
+      "url": "https://raw.githubusercontent.com/github/rest-api-description/main/descriptions/api.github.com/api.github.com.json",
+      "sha256": "6c33400fa143601698c8cd5ec9cbf2e1213b736ea79e8433994d47933d078aba",
+      "bytes": 14274031,
+      "schema": "components.schemas.webhook-pull-request-synchronize",
+      "observed_required": [
+        "action",
+        "number",
+        "before",
+        "after",
+        "pull_request",
+        "repository",
+        "sender"
+      ],
+      "observed_properties": {
+        "before": {
+          "type": "string"
+        },
+        "after": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "url": "https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#pull_request",
+      "finding": "pull_request GITHUB_SHA is a merge commit; pull_request.head.sha identifies the head branch commit."
+    }
+  ],
+  "static_checks": {
+    "yaml_parse": "passed",
+    "all_run_blocks_bash_syntax": "passed"
+  },
+  "fixture_commits": {
+    "initial": "5352d15fa17b880a5e146b819d434faa04462861",
+    "code": "c470d882687fec5846900f691cc02ee705cbb321",
+    "readme_only": "3e3e65eee3d224cff43cb95248132bd908eb89c0",
+    "second_code": "28116075cd65b38eab3515c9264968f19eb86013",
+    "advanced_base": "87a38e7eba967bbd208c6907721cf66f60dd0b5a",
+    "synthetic_merge": "ae11c6c5d0795878a76fc98300f06144cc2b471f"
+  },
+  "checks": [
+    {
+      "name": "initial-pr-opened",
+      "event": "pull_request",
+      "action": "opened",
+      "base_sha": "5352d15fa17b880a5e146b819d434faa04462861",
+      "head_sha": "c470d882687fec5846900f691cc02ee705cbb321",
+      "expected_integration": true,
+      "observed_output": "integration=true",
+      "status": "passed"
+    },
+    {
+      "name": "pr-reopened",
+      "event": "pull_request",
+      "action": "reopened",
+      "base_sha": "5352d15fa17b880a5e146b819d434faa04462861",
+      "head_sha": "3e3e65eee3d224cff43cb95248132bd908eb89c0",
+      "expected_integration": true,
+      "observed_output": "integration=true",
+      "status": "passed"
+    },
+    {
+      "name": "readme-only-pr-synchronize",
+      "event": "pull_request",
+      "action": "synchronize",
+      "base_sha": "c470d882687fec5846900f691cc02ee705cbb321",
+      "head_sha": "3e3e65eee3d224cff43cb95248132bd908eb89c0",
+      "expected_integration": false,
+      "observed_output": "integration=false",
+      "status": "passed"
+    },
+    {
+      "name": "source-pr-synchronize",
+      "event": "pull_request",
+      "action": "synchronize",
+      "base_sha": "3e3e65eee3d224cff43cb95248132bd908eb89c0",
+      "head_sha": "28116075cd65b38eab3515c9264968f19eb86013",
+      "expected_integration": true,
+      "observed_output": "integration=true",
+      "status": "passed"
+    },
+    {
+      "name": "readme-only-main-push",
+      "event": "push",
+      "action": "",
+      "base_sha": "c470d882687fec5846900f691cc02ee705cbb321",
+      "head_sha": "3e3e65eee3d224cff43cb95248132bd908eb89c0",
+      "expected_integration": false,
+      "observed_output": "integration=false",
+      "status": "passed"
+    },
+    {
+      "name": "source-main-push",
+      "event": "push",
+      "action": "",
+      "base_sha": "3e3e65eee3d224cff43cb95248132bd908eb89c0",
+      "head_sha": "28116075cd65b38eab3515c9264968f19eb86013",
+      "expected_integration": true,
+      "observed_output": "integration=true",
+      "status": "passed"
+    },
+    {
+      "name": "manual-dispatch-full",
+      "event": "workflow_dispatch",
+      "action": "",
+      "base_sha": "c470d882687fec5846900f691cc02ee705cbb321",
+      "head_sha": "3e3e65eee3d224cff43cb95248132bd908eb89c0",
+      "expected_integration": true,
+      "observed_output": "integration=true",
+      "status": "passed"
+    },
+    {
+      "name": "initial-push-zero-base",
+      "event": "push",
+      "action": "",
+      "base_sha": "0000000000000000000000000000000000000000",
+      "head_sha": "c470d882687fec5846900f691cc02ee705cbb321",
+      "expected_integration": true,
+      "observed_output": "integration=true",
+      "status": "passed"
+    },
+    {
+      "name": "missing-base-conservative-full",
+      "event": "pull_request",
+      "action": "opened",
+      "base_sha": "",
+      "head_sha": "c470d882687fec5846900f691cc02ee705cbb321",
+      "expected_integration": true,
+      "observed_output": "integration=true",
+      "status": "passed"
+    },
+    {
+      "name": "negative-control-original-pr-base-first",
+      "expected_original_defect": true,
+      "observed_output": "integration=true",
+      "status": "passed"
+    },
+    {
+      "name": "negative-control-synthetic-merge-head",
+      "expected_original_defect": true,
+      "observed_output": "integration=true",
+      "status": "passed"
+    }
+  ],
+  "check_count": 11,
+  "all_checks_passed": true,
+  "limitations": [
+    "Temporary Git repository removed after execution. Original per-case output is retained in this receipt.",
+    "A before SHA absent from fetched Git history still fails the scope step; no automatic hosted recovery was tested."
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "mlflow_version": "3.17.2",
+  "MLFLOW_DISABLE_TELEMETRY": "true",
+  "DO_NOT_TRACK": "true",
+  "telemetry_client_is_none": true,
+  "official_source": "https://mlflow.org/docs/latest/community/usage-tracking/",
+  "scope": "Actual installed SDK opt-out check before real service retry; not a packet capture."
+}

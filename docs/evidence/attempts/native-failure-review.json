@@ -1,0 +1,235 @@
+{
+  "assessment": {
+    "important_distinction": "Fresh CLI/JVM workers address lifecycle isolation in 04. They cannot alone explain 05, which failed before launching any Spark worker.",
+    "not_established": [
+      "Out-of-memory kill or JVM heap exhaustion",
+      "Accumulated orphan JVM processes across execution namespaces",
+      "A specific CPU quota or cgroup throttling limit",
+      "A reproducible Kafka protocol incompatibility",
+      "Simple early TCP-readiness race as the sole explanation for the long post-start stalls"
+    ],
+    "supported": "04 lost its Java gateway after business rows were committed. 05 shows large broker-controller timing gaps and a concurrent MLflow/model-load gap before any Spark worker was launched. A broader scheduling, runtime pause or resource stall is plausible."
+  },
+  "minimal_next_step": [
+    "Preserve 04 and 05 plus their persistent source/sink state and original logs. Do not turn failed aggregate runs into accepted runs.",
+    "Use the existing fresh-worker and metadata-readiness changes in one bounded next qualification, reusing models only after the recorded training-source comparison succeeds.",
+    "If the stall or gateway loss recurs, capture child PIDs/process-group IDs, gateway.proc.poll()/exit code, bounded CPU/RSS/thread samples and JVM GC/safepoint diagnostics inside the same execution namespace. These distinguish process cleanup, memory pressure, JVM pause and scheduling starvation.",
+    "Reconcile Kafka metadata after uncertain create_topics outcomes before repeating the mutation. For a resumed existing dataset, rely on the established Kafka-coordinate/batch ledger and preserve the checkpoint.",
+    "Do not increase timeouts or lower business gates solely to make a run pass; runtime diagnostics should determine any resource adjustment."
+  ],
+  "mitigations_observed_in_current_runner": {
+    "file": "scripts/qualify_native.py",
+    "implemented": [
+      "Services.worker runs lifecycle stages as fresh Python/JVM processes with bounded wait and owned-process-group cleanup.",
+      "Services.kafka now performs successful Kafka controller/broker metadata requests before publication."
+    ],
+    "sha256": "5c00272b9aaf0cab4ea8bfe7cf02738165a426f8e5f2f4bb91cc8644d1bb97c9",
+    "status": "Implemented; native06 was in progress at the time of this review. No success is asserted here."
+  },
+  "observer_limits": {
+    "cgroup_counters": "/sys/fs/cgroup is empty; memory.events, memory.peak, cpu.stat and pressure records were unavailable.",
+    "process_namespace": "The review exec sees only its own few processes, not previous exec namespaces. Absence of a Java process here does not establish cleanup elsewhere.",
+    "review_time_environment": {
+      "cpu_affinity_count": 9,
+      "load_average": "1.12 6.97 7.97 1/714 5",
+      "memory_available_at_earlier_review_kib": 4713720,
+      "memory_total_at_earlier_review_kib": 10206472,
+      "swap_total_at_earlier_review_kib": 0,
+      "warning": "Post-failure observer measurements do not establish resource peaks or conditions at the moment of failure.",
+      "workspace_available_gib_observed": 51
+    }
+  },
+  "originals": {
+    "state/native-qualification-04.log": {
+      "bytes": 29817,
+      "sha256": "0fd50c9acf5e96f9bb855d9dc84fd0de4977ce2e720b95010603db94b610b0df"
+    },
+    "state/native-qualification-04/evidence/kafka.log": {
+      "bytes": 115068,
+      "sha256": "ea97c4e59ecd139f4bf3746c71afd344fa84f5126d459ba3e228155802d94713"
+    },
+    "state/native-qualification-04/evidence/qualification.json": {
+      "bytes": 114020,
+      "sha256": "4034e5802c4baeca76c8d52d33098346d866e5c6798bb61abfb1989a3b0296e3"
+    },
+    "state/native-qualification-05.log": {
+      "bytes": 2203,
+      "sha256": "042f68f116edb20e0c8dba7318ef3e199956df1526d47e77c8c88460bb46571d"
+    },
+    "state/native-qualification-05/evidence/kafka.log": {
+      "bytes": 65982,
+      "sha256": "51963499d01f561ba3ef96a55e1b3eab7191dbbbdc0080fcabbe0580b1bfd5d0"
+    },
+    "state/native-qualification-05/evidence/mlflow.log": {
+      "bytes": 7194,
+      "sha256": "3050a9d21dd8fb71573f48be5a80d4338b2f409a223f92890f85d5854af6ea63"
+    },
+    "state/native-qualification-05/evidence/qualification.json": {
+      "bytes": 113567,
+      "sha256": "f100e06e87f2e8afaa7faa14b4721deb0338325480f0afe65927af182b341c56"
+    }
+  },
+  "review_version": "1",
+  "reviewed_at_utc": "2026-11-13T23:29:05.566628+00:00",
+  "runs": {
+    "04": {
+      "completed_scope": [
+        "initial Kafka/Spark ingestion",
+        "unavailable-model pending retention and recovery",
+        "batch/stream feature and score parity",
+        "before-commit recovery",
+        "after-commit recovery",
+        "active-query broker outage recovery",
+        "candidate and rollback writes are present in persisted tables"
+      ],
+      "effect_observed_before_failure": {
+        "batch_id": 6,
+        "event": "batch_committed",
+        "new_coordinates": 303,
+        "predictions": 2092,
+        "predictions_written": 127,
+        "raw": 4380
+      },
+      "fatal_jvm_report": "no hs_err_pid/replay_pid/hprof file found within this repository during review",
+      "first_failure": {
+        "cleanup_effect": "query.isActive in finally raised another ConnectionRefusedError, obscuring the original gateway-loss context",
+        "exception": "Py4JNetworkError: Answer from Java side is empty; subsequent connection refused",
+        "where": "query.awaitTermination during rollback consumption"
+      },
+      "jvm_exit_signal": "not recorded",
+      "jvm_oom": "not established",
+      "not_completed": [
+        "final aggregate native acceptance",
+        "dashboard HTTP validation in this run",
+        "full stopped deployment backup and restoration in this run"
+      ],
+      "overall_passed": false,
+      "persisted_pipeline": {
+        "counts": {
+          "alerts": 12,
+          "batches": 7,
+          "features": 2092,
+          "predictions": 2092,
+          "raw_records": 4380
+        },
+        "deployments": [
+          {
+            "action": "activate",
+            "mode": "approved",
+            "model_name": "industrial-risk",
+            "model_version": "1"
+          },
+          {
+            "action": "activate",
+            "mode": "approved",
+            "model_name": "industrial-risk",
+            "model_version": "2"
+          },
+          {
+            "action": "rollback",
+            "mode": "approved",
+            "model_name": "industrial-risk",
+            "model_version": "1"
+          }
+        ],
+        "predictions_by_version": {
+          "1": 1965,
+          "2": 127
+        },
+        "read_mode": "SQLite URI mode=ro"
+      },
+      "python": "3.11.18",
+      "recorded_checks": {
+        "active_broker_outage_recovery": true,
+        "after_commit_recovery": true,
+        "batch_stream_feature_parity": true,
+        "batch_stream_prediction_parity": true,
+        "before_commit_recovery": true,
+        "model_recovery_scores_pending": true,
+        "source_count_matches_producer": true,
+        "unavailable_model_retains_features": true
+      },
+      "reported_failure": {
+        "message": "[Errno 111] Connection refused",
+        "type": "ConnectionRefusedError"
+      },
+      "runtime": {
+        "kafka-python": "2.3.2",
+        "mlflow": "3.17.2",
+        "numpy": "2.3.5",
+        "pandas": "2.2.3",
+        "pyspark": "3.5.9",
+        "scikit-learn": "1.8.0"
+      },
+      "started_at_epoch": 1794611762.0875843,
+      "started_at_utc": "2026-11-13T23:16:02.087584+00:00"
+    },
+    "05": {
+      "failed_before_any_spark_worker": true,
+      "mutation_reconciliation": "Topic creation had server-side effects; a client timeout does not demonstrate absence of mutation. No successful Kafka metadata readback was captured after this failed run.",
+      "overall_passed": false,
+      "persisted_pipeline": {
+        "counts": {
+          "alerts": 0,
+          "batches": 0,
+          "features": 0,
+          "predictions": 0,
+          "raw_records": 0
+        },
+        "deployments": [
+          {
+            "action": "activate",
+            "mode": "approved",
+            "model_name": "industrial-risk",
+            "model_version": "1"
+          }
+        ],
+        "predictions_by_version": {},
+        "read_mode": "SQLite URI mode=ro"
+      },
+      "python": "3.11.18",
+      "recorded_checks": {},
+      "reported_failure": {
+        "message": "[Error 7] RequestTimedOutError: Request timed out after 60000.0 ms",
+        "type": "RequestTimedOutError"
+      },
+      "runtime": {
+        "kafka-python": "2.3.2",
+        "mlflow": "3.17.2",
+        "numpy": "2.3.5",
+        "pandas": "2.2.3",
+        "pyspark": "3.5.9",
+        "scikit-learn": "1.8.0"
+      },
+      "started_at_epoch": 1794612016.6715534,
+      "started_at_utc": "2026-11-13T23:20:16.671553+00:00",
+      "timeline": [
+        {
+          "logged_time": "2026-11-14 00:20:21.084",
+          "observation": "Broker unfenced; RECOVERY to RUNNING."
+        },
+        {
+          "logged_time": "2026-11-14 00:20:21.092",
+          "observation": "Kafka Server started."
+        },
+        {
+          "logged_time": "2026-11-14 00:20:29 to 00:21:13",
+          "observation": "MLflow client/model-load sequence has an approximately 44-second gap; server logs show artifact responses before and reference-profile requests after."
+        },
+        {
+          "logged_time": "2026-11-14 00:21:13.921",
+          "observation": "A broker-controller heartbeat configured for 2000ms timeout was cancelled after 34563ms since send (36290ms since creation)."
+        },
+        {
+          "logged_time": "2026-11-14 00:22:33.615",
+          "observation": "Kafka receives cleanup SIGTERM after producer failure."
+        },
+        {
+          "logged_time": "2026-11-14 00:22:33.717 to 00:22:33.751",
+          "observation": "Broker logs creation/loading of qualification partitions 2,1,0 despite the create_topics client timeout."
+        }
+      ]
+    }
+  },
+  "scope": "Read-only diagnosis of native qualification 04 and 05; no source modification, service launch, service termination, evidence deletion or workload replay by the reviewer. Only these review files were created."
+}

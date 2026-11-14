@@ -1,0 +1,14 @@
+{
+  "acknowledged": 2317,
+  "elapsed_seconds": 0.7559513659998629,
+  "events_per_second": 3065.0119891448417,
+  "offsets": {
+    "0": {
+      "count": 2317,
+      "first": 0,
+      "last": 2316
+    }
+  },
+  "partitions": 1,
+  "topic": "benchmark-h24-p1-w1"
+}

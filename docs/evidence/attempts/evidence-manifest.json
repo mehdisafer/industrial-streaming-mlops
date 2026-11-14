@@ -1,0 +1,306 @@
+{
+  "all_exact_copies_verified": true,
+  "attempt07_observation": {
+    "final_source_lag_reported": null,
+    "final_source_lag_zero_check_present": false,
+    "original_check_count": 19,
+    "original_report_passed": true,
+    "original_worker_lag": {
+      "exception": "TypeError",
+      "status": "unavailable"
+    },
+    "superseded_for_complete_acceptance_by": "native08"
+  },
+  "attempt_report_extractions": [
+    {
+      "attempt": "01",
+      "bundled_original_console_log": "docs/evidence/attempts/native-01.log",
+      "failure": {
+        "message": "KafkaConfigurationError: Must set 'max_in_flight_requests_per_connection' to 1 in order to use the idempotent producer. Otherwise we cannot guarantee idempotence.",
+        "type": "KafkaConfigurationError"
+      },
+      "passed": false,
+      "recorded_checks": {},
+      "source_bundled": false,
+      "source_bytes": 113030,
+      "source_path": "state/native-qualification-01/evidence/qualification.json",
+      "source_sha256": "37e186caff48ea1135c9af0a3c5c81a6e0db241ee7f75b0dc3c3629e946c92ce"
+    },
+    {
+      "attempt": "02",
+      "bundled_original_console_log": "docs/evidence/attempts/native-02.log",
+      "failure": {
+        "message": "[JAVA_GATEWAY_EXITED] Java gateway process exited before sending its port number.",
+        "type": "PySparkRuntimeError"
+      },
+      "passed": false,
+      "recorded_checks": {},
+      "source_bundled": false,
+      "source_bytes": 113361,
+      "source_path": "state/native-qualification-02/evidence/qualification.json",
+      "source_sha256": "c9d1235b83d1169cb9e1b9bbf23b4472cbf0fe965cfd6ea8748dcc45093d1d74"
+    },
+    {
+      "attempt": "03",
+      "bundled_original_console_log": "docs/evidence/attempts/native-03.log",
+      "failure": {
+        "message": "[STREAM_FAILED] Query [id = d0cf6a61-5d4e-4a61-a9e7-3a94802a04e5, runId = 1480f5be-020b-47cd-ba49-7c900dd25013] terminated with exception: An exception was raised by the Python Proxy. Return Message: Traceback (most recent call last):\n  File \"/workspace/scratch/65da83183df7/industrial-streaming-mlops/.tools/venv311/lib/python3.11/site-packages/py4j/clientserver.py\", line 644, in _call_proxy\n    return_value = getattr(self.pool[obj_id], method)(*params)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/65da83183df7/industrial-streaming-mlops/.tools/venv311/lib/python3.11/site-packages/pyspark/sql/utils.py\", line 120, in call\n    raise e\n  File \"/workspace/scratch/65da83183df7/industrial-streaming-mlops/.tools/venv311/lib/python3.11/site-packages/pyspark/sql/utils.py\", line 117, in call\n    self.func(DataFrame(jdf, wrapped_session_jdf), batch_id)\n  File \"/workspace/scratch/65da83183df7/industrial-streaming-mlops/src/industrial_mlops/streaming.py\", line 245, in sink\n    summary = store.process_batch(\n              ^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/65da83183df7/industrial-streaming-mlops/src/industrial_mlops/store.py\", line 193, in process_batch\n    if sum(len(source_bytes(record)) for record in records) > self.config.max_batch_bytes:\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/65da83183df7/industrial-streaming-mlops/src/industrial_mlops/store.py\", line 193, in <genexpr>\n    if sum(len(source_bytes(record)) for record in records) > self.config.max_batch_bytes:\n               ^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/65da83183df7/industrial-streaming-mlops/src/industrial_mlops/store.py\", line 35, in source_bytes\n    return base64.b64decode(record[\"value_base64\"], validate=True)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/agent/.local/share/uv/python/cpython-3.11.18-linux-x86_64-gnu/lib/python3.11/base64.py\", line 88, in b64decode\n    return binascii.a2b_base64(s, strict_mode=validate)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nbinascii.Error: Only base64 data is allowed\n",
+        "type": "StreamingQueryException"
+      },
+      "passed": false,
+      "recorded_checks": {},
+      "source_bundled": false,
+      "source_bytes": 115699,
+      "source_path": "state/native-qualification-03/evidence/qualification.json",
+      "source_sha256": "41396e00602409f2995a60cb9bb07ee4916f765ce12643404b515bd6b22b1982"
+    },
+    {
+      "attempt": "04",
+      "bundled_original_console_log": "docs/evidence/attempts/native-04.log",
+      "failure": {
+        "message": "[Errno 111] Connection refused",
+        "type": "ConnectionRefusedError"
+      },
+      "passed": false,
+      "recorded_checks": {
+        "active_broker_outage_recovery": true,
+        "after_commit_recovery": true,
+        "batch_stream_feature_parity": true,
+        "batch_stream_prediction_parity": true,
+        "before_commit_recovery": true,
+        "model_recovery_scores_pending": true,
+        "source_count_matches_producer": true,
+        "unavailable_model_retains_features": true
+      },
+      "source_bundled": false,
+      "source_bytes": 114020,
+      "source_path": "state/native-qualification-04/evidence/qualification.json",
+      "source_sha256": "4034e5802c4baeca76c8d52d33098346d866e5c6798bb61abfb1989a3b0296e3"
+    },
+    {
+      "attempt": "05",
+      "bundled_original_console_log": "docs/evidence/attempts/native-05.log",
+      "failure": {
+        "message": "[Error 7] RequestTimedOutError: Request timed out after 60000.0 ms",
+        "type": "RequestTimedOutError"
+      },
+      "passed": false,
+      "recorded_checks": {},
+      "source_bundled": false,
+      "source_bytes": 113567,
+      "source_path": "state/native-qualification-05/evidence/qualification.json",
+      "source_sha256": "f100e06e87f2e8afaa7faa14b4721deb0338325480f0afe65927af182b341c56"
+    }
+  ],
+  "authored_summaries": [
+    {
+      "bytes": 3633,
+      "kind": "authored explanation or receipt; not an original runtime transcript",
+      "path": "docs/evidence/model/README.md",
+      "sha256": "faf4ede5d9f8b948e1504a23cbc4823b3e586e10caf73cdfdbd1662bfb5f0f52"
+    },
+    {
+      "bytes": 5251,
+      "kind": "authored explanation or receipt; not an original runtime transcript",
+      "path": "docs/evidence/attempts/README.md",
+      "sha256": "ecf79572ba9a0893f8d20a41621c3a8eb7348fabc2e864653363be47139c753e"
+    },
+    {
+      "bytes": 3583,
+      "kind": "authored explanation or receipt; not an original runtime transcript",
+      "path": "docs/evidence/attempts/06-approval-rejection.json",
+      "sha256": "d7e7c0061c628eb59f42d6c12f86320010c3aba8017046ae88e619bf2ab7c871"
+    },
+    {
+      "bytes": 1663,
+      "kind": "authored explanation; not an original runtime transcript",
+      "path": "docs/evidence/attempts/07-superseded-note.md",
+      "sha256": "dff8c033f11a39e66063c1c53bf805cbfd9e91dd90daf616ba7c36ca4265aa91"
+    }
+  ],
+  "copied_originals": [
+    {
+      "bytes": 103461,
+      "destination_path": "docs/evidence/model/training-report.json",
+      "destination_sha256": "97d2439f858374d8a4fcda1a9f07d95aea410ff3590889e68530efd9e6cae620",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:02:46.901696+00:00",
+      "source_path": "state/native-qualification-01/training/training-report.json",
+      "source_sha256": "97d2439f858374d8a4fcda1a9f07d95aea410ff3590889e68530efd9e6cae620"
+    },
+    {
+      "bytes": 1166118,
+      "destination_path": "docs/evidence/model/holdout-predictions.csv",
+      "destination_sha256": "f095027a0dc58fd81d8db35814c17d21a4c5fa8d01e668437801efaaf832a675",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:02:46.895060+00:00",
+      "source_path": "state/native-qualification-01/training/holdout-predictions.csv",
+      "source_sha256": "f095027a0dc58fd81d8db35814c17d21a4c5fa8d01e668437801efaaf832a675"
+    },
+    {
+      "bytes": 2746,
+      "destination_path": "docs/evidence/model/native-01-source-manifest.json",
+      "destination_sha256": "5522788226e35f3b3803d2febdf00081464de6cf3ec1e7559d400520f0b13e3f",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:02:23.022230+00:00",
+      "source_path": "state/native-qualification-01/evidence/source-manifest.json",
+      "source_sha256": "5522788226e35f3b3803d2febdf00081464de6cf3ec1e7559d400520f0b13e3f"
+    },
+    {
+      "bytes": 2821,
+      "destination_path": "docs/evidence/attempts/native-01.log",
+      "destination_sha256": "3052caa63ca33419bcc7e565119c0dc5bd13b1a18e5ead88ce4dfa817d5b0193",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:02:51.063140+00:00",
+      "source_path": "state/native-qualification-01.log",
+      "source_sha256": "3052caa63ca33419bcc7e565119c0dc5bd13b1a18e5ead88ce4dfa817d5b0193"
+    },
+    {
+      "bytes": 7976,
+      "destination_path": "docs/evidence/attempts/native-02.log",
+      "destination_sha256": "e6015f9c561cc88a90e63b37d26e59ea3da11b8f565fd2c0b9ca02e42c7caee8",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:06:02.626657+00:00",
+      "source_path": "state/native-qualification-02.log",
+      "source_sha256": "e6015f9c561cc88a90e63b37d26e59ea3da11b8f565fd2c0b9ca02e42c7caee8"
+    },
+    {
+      "bytes": 10315,
+      "destination_path": "docs/evidence/attempts/native-03.log",
+      "destination_sha256": "6d4623b73f81b33193edccbe2bc6e85c3f8ae5f986c53f5284a544ad82eea31e",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:15:10.456088+00:00",
+      "source_path": "state/native-qualification-03.log",
+      "source_sha256": "6d4623b73f81b33193edccbe2bc6e85c3f8ae5f986c53f5284a544ad82eea31e"
+    },
+    {
+      "bytes": 29817,
+      "destination_path": "docs/evidence/attempts/native-04.log",
+      "destination_sha256": "0fd50c9acf5e96f9bb855d9dc84fd0de4977ce2e720b95010603db94b610b0df",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:18:54.656341+00:00",
+      "source_path": "state/native-qualification-04.log",
+      "source_sha256": "0fd50c9acf5e96f9bb855d9dc84fd0de4977ce2e720b95010603db94b610b0df"
+    },
+    {
+      "bytes": 2203,
+      "destination_path": "docs/evidence/attempts/native-05.log",
+      "destination_sha256": "042f68f116edb20e0c8dba7318ef3e199956df1526d47e77c8c88460bb46571d",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:22:38.176129+00:00",
+      "source_path": "state/native-qualification-05.log",
+      "source_sha256": "042f68f116edb20e0c8dba7318ef3e199956df1526d47e77c8c88460bb46571d"
+    },
+    {
+      "bytes": 115068,
+      "destination_path": "docs/evidence/attempts/native-04-kafka.log",
+      "destination_sha256": "ea97c4e59ecd139f4bf3746c71afd344fa84f5126d459ba3e228155802d94713",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:18:54.292334+00:00",
+      "source_path": "state/native-qualification-04/evidence/kafka.log",
+      "source_sha256": "ea97c4e59ecd139f4bf3746c71afd344fa84f5126d459ba3e228155802d94713"
+    },
+    {
+      "bytes": 65982,
+      "destination_path": "docs/evidence/attempts/native-05-kafka.log",
+      "destination_sha256": "51963499d01f561ba3ef96a55e1b3eab7191dbbbdc0080fcabbe0580b1bfd5d0",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:22:36.056058+00:00",
+      "source_path": "state/native-qualification-05/evidence/kafka.log",
+      "source_sha256": "51963499d01f561ba3ef96a55e1b3eab7191dbbbdc0080fcabbe0580b1bfd5d0"
+    },
+    {
+      "bytes": 7194,
+      "destination_path": "docs/evidence/attempts/native-05-mlflow.log",
+      "destination_sha256": "3050a9d21dd8fb71573f48be5a80d4338b2f409a223f92890f85d5854af6ea63",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:22:36.556074+00:00",
+      "source_path": "state/native-qualification-05/evidence/mlflow.log",
+      "source_sha256": "3050a9d21dd8fb71573f48be5a80d4338b2f409a223f92890f85d5854af6ea63"
+    },
+    {
+      "bytes": 10265,
+      "destination_path": "docs/evidence/attempts/native-failure-review.json",
+      "destination_sha256": "4c29acae90abe9c7e3a12036072c9646af5514cd986b71e0b999f4fa862294a1",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:29:05.567066+00:00",
+      "source_path": "state/native-failure-review.json",
+      "source_sha256": "4c29acae90abe9c7e3a12036072c9646af5514cd986b71e0b999f4fa862294a1"
+    },
+    {
+      "bytes": 4984,
+      "destination_path": "docs/evidence/attempts/native-failure-review.md",
+      "destination_sha256": "60f8a7b5f4d5fad26695e5d1fccb70691ee5fc269a3330648730ed1e12ce0496",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:29:06.223342+00:00",
+      "source_path": "state/native-failure-review.md",
+      "source_sha256": "60f8a7b5f4d5fad26695e5d1fccb70691ee5fc269a3330648730ed1e12ce0496"
+    },
+    {
+      "bytes": 312,
+      "destination_path": "docs/evidence/attempts/telemetry-optout.json",
+      "destination_sha256": "847ec865da102a914fc7a5d4cbe2c6f514a30ad91407fd8ed8a9e6df25a9c393",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:31:37.538535+00:00",
+      "source_path": "state/final-checks/telemetry-optout.json",
+      "source_sha256": "847ec865da102a914fc7a5d4cbe2c6f514a30ad91407fd8ed8a9e6df25a9c393"
+    },
+    {
+      "bytes": 128726,
+      "destination_path": "docs/evidence/attempts/native-07-qualification.json",
+      "destination_sha256": "0c0c5b057b027931d4b1fb4b0e19e9804f3c902d3609d1019d71f15a11319c98",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:38:39.610181+00:00",
+      "source_path": "state/native-qualification-07/evidence/qualification.json",
+      "source_sha256": "0c0c5b057b027931d4b1fb4b0e19e9804f3c902d3609d1019d71f15a11319c98"
+    },
+    {
+      "bytes": 1320,
+      "destination_path": "docs/evidence/attempts/native-07.log",
+      "destination_sha256": "15b6d68156d04c5668d5f0f29bec9c045b72768be40a1a6370e8eea2ad1fa4e7",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:38:39.610181+00:00",
+      "source_path": "state/native-qualification-07.log",
+      "source_sha256": "15b6d68156d04c5668d5f0f29bec9c045b72768be40a1a6370e8eea2ad1fa4e7"
+    },
+    {
+      "bytes": 2594,
+      "destination_path": "docs/evidence/attempts/native-07-lag-observation.json",
+      "destination_sha256": "1692358ac44cf80148a188b51712250f476c1a4dace54feeec0d165c23e4b02a",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:38:15.923633+00:00",
+      "source_path": "state/native-qualification-07/evidence/qualification-4.json",
+      "source_sha256": "1692358ac44cf80148a188b51712250f476c1a4dace54feeec0d165c23e4b02a"
+    }
+  ],
+  "copy_protocol": "Read original SHA-256, copy without rewriting contents, compare destination SHA-256, and recheck original SHA-256 after all packaging.",
+  "created_at_utc": "2026-11-13T23:38:51.472703+00:00",
+  "current_completed_native_receipt": "docs/evidence/native/qualification.json",
+  "exact_copy_count": 17,
+  "historical_status_note": "The original 04/05 failure review and the 06 rejection receipt retain their historical statements about later runs. The authored 07 supersession note and current native08 receipt provide the subsequent outcomes without rewriting those originals.",
+  "manifest_self_hash": "Not included to avoid a circular self-hash. All copied files and other authored files are covered above.",
+  "manifest_version": "1",
+  "native06_worker_log_observation": {
+    "bytes": 0,
+    "exists": true,
+    "observed_at_utc": "2026-11-13T23:38:51.472703+00:00",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source_path": "state/native-qualification-06/evidence/qualification-0.log"
+  },
+  "previous_manifest_sha256_before_native08_packaging": "6a2c310cde21667cac916a6cefc1c6aaf85489b4e381699edbcbd1f0c0efc8b3",
+  "scope": "Selected original synthetic model evidence and native attempts 01–07. Attempt 07 retains its original 19-check result and documented lag-observation gap; current completed qualification is linked at docs/evidence/native/README.md.",
+  "training_identity": {
+    "code_sha": "working-tree-sha256:0198d952137fe7439ed7818dbae0fbb81074f53e8e8da0032f365a2acab1db53",
+    "evaluation_id": "5639521de699a9b00af7789ad7ea52d727e3ff56f309b3e613f2cce6d2e37eb1",
+    "feature_signature": "d6901bc8f738c50d99ca4406a9fd9ad7eab6c001ef9e1677e7cdc1c93034ba95",
+    "git_commit_substituted": false
+  },
+  "updated_at_utc": "2026-11-13T23:53:54.993667+00:00",
+  "verification": {
+    "copied_json_parsed": true,
+    "holdout_csv_data_rows": 5166,
+    "holdout_rows_match_original_report": true,
+    "runtime_originals_modified_by_packaging": false,
+    "services_started_by_packaging": false
+  }
+}

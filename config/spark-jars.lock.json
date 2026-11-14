@@ -1,0 +1,362 @@
+{
+  "schema_version": 1,
+  "spark_version": "3.5.9",
+  "scala_binary_version": "2.12",
+  "repository": "https://repo.maven.apache.org/maven2/",
+  "reviewed_at_utc": "2026-11-13",
+  "policy": {
+    "purpose": "Offline Spark Kafka classpath only; no arbitrary Maven resolution or executable download hooks.",
+    "scopes": "Include nonoptional compile/runtime dependencies; Spark provided dependencies come from the pinned PySpark distribution. Ignore test dependencies and optional cglib/asm-util.",
+    "mediation": "Use Spark 3.5.9 parent dependencyManagement: snappy 1.1.10.5, slf4j-api 2.0.7, lz4-java 1.8.0; kafka-clients zstd-jni is excluded by both Spark connector edges; preserve bundled zstd-jni 1.5.5-4.",
+    "integrity": "Kafka publishes SHA-512. The Spark and commons-pool2 files had no SHA-512/SHA-256 sidecars (HTTP 404); their SHA-1 sidecars were verified and the downloaded bytes additionally pinned with actual SHA-256/SHA-512. SHA-1 is not represented as strong publisher authentication. No signatures were verified.",
+    "classpath": "Only the four listed extra JARs; no duplicate bundled JARs, test JARs or optional dependencies."
+  },
+  "downloads": [
+    {
+      "coordinate": "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.9",
+      "filename": "spark-sql-kafka-0-10_2.12-3.5.9.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.9/spark-sql-kafka-0-10_2.12-3.5.9.jar",
+      "bytes": 432716,
+      "sha256": "fed393dcc3ef70611fe3d4f35ae78a8ea7c55301fd4cdd66c5dc97fcfaa5a00f",
+      "sha512": "7d450d701b491018aa641c4c6ca7952907592812bf4d1eb006993c62c9d2f2550d9bae59e2c45245182df4fcd8361728ea97d1291e3dad115db04b4e70d96188",
+      "published_checksum": {
+        "algorithm": "sha1",
+        "value": "17ef44bb094642e6cbe4c31283b49b0e524225a3",
+        "url": "https://repo.maven.apache.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.9/spark-sql-kafka-0-10_2.12-3.5.9.jar.sha1"
+      },
+      "unavailable_stronger_sidecars": [
+        "sha512",
+        "sha256"
+      ],
+      "sha256_origin": "computed after verifying the published Maven Central checksum over HTTPS"
+    },
+    {
+      "coordinate": "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.9",
+      "filename": "spark-sql-kafka-0-10_2.12-3.5.9.pom",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.9/spark-sql-kafka-0-10_2.12-3.5.9.pom",
+      "bytes": 14706,
+      "sha256": "63b5534b10b7932dfe88e0abebca57110a7fdc2cc32e606a05e4826c14edf68c",
+      "sha512": "d37a9b46c2faf17ddc1146b286ce3b82fa07cb863ea5f4bed4a5b9356b4ece3c7049969c03477b40acb41e84cf5a0ce436e11b72298f9ec1732dab80b869e8c9",
+      "published_checksum": {
+        "algorithm": "sha1",
+        "value": "51712cbb7067a52d26ab0d406b58634736fa4b23",
+        "url": "https://repo.maven.apache.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.9/spark-sql-kafka-0-10_2.12-3.5.9.pom.sha1"
+      },
+      "unavailable_stronger_sidecars": [
+        "sha512",
+        "sha256"
+      ],
+      "sha256_origin": "computed after verifying the published Maven Central checksum over HTTPS"
+    },
+    {
+      "coordinate": "org.apache.spark:spark-token-provider-kafka-0-10_2.12:3.5.9",
+      "filename": "spark-token-provider-kafka-0-10_2.12-3.5.9.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/spark/spark-token-provider-kafka-0-10_2.12/3.5.9/spark-token-provider-kafka-0-10_2.12-3.5.9.jar",
+      "bytes": 56812,
+      "sha256": "e82612e6070438c5ea48b08c74f367a6d214a390bdf6dcf3ff316dca592ddda5",
+      "sha512": "a6273c03e9a0b499d670f4c4b60ced7f08ad33876fbc31b8299f88ae1b81f8fd63c37b89e0a0f49a59bb26a6df5757d2311a44bd76ac853cf7ad9cc4ab2bb3ef",
+      "published_checksum": {
+        "algorithm": "sha1",
+        "value": "a925bf703b98506dd130cb56584eb2e8bd325380",
+        "url": "https://repo.maven.apache.org/maven2/org/apache/spark/spark-token-provider-kafka-0-10_2.12/3.5.9/spark-token-provider-kafka-0-10_2.12-3.5.9.jar.sha1"
+      },
+      "unavailable_stronger_sidecars": [
+        "sha512",
+        "sha256"
+      ],
+      "sha256_origin": "computed after verifying the published Maven Central checksum over HTTPS"
+    },
+    {
+      "coordinate": "org.apache.spark:spark-token-provider-kafka-0-10_2.12:3.5.9",
+      "filename": "spark-token-provider-kafka-0-10_2.12-3.5.9.pom",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/spark/spark-token-provider-kafka-0-10_2.12/3.5.9/spark-token-provider-kafka-0-10_2.12-3.5.9.pom",
+      "bytes": 7326,
+      "sha256": "873a8aec7301619d80b3b41897c0667f1318bde42b91af33e64b999178de2271",
+      "sha512": "8e1c56f48081a9814b3f006473ef5d3dbe5430c7798e1a737c0c656378ea197047d7f76b840d106fc97eae4ad1f20d73d8e1fbf9828f8ac305656faa5692e094",
+      "published_checksum": {
+        "algorithm": "sha1",
+        "value": "d5189ec422eca33105c9d29ed401bdfccfe30018",
+        "url": "https://repo.maven.apache.org/maven2/org/apache/spark/spark-token-provider-kafka-0-10_2.12/3.5.9/spark-token-provider-kafka-0-10_2.12-3.5.9.pom.sha1"
+      },
+      "unavailable_stronger_sidecars": [
+        "sha512",
+        "sha256"
+      ],
+      "sha256_origin": "computed after verifying the published Maven Central checksum over HTTPS"
+    },
+    {
+      "coordinate": "org.apache.kafka:kafka-clients:3.4.1",
+      "filename": "kafka-clients-3.4.1.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-clients/3.4.1/kafka-clients-3.4.1.jar",
+      "bytes": 5050443,
+      "sha256": "9d0a9058c8ede79db6e54ae378ed16fe8d1bead2894635a4aa6aa0b7981668c6",
+      "sha512": "b111e1980fd6bf65ca546f6b517fb31a140b19b4dc88646e723b11b54b521e48643f33aa341f47b3111a4556af131200f80c851e1b68d37cb4e747e283eefd7e",
+      "published_checksum": {
+        "algorithm": "sha512",
+        "value": "b111e1980fd6bf65ca546f6b517fb31a140b19b4dc88646e723b11b54b521e48643f33aa341f47b3111a4556af131200f80c851e1b68d37cb4e747e283eefd7e",
+        "url": "https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-clients/3.4.1/kafka-clients-3.4.1.jar.sha512"
+      },
+      "unavailable_stronger_sidecars": [],
+      "sha256_origin": "computed after verifying the published Maven Central checksum over HTTPS"
+    },
+    {
+      "coordinate": "org.apache.kafka:kafka-clients:3.4.1",
+      "filename": "kafka-clients-3.4.1.pom",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-clients/3.4.1/kafka-clients-3.4.1.pom",
+      "bytes": 1774,
+      "sha256": "5083f6bbec8ad9a3e6977f584d77edb63e93df549a096f86f36b97bc86e54c1a",
+      "sha512": "589d7d8c77c51dfd7340ee6e341ef65ccbd6499e1b5dc04d10bf3428b54596cdc33d9e420812056c4779b9ed88bc31f01652baf09881e29f81a4667f5c341580",
+      "published_checksum": {
+        "algorithm": "sha512",
+        "value": "589d7d8c77c51dfd7340ee6e341ef65ccbd6499e1b5dc04d10bf3428b54596cdc33d9e420812056c4779b9ed88bc31f01652baf09881e29f81a4667f5c341580",
+        "url": "https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-clients/3.4.1/kafka-clients-3.4.1.pom.sha512"
+      },
+      "unavailable_stronger_sidecars": [],
+      "sha256_origin": "computed after verifying the published Maven Central checksum over HTTPS"
+    },
+    {
+      "coordinate": "org.apache.commons:commons-pool2:2.11.1",
+      "filename": "commons-pool2-2.11.1.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/commons/commons-pool2/2.11.1/commons-pool2-2.11.1.jar",
+      "bytes": 145516,
+      "sha256": "ea0505ee7515e58b1ac0e686e4d1a5d9f7d808e251a61bc371aa0595b9963f83",
+      "sha512": "7177d8a9e45ae47881ec323150dc7bd3372ce32eff9866029b47a77cb734535d5e987f22e6cb7009104832c3772079fb6322b2919650765b76a4b4aa8eae648e",
+      "published_checksum": {
+        "algorithm": "sha1",
+        "value": "8970fd110c965f285ed4c6e40be7630c62db6f68",
+        "url": "https://repo.maven.apache.org/maven2/org/apache/commons/commons-pool2/2.11.1/commons-pool2-2.11.1.jar.sha1"
+      },
+      "unavailable_stronger_sidecars": [
+        "sha512",
+        "sha256"
+      ],
+      "sha256_origin": "computed after verifying the published Maven Central checksum over HTTPS"
+    },
+    {
+      "coordinate": "org.apache.commons:commons-pool2:2.11.1",
+      "filename": "commons-pool2-2.11.1.pom",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/commons/commons-pool2/2.11.1/commons-pool2-2.11.1.pom",
+      "bytes": 17925,
+      "sha256": "c1bb02994a4adf89680df7a98adba33c5527683014272d65885bb3036ecd48c3",
+      "sha512": "861046908d38c3376d6d205cb8fed9766d5e3ba36577038b4ba863c56e3318b64e2b2a0237cb6f4ec34c240b6e4c6a5935511a9919cb4d64092d713abc595f68",
+      "published_checksum": {
+        "algorithm": "sha1",
+        "value": "6f7beea6542eb122a26981fb411db1e50f4ac062",
+        "url": "https://repo.maven.apache.org/maven2/org/apache/commons/commons-pool2/2.11.1/commons-pool2-2.11.1.pom.sha1"
+      },
+      "unavailable_stronger_sidecars": [
+        "sha512",
+        "sha256"
+      ],
+      "sha256_origin": "computed after verifying the published Maven Central checksum over HTTPS"
+    },
+    {
+      "coordinate": "org.apache.spark:spark-parent_2.12:3.5.9",
+      "filename": "spark-parent_2.12-3.5.9.pom",
+      "url": "https://repo.maven.apache.org/maven2/org/apache/spark/spark-parent_2.12/3.5.9/spark-parent_2.12-3.5.9.pom",
+      "bytes": 138478,
+      "sha256": "3bfe15f473bb424efa613037aedbb68a60a03e6b7ef3aed96b9ee7631e952630",
+      "sha512": "f6a6df62f5546cbcd88aead02510a73c7e9306004d69a01b13d1ca6b366ae0a708976b5a05044b97752489a83dba3f5298ecfa59767919b17778eb76a51d04b2",
+      "published_checksum": {
+        "algorithm": "sha1",
+        "value": "168c2d097360600fe058c4263418df8b016d7841",
+        "url": "https://repo.maven.apache.org/maven2/org/apache/spark/spark-parent_2.12/3.5.9/spark-parent_2.12-3.5.9.pom.sha1"
+      },
+      "unavailable_stronger_sidecars": [
+        "sha512",
+        "sha256"
+      ],
+      "sha256_origin": "computed after verifying the published Maven Central checksum over HTTPS"
+    }
+  ],
+  "provided_by_pyspark": [
+    {
+      "coordinate": "org.apache.spark:spark-core_2.12:3.5.9",
+      "filename": "spark-core_2.12-3.5.9.jar",
+      "sha256": "e0ed56b5a0586b22ab14f9bdd5e9c8fb2b765521d4e3b3e8098606dc57ec9b6a",
+      "source": "pyspark==3.5.9 distribution; preserve, never overwrite"
+    },
+    {
+      "coordinate": "org.apache.spark:spark-sql_2.12:3.5.9",
+      "filename": "spark-sql_2.12-3.5.9.jar",
+      "sha256": "ae3f1b2657edd714407710bb55e1a3233e70deb551e9e3cb4cb845f4ac2bbf05",
+      "source": "pyspark==3.5.9 distribution; preserve, never overwrite"
+    },
+    {
+      "coordinate": "org.apache.spark:spark-tags_2.12:3.5.9",
+      "filename": "spark-tags_2.12-3.5.9.jar",
+      "sha256": "089a878c52e98ffbf01432ba2a6d16296d99afa287ab3528c69b07af172ce7f3",
+      "source": "pyspark==3.5.9 distribution; preserve, never overwrite"
+    },
+    {
+      "coordinate": "org.scala-lang:scala-library:2.12.18",
+      "filename": "scala-library-2.12.18.jar",
+      "sha256": "e51e6636c003359e106bea4ad99def70e613c290190c8c84f10f9560dd5b00ae",
+      "source": "pyspark==3.5.9 distribution; preserve, never overwrite"
+    },
+    {
+      "coordinate": "com.google.code.findbugs:jsr305:3.0.0",
+      "filename": "jsr305-3.0.0.jar",
+      "sha256": "bec0b24dcb23f9670172724826584802b80ae6cbdaba03bdebdef9327b962f6a",
+      "source": "pyspark==3.5.9 distribution; preserve, never overwrite"
+    },
+    {
+      "coordinate": "org.apache.hadoop:hadoop-client-api:3.3.4",
+      "filename": "hadoop-client-api-3.3.4.jar",
+      "sha256": "e513d71b78086b5caaa439f4402b43e20df01446d56b66084ad419452878701c",
+      "source": "pyspark==3.5.9 distribution; preserve, never overwrite"
+    },
+    {
+      "coordinate": "org.apache.hadoop:hadoop-client-runtime:3.3.4",
+      "filename": "hadoop-client-runtime-3.3.4.jar",
+      "sha256": "9377a68071137ae5f5c8cdc2ed20d6f904a1df4d06df26b47ed8872a1b0d8d47",
+      "source": "pyspark==3.5.9 distribution; preserve, never overwrite"
+    },
+    {
+      "coordinate": "org.lz4:lz4-java:1.8.0",
+      "filename": "lz4-java-1.8.0.jar",
+      "sha256": "d74a3334fb35195009b338a951f918203d6bbca3d1d359033dc33edd1cadc9ef",
+      "source": "pyspark==3.5.9 distribution; preserve, never overwrite"
+    },
+    {
+      "coordinate": "org.xerial.snappy:snappy-java:1.1.10.5",
+      "filename": "snappy-java-1.1.10.5.jar",
+      "sha256": "0f3f1857ed33116583f480b4df5c0218836c47bfbc9c6221c0d73f356decf37b",
+      "source": "pyspark==3.5.9 distribution; preserve, never overwrite"
+    },
+    {
+      "coordinate": "org.slf4j:slf4j-api:2.0.7",
+      "filename": "slf4j-api-2.0.7.jar",
+      "sha256": "5d6298b93a1905c32cda6478808ac14c2d4a47e91535e53c41f7feeb85d946f4",
+      "source": "pyspark==3.5.9 distribution; preserve, never overwrite"
+    },
+    {
+      "coordinate": "com.github.luben:zstd-jni:1.5.5-4",
+      "filename": "zstd-jni-1.5.5-4.jar",
+      "sha256": "e234c9ccbe9e36e19cc36c633d15f4a461f1bdc985d66662a2abbaa89859e522",
+      "source": "pyspark==3.5.9 distribution; preserve, never overwrite"
+    }
+  ],
+  "reviewed_pom_dependencies": [
+    {
+      "coordinate": "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.9",
+      "dependencies": [
+        {
+          "coordinate": "org.apache.spark:spark-token-provider-kafka-0-10_2.12:3.5.9",
+          "scope": "compile",
+          "optional": false,
+          "exclusions": []
+        },
+        {
+          "coordinate": "org.apache.spark:spark-sql_2.12:3.5.9",
+          "scope": "provided",
+          "optional": false,
+          "exclusions": []
+        },
+        {
+          "coordinate": "org.apache.kafka:kafka-clients:3.4.1",
+          "scope": "compile",
+          "optional": false,
+          "exclusions": [
+            "com.github.luben:zstd-jni"
+          ]
+        },
+        {
+          "coordinate": "com.google.code.findbugs:jsr305:3.0.0",
+          "scope": "compile",
+          "optional": false,
+          "exclusions": []
+        },
+        {
+          "coordinate": "org.apache.commons:commons-pool2:2.11.1",
+          "scope": "compile",
+          "optional": false,
+          "exclusions": []
+        },
+        {
+          "coordinate": "org.apache.spark:spark-tags_2.12:3.5.9",
+          "scope": "compile",
+          "optional": false,
+          "exclusions": []
+        }
+      ]
+    },
+    {
+      "coordinate": "org.apache.spark:spark-token-provider-kafka-0-10_2.12:3.5.9",
+      "dependencies": [
+        {
+          "coordinate": "org.apache.spark:spark-core_2.12:3.5.9",
+          "scope": "provided",
+          "optional": false,
+          "exclusions": []
+        },
+        {
+          "coordinate": "org.apache.kafka:kafka-clients:3.4.1",
+          "scope": "compile",
+          "optional": false,
+          "exclusions": [
+            "com.github.luben:zstd-jni"
+          ]
+        },
+        {
+          "coordinate": "org.apache.hadoop:hadoop-client-runtime:3.3.4",
+          "scope": "compile",
+          "optional": false,
+          "exclusions": []
+        },
+        {
+          "coordinate": "org.apache.spark:spark-tags_2.12:3.5.9",
+          "scope": "compile",
+          "optional": false,
+          "exclusions": []
+        }
+      ]
+    },
+    {
+      "coordinate": "org.apache.kafka:kafka-clients:3.4.1",
+      "dependencies": [
+        {
+          "coordinate": "com.github.luben:zstd-jni:1.5.2-1",
+          "scope": "runtime",
+          "optional": false,
+          "exclusions": []
+        },
+        {
+          "coordinate": "org.lz4:lz4-java:1.8.0",
+          "scope": "runtime",
+          "optional": false,
+          "exclusions": []
+        },
+        {
+          "coordinate": "org.xerial.snappy:snappy-java:1.1.8.4",
+          "scope": "runtime",
+          "optional": false,
+          "exclusions": []
+        },
+        {
+          "coordinate": "org.slf4j:slf4j-api:1.7.36",
+          "scope": "runtime",
+          "optional": false,
+          "exclusions": []
+        }
+      ]
+    },
+    {
+      "coordinate": "org.apache.commons:commons-pool2:2.11.1",
+      "dependencies": [
+        {
+          "coordinate": "cglib:cglib:3.3.0",
+          "scope": "compile",
+          "optional": true,
+          "exclusions": []
+        },
+        {
+          "coordinate": "org.ow2.asm:asm-util:9.2",
+          "scope": "compile",
+          "optional": true,
+          "exclusions": []
+        }
+      ]
+    }
+  ]
+}

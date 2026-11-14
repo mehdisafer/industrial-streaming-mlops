@@ -1,0 +1,21 @@
+{
+  "findings": [],
+  "limitations": "Pattern matching only; no entropy analysis or hosted credential validation. The manifest and this scan report are generated after this content scan and contain only paths, counts, policy labels and hashes.",
+  "matched_values_recorded": false,
+  "original_files_scanned": 56,
+  "packaged_gzip_payloads_scanned": 22,
+  "packaged_plaintext_files_scanned": 39,
+  "rule_source": "scripts/security_inventory.py",
+  "rule_source_sha256": "2c79f3662c464a9527fd0e68ed11dcdbf5a8b92d934077f5ff251d9fe553ce9e",
+  "rules": [
+    "aws_access_key_id",
+    "credential_in_url",
+    "databricks_pat",
+    "github_classic_token",
+    "github_fine_grained_token",
+    "private_key"
+  ],
+  "schema_version": 1,
+  "scope": "All selected originals and all packaged UTF-8 text or decompressed gzip payloads, including synthetic inputs; no size-based skips",
+  "skipped": []
+}

@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mehdisafer/industrial-streaming-mlops/schemas/prediction.v1.json",
+  "title": "Prediction version 1",
+  "description": "One immutable prediction per feature_id. Registry numeric version is resolved before scoring; epoch timestamps identify actual local execution while event_time identifies simulated business time.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "feature_id",
+    "event_id",
+    "dataset_id",
+    "site_id",
+    "machine_id",
+    "event_time",
+    "available_at",
+    "score",
+    "threshold",
+    "model_name",
+    "model_version",
+    "run_id",
+    "feature_version",
+    "mode",
+    "predicted_at_epoch",
+    "inference_ms",
+    "arrival_to_prediction_ms",
+    "source_event_ids",
+    "feature_signature"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1"
+    },
+    "feature_id": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "event_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "dataset_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "site_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "machine_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "event_time": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?(?:Z|\\+00:00)$"
+    },
+    "available_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?(?:Z|\\+00:00)$"
+    },
+    "score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "threshold": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "model_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "feature_version": {
+      "const": "v1"
+    },
+    "mode": {
+      "enum": [
+        "shadow",
+        "approved"
+      ]
+    },
+    "predicted_at_epoch": {
+      "type": "number"
+    },
+    "inference_ms": {
+      "type": "number",
+      "minimum": 0
+    },
+    "arrival_to_prediction_ms": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "source_event_ids": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,127}$"
+      }
+    },
+    "feature_signature": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}

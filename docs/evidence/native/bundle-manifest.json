@@ -1,0 +1,572 @@
+{
+  "authored_files": [
+    {
+      "bytes": 8183,
+      "path": "docs/evidence/native/README.md",
+      "sha256": "0b1602146dbf954635c4798bb01743554d1ee6ba20db1df9696dd2a87aaa7d5d"
+    },
+    {
+      "bytes": 2366,
+      "path": "docs/evidence/native/input-secret-scan.json",
+      "sha256": "fff36c07b5259b1fa04371aeb833bb679c05eecc8903acf9fcb2aae6035e0d63"
+    }
+  ],
+  "compressed_original_inputs": [
+    {
+      "compressed_bytes": 65879,
+      "compressed_sha256": "f35765d65c4848ffe248b33729d49c19dbeaab5bbd394cfdb6112cbeda80a8a5",
+      "compression_level": 9,
+      "decompressed_sha256": "db8c5e337437ccd7c5b574ab5e0edc06caff86b6528c78eb606a0f1f741a8626",
+      "decompression_byte_identical": true,
+      "destination_path": "docs/evidence/native/inputs/initial.jsonl.gz",
+      "gzip_filename_header_present": false,
+      "gzip_mtime": 0,
+      "matches_acknowledged_publication_count": true,
+      "nonblank_jsonl_lines": 3471,
+      "repeat_compression_byte_identical": true,
+      "source_bytes": 1720481,
+      "source_path": "state/native-qualification-08/initial.jsonl",
+      "source_sha256": "db8c5e337437ccd7c5b574ab5e0edc06caff86b6528c78eb606a0f1f741a8626"
+    },
+    {
+      "compressed_bytes": 6150,
+      "compressed_sha256": "4c80b1fb53da7914d1091d1dd4fb83ab0f61c2fb02a622afe98a58525bfa988e",
+      "compression_level": 9,
+      "decompressed_sha256": "9186383f281f31f6cd75ad29cd33865ef957c4451a68a5262232633535cc5e36",
+      "decompression_byte_identical": true,
+      "destination_path": "docs/evidence/native/inputs/broker-recovery.jsonl.gz",
+      "gzip_filename_header_present": false,
+      "gzip_mtime": 0,
+      "matches_acknowledged_publication_count": true,
+      "nonblank_jsonl_lines": 303,
+      "repeat_compression_byte_identical": true,
+      "source_bytes": 148881,
+      "source_path": "state/native-qualification-08/broker-recovery.jsonl",
+      "source_sha256": "9186383f281f31f6cd75ad29cd33865ef957c4451a68a5262232633535cc5e36"
+    },
+    {
+      "compressed_bytes": 6122,
+      "compressed_sha256": "f8feb7e8edaa5252952ebf0e73a497c739fb7121bc7606b0fbbe358588dd0aab",
+      "compression_level": 9,
+      "decompressed_sha256": "ee2cba8a3e3d420c9af5dbb36ef77c6c7f31505078c908edb0a669e5a01b1037",
+      "decompression_byte_identical": true,
+      "destination_path": "docs/evidence/native/inputs/candidate.jsonl.gz",
+      "gzip_filename_header_present": false,
+      "gzip_mtime": 0,
+      "matches_acknowledged_publication_count": true,
+      "nonblank_jsonl_lines": 303,
+      "repeat_compression_byte_identical": true,
+      "source_bytes": 148865,
+      "source_path": "state/native-qualification-08/candidate.jsonl",
+      "source_sha256": "ee2cba8a3e3d420c9af5dbb36ef77c6c7f31505078c908edb0a669e5a01b1037"
+    },
+    {
+      "compressed_bytes": 6100,
+      "compressed_sha256": "536bd0fdcb26d895016a45c0f39f01704dfb7b5bf6916ee931420cec7541b1df",
+      "compression_level": 9,
+      "decompressed_sha256": "8318a229032b741cf61dcd781acb1a9d0f299d59cb28fab491cb679b58c54feb",
+      "decompression_byte_identical": true,
+      "destination_path": "docs/evidence/native/inputs/rollback.jsonl.gz",
+      "gzip_filename_header_present": false,
+      "gzip_mtime": 0,
+      "matches_acknowledged_publication_count": true,
+      "nonblank_jsonl_lines": 303,
+      "repeat_compression_byte_identical": true,
+      "source_bytes": 148874,
+      "source_path": "state/native-qualification-08/rollback.jsonl",
+      "source_sha256": "8318a229032b741cf61dcd781acb1a9d0f299d59cb28fab491cb679b58c54feb"
+    }
+  ],
+  "copied_originals": [
+    {
+      "bytes": 7984,
+      "destination_path": "docs/evidence/native/active-broker-outage.json",
+      "destination_sha256": "ffb327112bad903d5972b374ded3613dd4d2364e1df2b0430969dd75439c9b65",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:45:10.042002+00:00",
+      "source_path": "state/native-qualification-08/evidence/active-broker-outage.json",
+      "source_sha256": "ffb327112bad903d5972b374ded3613dd4d2364e1df2b0430969dd75439c9b65"
+    },
+    {
+      "bytes": 7243,
+      "destination_path": "docs/evidence/native/active-query.json",
+      "destination_sha256": "bde20bf60295302c3b741135c5b4aaea98db0f9671022dad84a42c1cd0bc71b0",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:45:09.527188+00:00",
+      "source_path": "state/native-qualification-08/evidence/active-query.json",
+      "source_sha256": "bde20bf60295302c3b741135c5b4aaea98db0f9671022dad84a42c1cd0bc71b0"
+    },
+    {
+      "bytes": 11997,
+      "destination_path": "docs/evidence/native/active-query.log",
+      "destination_sha256": "681f58c479da61f8ed63c58f42e48400a2c01771a65b6119b2afcb906e67e482",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:45:09.527188+00:00",
+      "source_path": "state/native-qualification-08/evidence/active-query.log",
+      "source_sha256": "681f58c479da61f8ed63c58f42e48400a2c01771a65b6119b2afcb906e67e482"
+    },
+    {
+      "bytes": 8570,
+      "destination_path": "docs/evidence/native/after_commit-0.log",
+      "destination_sha256": "c05d8ba00ee355defc46dbbb505ea45b2674f02666387a4553e03bf9d02a4ab6",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:44:04.143122+00:00",
+      "source_path": "state/native-qualification-08/evidence/after_commit-0.log",
+      "source_sha256": "c05d8ba00ee355defc46dbbb505ea45b2674f02666387a4553e03bf9d02a4ab6"
+    },
+    {
+      "bytes": 7330,
+      "destination_path": "docs/evidence/native/after_commit-1.json",
+      "destination_sha256": "b95346b9aa87a7c0b2055c7c4f0f63ff45db899ca7f4eacaeafddc036f5cee84",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:44:19.378691+00:00",
+      "source_path": "state/native-qualification-08/evidence/after_commit-1.json",
+      "source_sha256": "b95346b9aa87a7c0b2055c7c4f0f63ff45db899ca7f4eacaeafddc036f5cee84"
+    },
+    {
+      "bytes": 9959,
+      "destination_path": "docs/evidence/native/after_commit-1.log",
+      "destination_sha256": "a975f8aa848a384def08cb3b7d413630f752c8575aa1069e424614994833cefa",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:44:19.378691+00:00",
+      "source_path": "state/native-qualification-08/evidence/after_commit-1.log",
+      "source_sha256": "a975f8aa848a384def08cb3b7d413630f752c8575aa1069e424614994833cefa"
+    },
+    {
+      "bytes": 135,
+      "destination_path": "docs/evidence/native/after_commit-failure.json",
+      "destination_sha256": "c559aadc0380fcd32224da776b84d547edc8b41b05af7b36edc55c15139a23f3",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:44:04.614064+00:00",
+      "source_path": "state/native-qualification-08/evidence/after_commit-failure.json",
+      "source_sha256": "c559aadc0380fcd32224da776b84d547edc8b41b05af7b36edc55c15139a23f3"
+    },
+    {
+      "bytes": 8575,
+      "destination_path": "docs/evidence/native/before_commit-0.log",
+      "destination_sha256": "bdd1fdcf131a71e7e8ec5df8c7e62bdd5e8b64ad6915db0b4a8da5e3a039b4cb",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:43:37.742488+00:00",
+      "source_path": "state/native-qualification-08/evidence/before_commit-0.log",
+      "source_sha256": "bdd1fdcf131a71e7e8ec5df8c7e62bdd5e8b64ad6915db0b4a8da5e3a039b4cb"
+    },
+    {
+      "bytes": 7333,
+      "destination_path": "docs/evidence/native/before_commit-1.json",
+      "destination_sha256": "6eed1b989f6cf656d9737a992ca2d2f19ef97a2339df5bb1a341d0594bd9197a",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:43:53.479055+00:00",
+      "source_path": "state/native-qualification-08/evidence/before_commit-1.json",
+      "source_sha256": "6eed1b989f6cf656d9737a992ca2d2f19ef97a2339df5bb1a341d0594bd9197a"
+    },
+    {
+      "bytes": 9864,
+      "destination_path": "docs/evidence/native/before_commit-1.log",
+      "destination_sha256": "38aa6b8f299f48aacc0978f7b32c2148144f74eba10e2a71122fa7bfc0f42d9e",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:43:53.479055+00:00",
+      "source_path": "state/native-qualification-08/evidence/before_commit-1.log",
+      "source_sha256": "38aa6b8f299f48aacc0978f7b32c2148144f74eba10e2a71122fa7bfc0f42d9e"
+    },
+    {
+      "bytes": 138,
+      "destination_path": "docs/evidence/native/before_commit-failure.json",
+      "destination_sha256": "843ae9da84263822bdf3acee3420ac73e629c2443392be4de25460033682c444",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:43:38.190308+00:00",
+      "source_path": "state/native-qualification-08/evidence/before_commit-failure.json",
+      "source_sha256": "843ae9da84263822bdf3acee3420ac73e629c2443392be4de25460033682c444"
+    },
+    {
+      "bytes": 4956,
+      "destination_path": "docs/evidence/native/dashboard-response.html",
+      "destination_sha256": "1e241bf244cb0f75d4f63f2457da1140087a8543647070b47da9b898f1d999c1",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:45:44.269747+00:00",
+      "source_path": "state/native-qualification-08/evidence/dashboard-response.html",
+      "source_sha256": "1e241bf244cb0f75d4f63f2457da1140087a8543647070b47da9b898f1d999c1"
+    },
+    {
+      "bytes": 419666,
+      "destination_path": "docs/evidence/native/dashboard-snapshot.json",
+      "destination_sha256": "57bc3749a6ac50d73371caadcf997f1b9425f8eb945410d38d32a045f35888ff",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:45:43.755241+00:00",
+      "source_path": "state/native-qualification-08/evidence/dashboard-snapshot.json",
+      "source_sha256": "57bc3749a6ac50d73371caadcf997f1b9425f8eb945410d38d32a045f35888ff"
+    },
+    {
+      "bytes": 132,
+      "destination_path": "docs/evidence/native/dashboard.log",
+      "destination_sha256": "0608a1ca27bc9a161f038c42806e2892a838a079c4ee2152d324cd1da61a551d",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:45:44.256523+00:00",
+      "source_path": "state/native-qualification-08/evidence/dashboard.log",
+      "source_sha256": "0608a1ca27bc9a161f038c42806e2892a838a079c4ee2152d324cd1da61a551d"
+    },
+    {
+      "bytes": 170,
+      "destination_path": "docs/evidence/native/kafka-format.log",
+      "destination_sha256": "e5c951a17e745559b90eca64c83b430555d8803cb9f00b74c362f8048fbae98f",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:42:45.253449+00:00",
+      "source_path": "state/native-qualification-08/evidence/kafka-format.log",
+      "source_sha256": "e5c951a17e745559b90eca64c83b430555d8803cb9f00b74c362f8048fbae98f"
+    },
+    {
+      "bytes": 540,
+      "destination_path": "docs/evidence/native/kafka-ready.json",
+      "destination_sha256": "c63d6553956532c69b336fd7091a71345cfb674e8751d15dd5d9120f27d37dcd",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:44:41.278644+00:00",
+      "source_path": "state/native-qualification-08/evidence/kafka-ready.json",
+      "source_sha256": "c63d6553956532c69b336fd7091a71345cfb674e8751d15dd5d9120f27d37dcd"
+    },
+    {
+      "bytes": 115092,
+      "destination_path": "docs/evidence/native/kafka.log",
+      "destination_sha256": "d097b36573c1612706a0cf093e3e5173145389c2f37ec805abd756fe1ac8d5dc",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:45:44.696528+00:00",
+      "source_path": "state/native-qualification-08/evidence/kafka.log",
+      "source_sha256": "d097b36573c1612706a0cf093e3e5173145389c2f37ec805abd756fe1ac8d5dc"
+    },
+    {
+      "bytes": 42563,
+      "destination_path": "docs/evidence/native/mlflow.log",
+      "destination_sha256": "a920531971f79421646b98435270513c052c6d99157049ca46e9b9aac5eed8bc",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:45:45.228535+00:00",
+      "source_path": "state/native-qualification-08/evidence/mlflow.log",
+      "source_sha256": "a920531971f79421646b98435270513c052c6d99157049ca46e9b9aac5eed8bc"
+    },
+    {
+      "bytes": 7681,
+      "destination_path": "docs/evidence/native/qualification-0.json",
+      "destination_sha256": "e6605774ba530de1149ae3e8957c2373c6e4d9c52aed1ee521217f5e3a045fd7",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:43:12.075794+00:00",
+      "source_path": "state/native-qualification-08/evidence/qualification-0.json",
+      "source_sha256": "e6605774ba530de1149ae3e8957c2373c6e4d9c52aed1ee521217f5e3a045fd7"
+    },
+    {
+      "bytes": 10283,
+      "destination_path": "docs/evidence/native/qualification-0.log",
+      "destination_sha256": "5c40ffd3955a999882396fd461442caae78f2ed599f507f91ee42054f61b4613",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:43:12.075794+00:00",
+      "source_path": "state/native-qualification-08/evidence/qualification-0.log",
+      "source_sha256": "5c40ffd3955a999882396fd461442caae78f2ed599f507f91ee42054f61b4613"
+    },
+    {
+      "bytes": 2908,
+      "destination_path": "docs/evidence/native/qualification-1.json",
+      "destination_sha256": "36bd79a913a240380394ebb6ca2e90020ea203fcc0a3f95a469bb6bddfb876bc",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:43:27.544996+00:00",
+      "source_path": "state/native-qualification-08/evidence/qualification-1.json",
+      "source_sha256": "36bd79a913a240380394ebb6ca2e90020ea203fcc0a3f95a469bb6bddfb876bc"
+    },
+    {
+      "bytes": 3675,
+      "destination_path": "docs/evidence/native/qualification-1.log",
+      "destination_sha256": "571c8928dfccc0b4900176108812aaedf723069086a4938969b9e7613b8dc759",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:43:27.544996+00:00",
+      "source_path": "state/native-qualification-08/evidence/qualification-1.log",
+      "source_sha256": "571c8928dfccc0b4900176108812aaedf723069086a4938969b9e7613b8dc759"
+    },
+    {
+      "bytes": 2910,
+      "destination_path": "docs/evidence/native/qualification-2.json",
+      "destination_sha256": "f4bbfc67c4bcbc592e6a60b8621d42c85e472f4dd93c91db5dd0f38afe52cae8",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:45:16.948215+00:00",
+      "source_path": "state/native-qualification-08/evidence/qualification-2.json",
+      "source_sha256": "f4bbfc67c4bcbc592e6a60b8621d42c85e472f4dd93c91db5dd0f38afe52cae8"
+    },
+    {
+      "bytes": 3677,
+      "destination_path": "docs/evidence/native/qualification-2.log",
+      "destination_sha256": "f056061b601ba55a649ef33d41e6996169eaf98bae93e89be01d2f236cd0c3cb",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:45:16.948215+00:00",
+      "source_path": "state/native-qualification-08/evidence/qualification-2.log",
+      "source_sha256": "f056061b601ba55a649ef33d41e6996169eaf98bae93e89be01d2f236cd0c3cb"
+    },
+    {
+      "bytes": 3075,
+      "destination_path": "docs/evidence/native/qualification-3.json",
+      "destination_sha256": "3923c1d3e4d317fd68c9e25c008b7c94421cb3ef23a92f4153f6b12df6c68cbb",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:45:29.753362+00:00",
+      "source_path": "state/native-qualification-08/evidence/qualification-3.json",
+      "source_sha256": "3923c1d3e4d317fd68c9e25c008b7c94421cb3ef23a92f4153f6b12df6c68cbb"
+    },
+    {
+      "bytes": 4554,
+      "destination_path": "docs/evidence/native/qualification-3.log",
+      "destination_sha256": "bf81e32e744695f49594c2433475783f95c7d6249713d37bdb8bafc49c2d1ef3",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:45:29.753362+00:00",
+      "source_path": "state/native-qualification-08/evidence/qualification-3.log",
+      "source_sha256": "bf81e32e744695f49594c2433475783f95c7d6249713d37bdb8bafc49c2d1ef3"
+    },
+    {
+      "bytes": 3073,
+      "destination_path": "docs/evidence/native/qualification-4.json",
+      "destination_sha256": "20c969d2baeca51100e003986d69dae3e8fb6fa4d580128856f5202917c54b53",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:45:43.159688+00:00",
+      "source_path": "state/native-qualification-08/evidence/qualification-4.json",
+      "source_sha256": "20c969d2baeca51100e003986d69dae3e8fb6fa4d580128856f5202917c54b53"
+    },
+    {
+      "bytes": 4552,
+      "destination_path": "docs/evidence/native/qualification-4.log",
+      "destination_sha256": "7825509fea44d4db639387e88a1f3835bb2b6ccaaddca9daac629237cfb84379",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:45:43.159688+00:00",
+      "source_path": "state/native-qualification-08/evidence/qualification-4.log",
+      "source_sha256": "7825509fea44d4db639387e88a1f3835bb2b6ccaaddca9daac629237cfb84379"
+    },
+    {
+      "bytes": 129411,
+      "destination_path": "docs/evidence/native/qualification.json",
+      "destination_sha256": "7f83c06f4e6e4b0d309276f42e895eea1d569df50f7fa0d9c2acc14c0f42b5a3",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:46:05.704156+00:00",
+      "source_path": "state/native-qualification-08/evidence/qualification.json",
+      "source_sha256": "7f83c06f4e6e4b0d309276f42e895eea1d569df50f7fa0d9c2acc14c0f42b5a3"
+    },
+    {
+      "bytes": 2910,
+      "destination_path": "docs/evidence/native/restored-checkpoint-run.json",
+      "destination_sha256": "2d3c3754451024e7e1e174315061ee66da27e9421cafa42129a79029c0aafb74",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:46:03.453081+00:00",
+      "source_path": "state/native-qualification-08/evidence/restored-checkpoint-run.json",
+      "source_sha256": "2d3c3754451024e7e1e174315061ee66da27e9421cafa42129a79029c0aafb74"
+    },
+    {
+      "bytes": 3000,
+      "destination_path": "docs/evidence/native/source-manifest.json",
+      "destination_sha256": "7c4c25351483f49728ec2d3966100ba4be003ce796f586a65919a5772c966663",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:42:43.701883+00:00",
+      "source_path": "state/native-qualification-08/evidence/source-manifest.json",
+      "source_sha256": "7c4c25351483f49728ec2d3966100ba4be003ce796f586a65919a5772c966663"
+    },
+    {
+      "bytes": 1398,
+      "destination_path": "docs/evidence/native/console.log",
+      "destination_sha256": "531f0f9f9a223a9adabb5ba3b45eb7051cc2d293344317c0454eb04efeea2f26",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:46:05.704156+00:00",
+      "source_path": "state/native-qualification-08.log",
+      "source_sha256": "531f0f9f9a223a9adabb5ba3b45eb7051cc2d293344317c0454eb04efeea2f26"
+    },
+    {
+      "bytes": 184953,
+      "destination_path": "docs/evidence/native/restored/kafka.log",
+      "destination_sha256": "779dd4dce85571b7549d09b2723b957681ddffbf76bb80d7606011765d6a3106",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:46:04.149003+00:00",
+      "source_path": "state/native-qualification-08-restored/evidence/kafka.log",
+      "source_sha256": "779dd4dce85571b7549d09b2723b957681ddffbf76bb80d7606011765d6a3106"
+    },
+    {
+      "bytes": 49759,
+      "destination_path": "docs/evidence/native/restored/mlflow.log",
+      "destination_sha256": "3906f0ec8122470c5e25b57fad5a80943e303e1c3945099c4a79dcf790f40787",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:46:04.677012+00:00",
+      "source_path": "state/native-qualification-08-restored/evidence/mlflow.log",
+      "source_sha256": "3906f0ec8122470c5e25b57fad5a80943e303e1c3945099c4a79dcf790f40787"
+    },
+    {
+      "bytes": 3677,
+      "destination_path": "docs/evidence/native/restored/restored-worker.log",
+      "destination_sha256": "9182a7613ce49479a530ce4869820307909a0cf4036d3bc109fa24197d49ff16",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:46:03.453081+00:00",
+      "source_path": "state/native-qualification-08-restored/evidence/restored-worker.log",
+      "source_sha256": "9182a7613ce49479a530ce4869820307909a0cf4036d3bc109fa24197d49ff16"
+    },
+    {
+      "bytes": 22049,
+      "destination_path": "docs/evidence/native/backup-manifest.json",
+      "destination_sha256": "d025564a9954b905481575a5c09b9e0e071e6dcf2a54fb56fab540249874f245",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:45:46.375310+00:00",
+      "source_path": "state/native-qualification-08-backup/manifest.json",
+      "source_sha256": "d025564a9954b905481575a5c09b9e0e071e6dcf2a54fb56fab540249874f245"
+    },
+    {
+      "bytes": 17090,
+      "destination_path": "docs/evidence/native/source-binding.json",
+      "destination_sha256": "5f34d879a69dfe96e508edf85514aaf0db8d057d2540612ce557493a04c8ad9b",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:44:09.662635+00:00",
+      "source_path": "state/final-checks/source-binding.json",
+      "source_sha256": "5f34d879a69dfe96e508edf85514aaf0db8d057d2540612ce557493a04c8ad9b"
+    }
+  ],
+  "copy_protocol": "Each original is hashed, copied without content changes, compared to the destination hash, then rechecked at the source after packaging. Every exact-copy original is smaller than 2 MiB.",
+  "created_at_utc": "2026-11-13T23:53:54.993667+00:00",
+  "exact_copy_count": 37,
+  "input_scan_receipt": {
+    "path": "docs/evidence/native/input-secret-scan.json",
+    "sha256": "fff36c07b5259b1fa04371aeb833bb679c05eecc8903acf9fcb2aae6035e0d63"
+  },
+  "manifest_self_hash": "Not embedded to avoid a circular self-hash; all copied, compressed and other authored files are covered above.",
+  "native08_evidence_directory_fully_copied": true,
+  "native08_evidence_directory_original_count": 31,
+  "original_inputs_scanned_before_compression": true,
+  "qualification": {
+    "active_broker_stop_to_restart_seconds": 15.379153728485107,
+    "active_worker_consumed_recovery_input": true,
+    "all_recorded_checks_true": true,
+    "checks_count": 21,
+    "final_counts": {
+      "accepted": 2164,
+      "alerts": 12,
+      "batches": 7,
+      "control": 24,
+      "duplicate": 4,
+      "events": 2164,
+      "features": 2092,
+      "label": 2164,
+      "labels": 2164,
+      "pending_events": 0,
+      "pending_predictions": 0,
+      "predictions": 2092,
+      "raw": 4380,
+      "rejected": 24
+    },
+    "new_recovery_records_acknowledged": 303,
+    "passed": true,
+    "source_lag": {
+      "offsets_behind": 0,
+      "partitions": [
+        {
+          "behind": 0,
+          "broker_end": 846,
+          "partition": 0,
+          "retained_start": 0,
+          "sink_next": 846
+        },
+        {
+          "behind": 0,
+          "broker_end": 2606,
+          "partition": 1,
+          "retained_start": 0,
+          "sink_next": 2606
+        },
+        {
+          "behind": 0,
+          "broker_end": 928,
+          "partition": 2,
+          "retained_start": 0,
+          "sink_next": 928
+        }
+      ],
+      "status": "observed",
+      "topic": "qualification"
+    },
+    "source_path": "state/native-qualification-08/evidence/qualification.json"
+  },
+  "related_attempt07_copies": [
+    {
+      "bytes": 128726,
+      "destination_path": "docs/evidence/attempts/native-07-qualification.json",
+      "destination_sha256": "0c0c5b057b027931d4b1fb4b0e19e9804f3c902d3609d1019d71f15a11319c98",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:38:39.610181+00:00",
+      "source_path": "state/native-qualification-07/evidence/qualification.json",
+      "source_sha256": "0c0c5b057b027931d4b1fb4b0e19e9804f3c902d3609d1019d71f15a11319c98"
+    },
+    {
+      "bytes": 1320,
+      "destination_path": "docs/evidence/attempts/native-07.log",
+      "destination_sha256": "15b6d68156d04c5668d5f0f29bec9c045b72768be40a1a6370e8eea2ad1fa4e7",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:38:39.610181+00:00",
+      "source_path": "state/native-qualification-07.log",
+      "source_sha256": "15b6d68156d04c5668d5f0f29bec9c045b72768be40a1a6370e8eea2ad1fa4e7"
+    },
+    {
+      "bytes": 2594,
+      "destination_path": "docs/evidence/attempts/native-07-lag-observation.json",
+      "destination_sha256": "1692358ac44cf80148a188b51712250f476c1a4dace54feeec0d165c23e4b02a",
+      "exact_copy_verified": true,
+      "source_mtime_utc": "2026-11-13T23:38:15.923633+00:00",
+      "source_path": "state/native-qualification-07/evidence/qualification-4.json",
+      "source_sha256": "1692358ac44cf80148a188b51712250f476c1a4dace54feeec0d165c23e4b02a"
+    }
+  ],
+  "related_document_updates": [
+    {
+      "bytes": 3633,
+      "path": "docs/evidence/model/README.md",
+      "sha256": "faf4ede5d9f8b948e1504a23cbc4823b3e586e10caf73cdfdbd1662bfb5f0f52"
+    },
+    {
+      "bytes": 5251,
+      "path": "docs/evidence/attempts/README.md",
+      "sha256": "ecf79572ba9a0893f8d20a41621c3a8eb7348fabc2e864653363be47139c753e"
+    },
+    {
+      "bytes": 1663,
+      "path": "docs/evidence/attempts/07-superseded-note.md",
+      "sha256": "dff8c033f11a39e66063c1c53bf805cbfd9e91dd90daf616ba7c36ca4265aa91"
+    },
+    {
+      "bytes": 16731,
+      "path": "docs/evidence/attempts/evidence-manifest.json",
+      "sha256": "00de05fa309ef4b39ecf33ec61ae1853074bbecdb963b8f27eed10e746b5b1fb"
+    }
+  ],
+  "restoration_scope": {
+    "backup_manifest_bytes": 51731181,
+    "backup_manifest_file_count": 181,
+    "backup_quiescence_declaration": "operator_asserted_stopped",
+    "full_binary_backup_included": false,
+    "new_post_restore_publication_tested": false,
+    "reported_scope": "stopped full deployment; SQLite reopened, Kafka offsets observed, MLflow model reloaded and prediction checked, checkpoint explicitly relocated and resumed without duplicate effects",
+    "restored_counts_identical": true,
+    "restored_input_rows_observed": 0,
+    "restored_source_lag_observed_zero": true
+  },
+  "schema_version": "1",
+  "scope": "Completed native08 synthetic single-host qualification evidence, exact original receipts, selected distinct restored logs, original backup manifest, source binding and losslessly compressed original inputs.",
+  "source_identity": {
+    "binding_file_count": 54,
+    "difference_between_runtime_and_reviewed_commits": [
+      ".github/workflows/ci.yml"
+    ],
+    "embedded_training_report_identical_to_original_native01": true,
+    "original_training_code_identity": "working-tree-sha256:0198d952137fe7439ed7818dbae0fbb81074f53e8e8da0032f365a2acab1db53",
+    "reviewed_source_commit": "55a082ea7d72818cc8088f70bcd4710d0decb9dd",
+    "runner_sha256": "8b395533b92e8cc5886803227fa756de6e757c972bedb73f733b3e11b050e40d",
+    "runtime_execution_commit": "56bf4370bf0b1835b59da815006216976e19e5a7",
+    "runtime_source_files_rechecked": 27,
+    "runtime_source_files_unchanged": true,
+    "runtime_worktree_identity": "working-tree-sha256:8756108fa9d3f07592b2a40e51f9da1a07baa2314bda77e413af08b23d930866",
+    "supporting_history_audit_sha256": "513c9dc95e641c902c18bf621bd40bfe4391d1a2617f2bb55a9b24b59905112c",
+    "supporting_history_audit_source_path": "state/final-checks/hosted-history-audit.json",
+    "training_reused": true,
+    "training_source_files_unchanged": 7
+  },
+  "verification": {
+    "all_exact_copy_hashes_match": true,
+    "all_gzip_decompressions_byte_identical": true,
+    "all_gzip_repeat_compressions_byte_identical": true,
+    "gzip_mtime_zero": true,
+    "input_pattern_findings": 0,
+    "input_scan_skipped_files": 0,
+    "runtime_originals_modified": false,
+    "services_started": false,
+    "source_files_modified": false
+  }
+}

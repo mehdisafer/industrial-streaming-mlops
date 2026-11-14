@@ -1,0 +1,70 @@
+resources:
+  jobs:
+    qualify_stream:
+      name: industrial-streaming-mlops-qualification
+      description: Bounded Kafka to Delta qualification on explicitly selected existing compute; no provider acceptance is inferred from deployment.
+      max_concurrent_runs: 1
+      timeout_seconds: 1500
+      queue:
+        enabled: false
+      tags:
+        project: industrial-streaming-mlops
+        purpose: bounded-qualification
+      tasks:
+        - task_key: kafka_to_predictions
+          existing_cluster_id: ${var.cluster_id}
+          timeout_seconds: 1200
+          max_retries: 0
+          spark_python_task:
+            python_file: ../databricks/job.py
+            source: WORKSPACE
+            parameters:
+              - --catalog
+              - ${var.catalog}
+              - --schema
+              - ${var.schema}
+              - --table-prefix
+              - ${var.table_prefix}
+              - --output-root
+              - ${var.output_root}
+              - --checkpoint-root
+              - ${var.checkpoint_root}
+              - --bootstrap
+              - ${var.kafka_bootstrap_servers}
+              - --topic
+              - ${var.kafka_topic}
+              - --secret-scope
+              - ${var.kafka_secret_scope}
+              - --secret-key
+              - ${var.kafka_secret_key}
+              - --model-name
+              - ${var.model_name}
+              - --model-version
+              - ${var.model_version}
+              - --registry-uri
+              - ${var.registry_uri}
+              - --tracking-uri
+              - ${var.tracking_uri}
+              - --code-sha
+              - ${var.code_sha}
+              - --run-id
+              - '{{job.run_id}}'
+              - --max-records
+              - ${var.max_records}
+              - --max-offsets
+              - ${var.max_offsets}
+              - --expected-records
+              - ${var.expected_records}
+          # Deliberately do not install the project wheel or pyspark: DBR owns Spark.
+          # These model dependencies still need provider-runtime qualification.
+          libraries:
+            - pypi:
+                package: mlflow==3.17.2
+            - pypi:
+                package: scikit-learn==1.8.0
+            - pypi:
+                package: numpy==2.3.5
+            - pypi:
+                package: pandas==2.2.3
+            - pypi:
+                package: skops==0.16.0

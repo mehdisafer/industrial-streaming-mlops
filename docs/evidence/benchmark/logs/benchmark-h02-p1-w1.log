@@ -1,0 +1,162 @@
+26/11/14 00:55:36 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+26/11/14 00:55:37 WARN MacAddressUtil: Failed to find a usable hardware address from the network interfaces; using random bytes: a2:48:dc:b1:34:97:f0:f8
+26/11/14 00:55:39 WARN ResolveWriteToStream: spark.sql.adaptive.enabled is not supported in streaming DataFrames/Datasets and will be disabled.
+26/11/14 00:55:40 WARN AdminClientConfig: These configurations '[key.deserializer, value.deserializer, enable.auto.commit, max.poll.records, auto.offset.reset]' were supplied but are not used yet.
+[Stage 0:>                                                          (0 + 1) / 1]                                                                                [Stage 2:>                                                          (0 + 1) / 1]{"batch_id":0,"dispositions":{"accepted":97,"alerts":0,"batches":0,"control":4,"duplicate":1,"events":97,"features":85,"label":93,"labels":93,"pending_events":0,"pending_predictions":0,"predictions":85,"raw":200,"rejected":5},"event":"batch_committed","new_coordinates":200,"predictions_written":85,"query_id":"benchmark-h02-p1-w1","received":200,"replayed_coordinates":0}
+                                                                                {"batch_id":1,"dispositions":{"accepted":97,"alerts":0,"batches":1,"control":4,"duplicate":1,"events":97,"features":85,"label":97,"labels":97,"pending_events":0,"pending_predictions":0,"predictions":85,"raw":205,"rejected":6},"event":"batch_committed","new_coordinates":5,"predictions_written":0,"query_id":"benchmark-h02-p1-w1","received":5,"replayed_coordinates":0}
+{
+  "drained": true,
+  "elapsed_seconds": 9.036440410999603,
+  "engine": "Spark Structured Streaming",
+  "max_offsets_per_trigger": 200,
+  "mode": "availableNow",
+  "progress": [
+    {
+      "batchId": 0,
+      "durationMs": {
+        "addBatch": 5603,
+        "commitOffsets": 41,
+        "getBatch": 14,
+        "latestOffset": 768,
+        "queryPlanning": 371,
+        "triggerExecution": 6862,
+        "walCommit": 41
+      },
+      "id": "50ad07d6-4b3b-4c56-920d-7632c392d533",
+      "inputRowsPerSecond": 0.0,
+      "name": "benchmark-h02-p1-w1",
+      "numInputRows": 400,
+      "processedRowsPerSecond": 58.283549468162605,
+      "runId": "f2ba2d2a-bafc-4b35-8e1d-03dfd2994a21",
+      "sink": {
+        "description": "ForeachBatchSink",
+        "numOutputRows": -1
+      },
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[benchmark-h02-p1-w1]]",
+          "endOffset": {
+            "benchmark-h02-p1-w1": {
+              "0": 200
+            }
+          },
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": {
+            "benchmark-h02-p1-w1": {
+              "0": 205
+            }
+          },
+          "metrics": {
+            "avgOffsetsBehindLatest": "5.0",
+            "maxOffsetsBehindLatest": "5",
+            "minOffsetsBehindLatest": "5"
+          },
+          "numInputRows": 400,
+          "processedRowsPerSecond": 58.283549468162605,
+          "startOffset": null
+        }
+      ],
+      "stateOperators": [],
+      "timestamp": "2026-11-13T23:55:39.841Z"
+    },
+    {
+      "batchId": 1,
+      "durationMs": {
+        "addBatch": 356,
+        "commitOffsets": 38,
+        "getBatch": 1,
+        "latestOffset": 1,
+        "queryPlanning": 52,
+        "triggerExecution": 491,
+        "walCommit": 37
+      },
+      "id": "50ad07d6-4b3b-4c56-920d-7632c392d533",
+      "inputRowsPerSecond": 1.453699665649077,
+      "name": "benchmark-h02-p1-w1",
+      "numInputRows": 10,
+      "processedRowsPerSecond": 20.366598778004075,
+      "runId": "f2ba2d2a-bafc-4b35-8e1d-03dfd2994a21",
+      "sink": {
+        "description": "ForeachBatchSink",
+        "numOutputRows": -1
+      },
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[benchmark-h02-p1-w1]]",
+          "endOffset": {
+            "benchmark-h02-p1-w1": {
+              "0": 205
+            }
+          },
+          "inputRowsPerSecond": 1.453699665649077,
+          "latestOffset": {
+            "benchmark-h02-p1-w1": {
+              "0": 205
+            }
+          },
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 10,
+          "processedRowsPerSecond": 20.366598778004075,
+          "startOffset": {
+            "benchmark-h02-p1-w1": {
+              "0": 200
+            }
+          }
+        }
+      ],
+      "stateOperators": [],
+      "timestamp": "2026-11-13T23:55:46.720Z"
+    }
+  ],
+  "query_id": "50ad07d6-4b3b-4c56-920d-7632c392d533",
+  "run_id": "f2ba2d2a-bafc-4b35-8e1d-03dfd2994a21",
+  "source_lag": {
+    "offsets_behind": 0,
+    "partitions": [
+      {
+        "behind": 0,
+        "broker_end": 205,
+        "partition": 0,
+        "retained_start": 0,
+        "sink_next": 205
+      }
+    ],
+    "status": "observed",
+    "topic": "benchmark-h02-p1-w1"
+  },
+  "spark_version": "3.5.9",
+  "verification": {
+    "checks": {
+      "accepted_events_balance": true,
+      "alerts_have_predictions": true,
+      "labels_balance": true,
+      "predictions_have_features": true,
+      "source_dispositions_balance": true,
+      "sqlite_integrity": true
+    },
+    "counts": {
+      "accepted": 97,
+      "alerts": 0,
+      "batches": 2,
+      "control": 4,
+      "duplicate": 1,
+      "events": 97,
+      "features": 85,
+      "label": 97,
+      "labels": 97,
+      "pending_events": 0,
+      "pending_predictions": 0,
+      "predictions": 85,
+      "raw": 205,
+      "rejected": 6
+    },
+    "valid": true
+  },
+  "workers": 1
+}

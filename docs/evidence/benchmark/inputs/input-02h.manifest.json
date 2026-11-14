@@ -1,0 +1,53 @@
+{
+  "data_origin": "Generated synthetic measurements; no external or client data",
+  "dataset_id": "synthetic-9a1b1a00305cba56a4683752",
+  "expected_dispositions": {
+    "accepted": 198,
+    "accepted_heartbeat": 4,
+    "accepted_label": 97,
+    "accepted_sensor": 97,
+    "duplicates": 1,
+    "rejected": 6,
+    "source": 205
+  },
+  "failure_schedule": {
+    "machine-000": [],
+    "machine-001": [],
+    "machine-002": [],
+    "machine-003": []
+  },
+  "injected_anomalies": {
+    "accepted_extra_labels": 1,
+    "accepted_out_of_order_sensors": 1,
+    "exact_duplicates": 1,
+    "rejects": {
+      "conflicting_event_id": 1,
+      "incompatible_schema": 1,
+      "incompatible_units": 1,
+      "invalid_json": 1,
+      "late_after_watermark": 1,
+      "missing_field": 1
+    }
+  },
+  "last_arrival_at": "2026-06-01T03:30:00.000Z",
+  "observation_end": "2026-06-01T02:00:00.000Z",
+  "parameters": {
+    "anomalies": true,
+    "drift": 0.0,
+    "horizon_seconds": 1800,
+    "hours": 2,
+    "label_delay_seconds": 3600,
+    "lateness_seconds": 120,
+    "machines": 4,
+    "seed": 42,
+    "simulator_version": "1.0.0",
+    "sites": 2,
+    "start": "2026-06-01T00:00:00.000Z",
+    "step_seconds": 300
+  },
+  "positive_labels": 0,
+  "records_sha256": "d3618cfa7ec4d7abd92407abb684915b1068758489f32d3c053c961d56396981",
+  "sensor_count": 97,
+  "sensor_end": "2026-06-01T01:55:00.000Z",
+  "sensor_start": "2026-06-01T00:00:00.000Z"
+}

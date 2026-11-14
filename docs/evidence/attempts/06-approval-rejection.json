@@ -1,0 +1,61 @@
+{
+  "attempt": "06",
+  "causality_limits": [
+    "The automatic-review rejection explains why attempt 06 lacks a completed qualification result; it does not prove the cause of the earlier Spark startup wait.",
+    "MLflow telemetry is not established as the cause of the Java gateway loss in attempt 04 or the broker/client timing gaps and create_topics timeout in attempt 05.",
+    "Out-of-memory, CPU throttling, orphan JVM accumulation and other resource explanations remain unproven.",
+    "Attempt 07 was reported as in progress when this evidence bundle was prepared. This receipt does not assert its outcome."
+  ],
+  "historical_audit_note": "The exact-copy native-failure-review files describe attempts 04 and 05 and were written while 06 was in progress. This receipt supersedes only that historical status of 06.",
+  "local_observations": {
+    "first_worker_log": {
+      "bytes": 0,
+      "exists": true,
+      "observed_at_utc": "2026-11-13T23:38:51.472703+00:00",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_path": "state/native-qualification-06/evidence/qualification-0.log"
+    },
+    "interpretation": "No completed qualification result was observed. An empty first-worker log does not identify the technical cause of the preceding startup wait.",
+    "qualification_report_exists": false,
+    "qualification_report_path": "state/native-qualification-06/evidence/qualification.json"
+  },
+  "qualification_completed": false,
+  "qualification_pass_claimed": false,
+  "receipt_version": "1",
+  "recorded_at_utc": "2026-11-13T23:38:51.472703+00:00",
+  "rejection": {
+    "action": "Polling native qualification session 16503 was rejected in connection with outbound MLflow telemetry configuration traffic.",
+    "destination": "https://config.mlflow-telemetry.io",
+    "evidence_kind": "Summary of the parent agent's observed automatic-review rejection; not a verbatim platform transcript.",
+    "exact_rejection_timestamp_utc": null,
+    "parent_reported_observation_before_denial": {
+      "first_worker_log_bytes": 0,
+      "qualification_completion_observed": false,
+      "source": "Parent agent report of native session 16503; not a verbatim platform transcript."
+    },
+    "reason": "External MLflow telemetry destination carrying unverified metadata/payload was denied by automatic approval review.",
+    "verbatim_platform_error_available_in_this_bundle": false
+  },
+  "remediation": {
+    "bundled_receipt": "docs/evidence/attempts/telemetry-optout.json",
+    "environment": {
+      "DO_NOT_TRACK": "true",
+      "MLFLOW_DISABLE_TELEMETRY": "true"
+    },
+    "installed_sdk_observation": {
+      "DO_NOT_TRACK": "true",
+      "MLFLOW_DISABLE_TELEMETRY": "true",
+      "mlflow_version": "3.17.2",
+      "official_source": "https://mlflow.org/docs/latest/community/usage-tracking/",
+      "scope": "Actual installed SDK opt-out check before real service retry; not a packet capture.",
+      "telemetry_client_is_none": true
+    },
+    "mechanism": "Official MLflow telemetry opt-out set by the parent before a new qualification attempt.",
+    "official_documentation": "https://mlflow.org/docs/latest/community/usage-tracking/",
+    "original_receipt": "state/final-checks/telemetry-optout.json",
+    "proof_limit": "This checks the installed SDK with opt-out active; it is not a packet capture or a completed integration result.",
+    "receipt_sha256": "847ec865da102a914fc7a5d4cbe2c6f514a30ad91407fd8ed8a9e6df25a9c393"
+  },
+  "status": "blocked_by_automatic_approval_review",
+  "tool_session_id": 16503
+}

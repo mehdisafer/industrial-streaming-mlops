@@ -1,0 +1,24 @@
+{
+  "acknowledged": 2317,
+  "elapsed_seconds": 0.42292456599989237,
+  "events_per_second": 5478.518360649189,
+  "offsets": {
+    "0": {
+      "count": 1739,
+      "first": 0,
+      "last": 1738
+    },
+    "1": {
+      "count": 1,
+      "first": 0,
+      "last": 0
+    },
+    "2": {
+      "count": 577,
+      "first": 0,
+      "last": 576
+    }
+  },
+  "partitions": 3,
+  "topic": "benchmark-h24-p3-w2"
+}

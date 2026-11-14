@@ -1,0 +1,51 @@
+<!doctype html><html lang="en"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Industrial Fleet | Maintenance Monitor</title>
+<style>
+:root{font-family:system-ui,sans-serif;color:#e6edf3;background:#0b1321}
+body{margin:0}main{max-width:1220px;margin:auto;padding:38px 26px}
+header{display:flex;justify-content:space-between;align-items:center;gap:20px}
+h1{font-size:32px;letter-spacing:-1px;margin:8px 0}h2{font-size:20px;margin-top:36px}
+.eyebrow{color:#5eead4;text-transform:uppercase;letter-spacing:2px;font-size:12px}
+.muted{color:#96a6ba;line-height:1.5}#status{border:1px solid #40536c;border-radius:30px;padding:10px 16px}
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin:28px 0}
+.card{background:#142136;border:1px solid #25374e;border-radius:12px;padding:19px}
+.number{font-size:29px;font-weight:650;margin-top:9px}.label{font-size:13px;color:#9badc6}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;padding:13px 10px;border-bottom:1px solid #25374e}
+th{color:#96a6ba;font-size:12px;text-transform:uppercase}code{font-size:11px;color:#7dd3fc}
+.table{overflow-x:auto;background:#101c2e;border:1px solid #25374e;border-radius:12px}
+.risk{color:#fbbf24}.good{color:#5eead4}.error{color:#fb7185}
+details{padding:16px;border:1px solid #25374e;border-radius:10px;margin-top:15px}
+pre{white-space:pre-wrap;word-break:break-word;font-size:12px}
+footer{margin-top:30px;font-size:12px;color:#96a6ba}
+@media(max-width:800px){.cards{grid-template-columns:repeat(2,1fr)}header{display:block}}
+</style><main>
+<header><div><div class="eyebrow">Synthetic industrial fleet</div><h1>Maintenance Monitor</h1>
+<div class="muted">Machine risk, alert evidence and pipeline recovery in one view.</div></div>
+<span id="status">Connecting to pipeline…</span></header>
+<div class="cards" id="cards"></div>
+<div id="model" class="muted"></div>
+<h2>Recent maintenance alerts</h2><div class="table"><table>
+<thead><tr><th>Site / machine</th><th>Risk</th><th>Observed</th><th>Model</th><th>Evidence</th></tr></thead>
+<tbody id="alerts"></tbody></table></div>
+<h2>Prediction and reality</h2><div class="muted">Labels appear only after their availability time. Shadow alerts are exploratory.</div>
+<div class="table"><table><thead><tr><th>Machine</th><th>Event time (UTC)</th><th>Risk</th><th>Label</th><th>Inference</th><th>Mode</th></tr></thead>
+<tbody id="predictions"></tbody></table></div>
+<details><summary>Pipeline health, rejections and source reconciliation</summary><pre id="health"></pre></details>
+<footer id="footer">Read-only local reference. No command, retraining or promotion is exposed by this dashboard.</footer>
+<script>
+const el=id=>document.getElementById(id);
+const cell=(text,cls)=>{const t=document.createElement('td');t.textContent=text;if(cls)t.className=cls;return t};
+function row(target,values){const tr=document.createElement('tr');values.forEach(v=>tr.appendChild(cell(v)));target.appendChild(tr)}
+async function refresh(){try{const r=await fetch('/api/snapshot',{cache:'no-store'});if(!r.ok)throw Error(r.status);const d=await r.json();
+const c=d.counts;el('cards').replaceChildren();
+[['Raw messages',c.raw],['Accepted sensors',c.accepted],['Rejected / duplicates',c.rejected+' / '+c.duplicate],['Predictions',c.predictions],['Maintenance alerts',c.alerts]].forEach(([k,v])=>{const a=document.createElement('div');a.className='card';const l=document.createElement('div');l.className='label';l.textContent=k;const n=document.createElement('div');n.className='number';n.textContent=v;a.append(l,n);el('cards').append(a)});
+const state=d.runtime.model?.value?.status||'not activated';el('status').textContent=state+' · '+(d.freshness_seconds===null?'no batch':Math.round(d.freshness_seconds)+'s since batch');
+el('model').textContent=d.deployment?'Active model: '+d.deployment.model_name+' / v'+d.deployment.model_version+' · '+d.deployment.mode+' · '+c.pending_predictions+' pending predictions':'No active model. Features are retained until activation.';
+el('alerts').replaceChildren();d.alerts.slice(0,20).forEach(a=>row(el('alerts'),[a.site_id+' / '+a.machine_id,(100*a.score).toFixed(1)+'%',a.event_time,'v'+a.model_version+' · '+a.mode,a.feature_id.slice(0,14)+' · '+a.source_event_ids.length+' sensor events']));
+if(!d.alerts.length)row(el('alerts'),['No alerts emitted','','','','']);
+el('predictions').replaceChildren();d.predictions.slice(0,40).forEach(p=>row(el('predictions'),[p.machine_id,p.event_time,(100*p.score).toFixed(1)+'%',p.label?(p.label.target?'Failure in horizon':'No failure in horizon'):'Not yet available',p.inference_ms.toFixed(2)+' ms',p.mode]));
+el('health').textContent=JSON.stringify({counts:d.counts,rejections:d.rejections,runtime:d.runtime},null,2);
+}catch(e){el('status').textContent='Pipeline unavailable';el('status').className='error'}}
+refresh();setInterval(refresh,5000);
+</script></main></html>

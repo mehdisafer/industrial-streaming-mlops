@@ -1,0 +1,6 @@
+{
+  "attempt": "Playwright Chromium launch for actual read-only dashboard",
+  "result": "not_executed_browser_launch_failed",
+  "observed_error": "Chromium process singleton socket() failed: Operation not permitted",
+  "scope": "No screenshot produced; no permission escalation or alternate socket path attempted. Original HTML and HTTP JSON remain the demonstration evidence."
+}

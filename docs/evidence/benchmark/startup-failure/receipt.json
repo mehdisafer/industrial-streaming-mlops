@@ -1,0 +1,6 @@
+{
+  "status": "failed_before_services_or_workdir_creation",
+  "cause": "ModuleNotFoundError: psutil in clean locked Python 3.11 environment",
+  "original_log": "state/streaming-benchmark-01.log",
+  "corrective_action": "Add psutil as an explicit pinned development dependency, regenerate lock, and retry under the clean reference environment."
+}
