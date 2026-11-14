@@ -1,0 +1,16 @@
+{
+  "scope": "Supplement to the untouched installed-metadata inventory; no legal clearance is claimed.",
+  "huey": {
+    "version": "3.5.4",
+    "metadata_license_missing": true,
+    "wheel_license_file": "/workspace/scratch/65da83183df7/industrial-streaming-mlops/.tools/venv311/lib/python3.11/site-packages/huey-3.5.4.dist-info/licenses/LICENSE",
+    "license_file_sha256": "a4b2c19135a1e6a43b661f5d817e28dc3f28b621ff969d870e47eb98adcd3250",
+    "observed_text": "MIT permission grant and warranty disclaimer in the installed distribution license file; metadata omission does not mean no license."
+  },
+  "uninstalled_platform_packages": [
+    "colorama",
+    "pywin32",
+    "waitress"
+  ],
+  "repository_license": "Owner decision pending; no license selected."
+}

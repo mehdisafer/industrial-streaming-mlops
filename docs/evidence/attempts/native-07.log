@@ -1,0 +1,12 @@
+{"stage": "starting_real_services"}
+{"stage": "reusing_registered_models_with_matching_training_source"}
+{"stage": "publishing_telemetry_with_poison_late_and_duplicate_cases"}
+{"stage": "consuming_with_unavailable_model"}
+{"stage": "resuming_checkpoint_and_scoring_retained_features"}
+{"stage": "testing_transaction_boundary_recovery"}
+{"stage": "killing_and_restarting_broker_during_active_query"}
+{"stage": "promoting_and_activating_candidate"}
+{"stage": "rolling_back_and_proving_new_predictions"}
+{"stage": "verifying_live_dashboard"}
+{"stage": "testing_stopped_state_restore"}
+{"stage": "qualification_complete", "passed": true, "checks": {"unavailable_model_retains_features": true, "model_recovery_scores_pending": true, "batch_stream_feature_parity": true, "batch_stream_prediction_parity": true, "source_count_matches_producer": true, "before_commit_recovery": true, "after_commit_recovery": true, "active_broker_outage_recovery": true, "candidate_scored_real_stream": true, "rollback_scored_real_stream": true, "final_invariants": true, "all_source_receipts_balance": true, "drift_does_not_promote": true, "dashboard_reads_real_sink": true, "pipeline_database_restore": true, "mlflow_artifact_restore": true, "kafka_log_restore": true, "restored_checkpoint_resume": true, "source_unchanged_during_run": true}}

@@ -1,0 +1,327 @@
+Registry store URI not provided. Using backend store URI.
+[MLflow] Security middleware enabled. Allowed hosts: 127.0.0.1:5000, localhost:5000.
+2026/11/14 00:42:50 INFO mlflow.server.jobs.executor_registry: Available backends after discovery: local
+2026/11/14 00:42:50 INFO mlflow.server.jobs.executor_registry: Job executor backend 'local' passed requirements check
+/workspace/scratch/65da83183df7/industrial-streaming-mlops/.tools/venv311/lib/python3.11/site-packages/mlflow/server/fastapi_app.py:23: StarletteDeprecationWarning: starlette.middleware.wsgi is deprecated and will be removed in a future release. Please refer to https://github.com/abersheeran/a2wsgi as a replacement.
+  from starlette.middleware.wsgi import WSGIResponder, build_environ
+2026/11/14 00:42:53 INFO:     Started server process [916]
+2026/11/14 00:42:53 INFO:     Waiting for application startup.
+2026/11/14 00:42:53 INFO:     Application startup complete.
+2026/11/14 00:42:53 INFO:     Uvicorn running on http://127.0.0.1:5000 (Press CTRL+C to quit)
+2026/11/14 00:42:53 INFO:     127.0.0.1:44216 - "GET /health HTTP/1.1" 200 OK
+2026/11/14 00:42:54 INFO:     127.0.0.1:44230 - "GET /api/2.0/mlflow/model-versions/get?name=industrial-risk&version=1 HTTP/1.1" 200 OK
+2026/11/14 00:42:54 INFO:     127.0.0.1:44230 - "GET /api/2.0/mlflow/logged-models/m-d3d15408c4c940c6b7d8d6e2d58af36d HTTP/1.1" 200 OK
+2026/11/14 00:42:54 INFO:     127.0.0.1:44230 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:42:54 INFO:     127.0.0.1:44230 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:42:54 INFO:     127.0.0.1:44234 - "GET /api/3.0/mlflow/server-info HTTP/1.1" 200 OK
+2026/11/14 00:42:54 INFO:     127.0.0.1:44230 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/MLmodel HTTP/1.1" 200 OK
+2026/11/14 00:42:54 INFO:     127.0.0.1:44240 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/conda.yaml HTTP/1.1" 200 OK
+2026/11/14 00:42:54 INFO:     127.0.0.1:44254 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:42:54 INFO:     127.0.0.1:44266 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/model.skops HTTP/1.1" 200 OK
+2026/11/14 00:42:54 INFO:     127.0.0.1:44282 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/python_env.yaml HTTP/1.1" 200 OK
+2026/11/14 00:42:54 INFO:     127.0.0.1:44286 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/requirements.txt HTTP/1.1" 200 OK
+2026/11/14 00:42:54 INFO:     127.0.0.1:44302 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/serving_input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:42:55 INFO:     127.0.0.1:44302 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:42:55 INFO:     127.0.0.1:44302 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2F798fe8b6a2fb4f9faaa07996a5a344d0%2Fartifacts%2Freference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:42:55 INFO:     127.0.0.1:44302 - "GET /api/2.0/mlflow-artifacts/artifacts/1/798fe8b6a2fb4f9faaa07996a5a344d0/artifacts/reference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:42:55 INFO:     127.0.0.1:44302 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:42:55 INFO:     127.0.0.1:44302 - "POST /api/2.0/mlflow/logged-models/search HTTP/1.1" 200 OK
+2026/11/14 00:42:55 INFO:     127.0.0.1:44302 - "GET /api/2.0/mlflow/model-versions/get?name=industrial-risk&version=2 HTTP/1.1" 200 OK
+2026/11/14 00:42:55 INFO:     127.0.0.1:44302 - "GET /api/2.0/mlflow/logged-models/m-9af4915f9e6341d2932fac12004996c1 HTTP/1.1" 200 OK
+2026/11/14 00:42:55 INFO:     127.0.0.1:44302 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-9af4915f9e6341d2932fac12004996c1%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:42:55 INFO:     127.0.0.1:44302 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-9af4915f9e6341d2932fac12004996c1%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:42:55 INFO:     127.0.0.1:44302 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/MLmodel HTTP/1.1" 200 OK
+2026/11/14 00:42:55 INFO:     127.0.0.1:44286 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/python_env.yaml HTTP/1.1" 200 OK
+2026/11/14 00:42:55 INFO:     127.0.0.1:44282 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/conda.yaml HTTP/1.1" 200 OK
+2026/11/14 00:42:55 INFO:     127.0.0.1:44254 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/model.skops HTTP/1.1" 200 OK
+2026/11/14 00:42:55 INFO:     127.0.0.1:44240 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/requirements.txt HTTP/1.1" 200 OK
+2026/11/14 00:42:55 INFO:     127.0.0.1:44266 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:42:55 INFO:     127.0.0.1:44230 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/serving_input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:42:55 INFO:     127.0.0.1:44230 - "GET /api/2.0/mlflow/runs/get?run_uuid=fc11d0d4b21e4ba2900a4162b93df8e1&run_id=fc11d0d4b21e4ba2900a4162b93df8e1 HTTP/1.1" 200 OK
+2026/11/14 00:42:55 INFO:     127.0.0.1:44230 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Ffc11d0d4b21e4ba2900a4162b93df8e1%2Fartifacts%2Freference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:42:55 INFO:     127.0.0.1:44230 - "GET /api/2.0/mlflow-artifacts/artifacts/1/fc11d0d4b21e4ba2900a4162b93df8e1/artifacts/reference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:42:55 INFO:     127.0.0.1:44230 - "GET /api/2.0/mlflow/runs/get?run_uuid=fc11d0d4b21e4ba2900a4162b93df8e1&run_id=fc11d0d4b21e4ba2900a4162b93df8e1 HTTP/1.1" 200 OK
+2026/11/14 00:42:55 INFO:     127.0.0.1:44230 - "POST /api/2.0/mlflow/logged-models/search HTTP/1.1" 200 OK
+2026/11/14 00:42:55 INFO mlflow.server.jobs.utils: Registered online_scoring_scheduler periodic task (runs every 1 minute)
+2026/11/14 00:42:55 INFO mlflow.server.jobs.utils: Registered trace_archival_scheduler periodic task (polls every 1 minute and no-ops when trace archival is disabled or unconfigured)
+2026/11/14 00:42:55 INFO mlflow.server.jobs.utils: SQL trace rollup scheduler was not registered because rollups are disabled
+2026/11/14 00:42:56 INFO:     Shutting down
+2026/11/14 00:42:56 INFO:     Waiting for application shutdown.
+2026/11/14 00:42:56 INFO:     Application shutdown complete.
+2026/11/14 00:42:56 INFO:     Finished server process [916]
+Registry store URI not provided. Using backend store URI.
+[MLflow] Security middleware enabled. Allowed hosts: 127.0.0.1:5000, localhost:5000.
+2026/11/14 00:43:14 INFO mlflow.server.jobs.executor_registry: Available backends after discovery: local
+2026/11/14 00:43:14 INFO mlflow.server.jobs.executor_registry: Job executor backend 'local' passed requirements check
+/workspace/scratch/65da83183df7/industrial-streaming-mlops/.tools/venv311/lib/python3.11/site-packages/mlflow/server/fastapi_app.py:23: StarletteDeprecationWarning: starlette.middleware.wsgi is deprecated and will be removed in a future release. Please refer to https://github.com/abersheeran/a2wsgi as a replacement.
+  from starlette.middleware.wsgi import WSGIResponder, build_environ
+2026/11/14 00:43:16 INFO:     Started server process [1478]
+2026/11/14 00:43:16 INFO:     Waiting for application startup.
+2026/11/14 00:43:16 INFO:     Application startup complete.
+2026/11/14 00:43:16 INFO:     Uvicorn running on http://127.0.0.1:5000 (Press CTRL+C to quit)
+2026/11/14 00:43:16 INFO:     127.0.0.1:56850 - "GET /health HTTP/1.1" 200 OK
+2026/11/14 00:43:18 INFO mlflow.server.jobs.utils: Registered online_scoring_scheduler periodic task (runs every 1 minute)
+2026/11/14 00:43:18 INFO mlflow.server.jobs.utils: Registered trace_archival_scheduler periodic task (polls every 1 minute and no-ops when trace archival is disabled or unconfigured)
+2026/11/14 00:43:18 INFO mlflow.server.jobs.utils: SQL trace rollup scheduler was not registered because rollups are disabled
+2026/11/14 00:43:23 INFO:     127.0.0.1:45230 - "GET /api/2.0/mlflow/model-versions/get?name=industrial-risk&version=1 HTTP/1.1" 200 OK
+2026/11/14 00:43:23 INFO:     127.0.0.1:45230 - "GET /api/2.0/mlflow/logged-models/m-d3d15408c4c940c6b7d8d6e2d58af36d HTTP/1.1" 200 OK
+2026/11/14 00:43:23 INFO:     127.0.0.1:45230 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:43:23 INFO:     127.0.0.1:45230 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:43:23 INFO:     127.0.0.1:45236 - "GET /api/3.0/mlflow/server-info HTTP/1.1" 200 OK
+2026/11/14 00:43:23 INFO:     127.0.0.1:45230 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/MLmodel HTTP/1.1" 200 OK
+2026/11/14 00:43:23 INFO:     127.0.0.1:45240 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/conda.yaml HTTP/1.1" 200 OK
+2026/11/14 00:43:23 INFO:     127.0.0.1:45242 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/requirements.txt HTTP/1.1" 200 OK
+2026/11/14 00:43:23 INFO:     127.0.0.1:45248 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/serving_input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:43:23 INFO:     127.0.0.1:45250 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/model.skops HTTP/1.1" 200 OK
+2026/11/14 00:43:23 INFO:     127.0.0.1:45266 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:43:23 INFO:     127.0.0.1:45272 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/python_env.yaml HTTP/1.1" 200 OK
+2026/11/14 00:43:24 INFO:     127.0.0.1:45266 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:43:24 INFO:     127.0.0.1:45266 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2F798fe8b6a2fb4f9faaa07996a5a344d0%2Fartifacts%2Freference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:43:24 INFO:     127.0.0.1:45266 - "GET /api/2.0/mlflow-artifacts/artifacts/1/798fe8b6a2fb4f9faaa07996a5a344d0/artifacts/reference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:43:24 INFO:     127.0.0.1:45266 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:43:24 INFO:     127.0.0.1:45266 - "POST /api/2.0/mlflow/logged-models/search HTTP/1.1" 200 OK
+2026/11/14 00:43:35 INFO:     127.0.0.1:42762 - "GET /api/2.0/mlflow/model-versions/get?name=industrial-risk&version=1 HTTP/1.1" 200 OK
+2026/11/14 00:43:35 INFO:     127.0.0.1:42762 - "GET /api/2.0/mlflow/logged-models/m-d3d15408c4c940c6b7d8d6e2d58af36d HTTP/1.1" 200 OK
+2026/11/14 00:43:35 INFO:     127.0.0.1:42762 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:43:35 INFO:     127.0.0.1:42762 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:43:35 INFO:     127.0.0.1:42764 - "GET /api/3.0/mlflow/server-info HTTP/1.1" 200 OK
+2026/11/14 00:43:35 INFO:     127.0.0.1:42762 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/MLmodel HTTP/1.1" 200 OK
+2026/11/14 00:43:35 INFO:     127.0.0.1:42762 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/serving_input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:43:35 INFO:     127.0.0.1:42770 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/requirements.txt HTTP/1.1" 200 OK
+2026/11/14 00:43:35 INFO:     127.0.0.1:42782 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/python_env.yaml HTTP/1.1" 200 OK
+2026/11/14 00:43:35 INFO:     127.0.0.1:42762 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/model.skops HTTP/1.1" 200 OK
+2026/11/14 00:43:35 INFO:     127.0.0.1:42786 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:43:35 INFO:     127.0.0.1:42798 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/conda.yaml HTTP/1.1" 200 OK
+2026/11/14 00:43:36 INFO:     127.0.0.1:42798 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:43:36 INFO:     127.0.0.1:42798 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2F798fe8b6a2fb4f9faaa07996a5a344d0%2Fartifacts%2Freference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:43:36 INFO:     127.0.0.1:42798 - "GET /api/2.0/mlflow-artifacts/artifacts/1/798fe8b6a2fb4f9faaa07996a5a344d0/artifacts/reference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:43:36 INFO:     127.0.0.1:42798 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:43:36 INFO:     127.0.0.1:42798 - "POST /api/2.0/mlflow/logged-models/search HTTP/1.1" 200 OK
+2026/11/14 00:43:45 INFO:     127.0.0.1:42744 - "GET /api/2.0/mlflow/model-versions/get?name=industrial-risk&version=1 HTTP/1.1" 200 OK
+2026/11/14 00:43:45 INFO:     127.0.0.1:42744 - "GET /api/2.0/mlflow/logged-models/m-d3d15408c4c940c6b7d8d6e2d58af36d HTTP/1.1" 200 OK
+2026/11/14 00:43:45 INFO:     127.0.0.1:42744 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:43:45 INFO:     127.0.0.1:42744 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:43:45 INFO:     127.0.0.1:42758 - "GET /api/3.0/mlflow/server-info HTTP/1.1" 200 OK
+2026/11/14 00:43:45 INFO:     127.0.0.1:42744 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/MLmodel HTTP/1.1" 200 OK
+2026/11/14 00:43:45 INFO:     127.0.0.1:42770 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/conda.yaml HTTP/1.1" 200 OK
+2026/11/14 00:43:45 INFO:     127.0.0.1:42778 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/model.skops HTTP/1.1" 200 OK
+2026/11/14 00:43:45 INFO:     127.0.0.1:42788 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/python_env.yaml HTTP/1.1" 200 OK
+2026/11/14 00:43:45 INFO:     127.0.0.1:42770 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/serving_input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:43:45 INFO:     127.0.0.1:42788 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:43:45 INFO:     127.0.0.1:42778 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/requirements.txt HTTP/1.1" 200 OK
+2026/11/14 00:43:46 INFO:     127.0.0.1:42788 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:43:46 INFO:     127.0.0.1:42788 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2F798fe8b6a2fb4f9faaa07996a5a344d0%2Fartifacts%2Freference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:43:46 INFO:     127.0.0.1:42788 - "GET /api/2.0/mlflow-artifacts/artifacts/1/798fe8b6a2fb4f9faaa07996a5a344d0/artifacts/reference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:43:46 INFO:     127.0.0.1:42788 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:43:46 INFO:     127.0.0.1:42788 - "POST /api/2.0/mlflow/logged-models/search HTTP/1.1" 200 OK
+2026/11/14 00:44:01 INFO:     127.0.0.1:42522 - "GET /api/2.0/mlflow/model-versions/get?name=industrial-risk&version=1 HTTP/1.1" 200 OK
+2026/11/14 00:44:01 INFO:     127.0.0.1:42522 - "GET /api/2.0/mlflow/logged-models/m-d3d15408c4c940c6b7d8d6e2d58af36d HTTP/1.1" 200 OK
+2026/11/14 00:44:01 INFO:     127.0.0.1:42522 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:44:01 INFO:     127.0.0.1:42522 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:44:01 INFO:     127.0.0.1:42536 - "GET /api/3.0/mlflow/server-info HTTP/1.1" 200 OK
+2026/11/14 00:44:01 INFO:     127.0.0.1:42522 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/MLmodel HTTP/1.1" 200 OK
+2026/11/14 00:44:02 INFO:     127.0.0.1:42544 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:44:02 INFO:     127.0.0.1:42522 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/model.skops HTTP/1.1" 200 OK
+2026/11/14 00:44:02 INFO:     127.0.0.1:42548 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/conda.yaml HTTP/1.1" 200 OK
+2026/11/14 00:44:02 INFO:     127.0.0.1:42556 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/python_env.yaml HTTP/1.1" 200 OK
+2026/11/14 00:44:02 INFO:     127.0.0.1:42566 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/requirements.txt HTTP/1.1" 200 OK
+2026/11/14 00:44:02 INFO:     127.0.0.1:42544 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/serving_input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:44:03 INFO:     127.0.0.1:42566 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:44:03 INFO:     127.0.0.1:42566 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2F798fe8b6a2fb4f9faaa07996a5a344d0%2Fartifacts%2Freference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:44:03 INFO:     127.0.0.1:42566 - "GET /api/2.0/mlflow-artifacts/artifacts/1/798fe8b6a2fb4f9faaa07996a5a344d0/artifacts/reference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:44:03 INFO:     127.0.0.1:42566 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:44:03 INFO:     127.0.0.1:42566 - "POST /api/2.0/mlflow/logged-models/search HTTP/1.1" 200 OK
+2026/11/14 00:44:11 INFO:     127.0.0.1:52216 - "GET /api/2.0/mlflow/model-versions/get?name=industrial-risk&version=1 HTTP/1.1" 200 OK
+2026/11/14 00:44:11 INFO:     127.0.0.1:52216 - "GET /api/2.0/mlflow/logged-models/m-d3d15408c4c940c6b7d8d6e2d58af36d HTTP/1.1" 200 OK
+2026/11/14 00:44:11 INFO:     127.0.0.1:52216 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:44:11 INFO:     127.0.0.1:52216 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:44:11 INFO:     127.0.0.1:52232 - "GET /api/3.0/mlflow/server-info HTTP/1.1" 200 OK
+2026/11/14 00:44:11 INFO:     127.0.0.1:52216 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/MLmodel HTTP/1.1" 200 OK
+2026/11/14 00:44:11 INFO:     127.0.0.1:52240 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/conda.yaml HTTP/1.1" 200 OK
+2026/11/14 00:44:11 INFO:     127.0.0.1:52216 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:44:11 INFO:     127.0.0.1:52244 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/python_env.yaml HTTP/1.1" 200 OK
+2026/11/14 00:44:11 INFO:     127.0.0.1:52240 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/requirements.txt HTTP/1.1" 200 OK
+2026/11/14 00:44:11 INFO:     127.0.0.1:52246 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/model.skops HTTP/1.1" 200 OK
+2026/11/14 00:44:11 INFO:     127.0.0.1:52216 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/serving_input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:44:12 INFO:     127.0.0.1:52246 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:44:12 INFO:     127.0.0.1:52246 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2F798fe8b6a2fb4f9faaa07996a5a344d0%2Fartifacts%2Freference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:44:12 INFO:     127.0.0.1:52246 - "GET /api/2.0/mlflow-artifacts/artifacts/1/798fe8b6a2fb4f9faaa07996a5a344d0/artifacts/reference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:44:12 INFO:     127.0.0.1:52246 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:44:12 INFO:     127.0.0.1:52246 - "POST /api/2.0/mlflow/logged-models/search HTTP/1.1" 200 OK
+2026/11/14 00:44:51 INFO:     127.0.0.1:59168 - "GET /api/2.0/mlflow/model-versions/get?name=industrial-risk&version=1 HTTP/1.1" 200 OK
+2026/11/14 00:44:51 INFO:     127.0.0.1:59168 - "GET /api/2.0/mlflow/logged-models/m-d3d15408c4c940c6b7d8d6e2d58af36d HTTP/1.1" 200 OK
+2026/11/14 00:44:51 INFO:     127.0.0.1:59168 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:44:51 INFO:     127.0.0.1:59168 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:44:51 INFO:     127.0.0.1:59182 - "GET /api/3.0/mlflow/server-info HTTP/1.1" 200 OK
+2026/11/14 00:44:51 INFO:     127.0.0.1:59168 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/MLmodel HTTP/1.1" 200 OK
+2026/11/14 00:44:51 INFO:     127.0.0.1:59184 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:44:51 INFO:     127.0.0.1:59184 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/model.skops HTTP/1.1" 200 OK
+2026/11/14 00:44:51 INFO:     127.0.0.1:59168 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/serving_input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:44:51 INFO:     127.0.0.1:59192 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/python_env.yaml HTTP/1.1" 200 OK
+2026/11/14 00:44:51 INFO:     127.0.0.1:59194 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/requirements.txt HTTP/1.1" 200 OK
+2026/11/14 00:44:51 INFO:     127.0.0.1:59208 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/conda.yaml HTTP/1.1" 200 OK
+2026/11/14 00:44:52 INFO:     127.0.0.1:59208 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:44:52 INFO:     127.0.0.1:59208 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2F798fe8b6a2fb4f9faaa07996a5a344d0%2Fartifacts%2Freference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:44:52 INFO:     127.0.0.1:59208 - "GET /api/2.0/mlflow-artifacts/artifacts/1/798fe8b6a2fb4f9faaa07996a5a344d0/artifacts/reference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:44:52 INFO:     127.0.0.1:59208 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:44:52 INFO:     127.0.0.1:59208 - "POST /api/2.0/mlflow/logged-models/search HTTP/1.1" 200 OK
+2026/11/14 00:45:14 INFO:     127.0.0.1:44318 - "GET /api/2.0/mlflow/model-versions/get?name=industrial-risk&version=1 HTTP/1.1" 200 OK
+2026/11/14 00:45:14 INFO:     127.0.0.1:44318 - "GET /api/2.0/mlflow/logged-models/m-d3d15408c4c940c6b7d8d6e2d58af36d HTTP/1.1" 200 OK
+2026/11/14 00:45:14 INFO:     127.0.0.1:44318 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:45:14 INFO:     127.0.0.1:44318 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:45:14 INFO:     127.0.0.1:44328 - "GET /api/3.0/mlflow/server-info HTTP/1.1" 200 OK
+2026/11/14 00:45:14 INFO:     127.0.0.1:44318 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/MLmodel HTTP/1.1" 200 OK
+2026/11/14 00:45:14 INFO:     127.0.0.1:44342 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/requirements.txt HTTP/1.1" 200 OK
+2026/11/14 00:45:14 INFO:     127.0.0.1:44318 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/serving_input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:45:14 INFO:     127.0.0.1:44352 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/python_env.yaml HTTP/1.1" 200 OK
+2026/11/14 00:45:15 INFO:     127.0.0.1:44342 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/model.skops HTTP/1.1" 200 OK
+2026/11/14 00:45:15 INFO:     127.0.0.1:44318 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/conda.yaml HTTP/1.1" 200 OK
+2026/11/14 00:45:15 INFO:     127.0.0.1:44366 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:45:16 INFO:     127.0.0.1:44366 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:45:16 INFO:     127.0.0.1:44366 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2F798fe8b6a2fb4f9faaa07996a5a344d0%2Fartifacts%2Freference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:45:16 INFO:     127.0.0.1:44366 - "GET /api/2.0/mlflow-artifacts/artifacts/1/798fe8b6a2fb4f9faaa07996a5a344d0/artifacts/reference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:45:16 INFO:     127.0.0.1:44366 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:45:16 INFO:     127.0.0.1:44366 - "POST /api/2.0/mlflow/logged-models/search HTTP/1.1" 200 OK
+2026/11/14 00:45:17 INFO:     127.0.0.1:44376 - "GET /api/2.0/mlflow/model-versions/get?name=industrial-risk&version=2 HTTP/1.1" 200 OK
+2026/11/14 00:45:17 INFO:     127.0.0.1:44376 - "GET /api/2.0/mlflow/model-versions/get?name=industrial-risk&version=2 HTTP/1.1" 200 OK
+2026/11/14 00:45:17 INFO:     127.0.0.1:44376 - "GET /api/2.0/mlflow/logged-models/m-9af4915f9e6341d2932fac12004996c1 HTTP/1.1" 200 OK
+2026/11/14 00:45:17 INFO:     127.0.0.1:44376 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-9af4915f9e6341d2932fac12004996c1%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:45:17 INFO:     127.0.0.1:44376 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-9af4915f9e6341d2932fac12004996c1%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:45:17 INFO:     127.0.0.1:44380 - "GET /api/3.0/mlflow/server-info HTTP/1.1" 200 OK
+2026/11/14 00:45:17 INFO:     127.0.0.1:44376 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/serving_input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:45:17 INFO:     127.0.0.1:44396 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/model.skops HTTP/1.1" 200 OK
+2026/11/14 00:45:17 INFO:     127.0.0.1:44402 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/requirements.txt HTTP/1.1" 200 OK
+2026/11/14 00:45:17 INFO:     127.0.0.1:44418 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/MLmodel HTTP/1.1" 200 OK
+2026/11/14 00:45:17 INFO:     127.0.0.1:44376 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/conda.yaml HTTP/1.1" 200 OK
+2026/11/14 00:45:17 INFO:     127.0.0.1:44396 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:45:17 INFO:     127.0.0.1:44434 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/python_env.yaml HTTP/1.1" 200 OK
+2026/11/14 00:45:17 INFO:     127.0.0.1:44434 - "GET /api/2.0/mlflow/runs/get?run_uuid=fc11d0d4b21e4ba2900a4162b93df8e1&run_id=fc11d0d4b21e4ba2900a4162b93df8e1 HTTP/1.1" 200 OK
+2026/11/14 00:45:17 INFO:     127.0.0.1:44434 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Ffc11d0d4b21e4ba2900a4162b93df8e1%2Fartifacts%2Freference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:45:17 INFO:     127.0.0.1:44434 - "GET /api/2.0/mlflow-artifacts/artifacts/1/fc11d0d4b21e4ba2900a4162b93df8e1/artifacts/reference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:45:17 INFO:     127.0.0.1:44434 - "GET /api/2.0/mlflow/runs/get?run_uuid=fc11d0d4b21e4ba2900a4162b93df8e1&run_id=fc11d0d4b21e4ba2900a4162b93df8e1 HTTP/1.1" 200 OK
+2026/11/14 00:45:17 INFO:     127.0.0.1:44434 - "POST /api/2.0/mlflow/logged-models/search HTTP/1.1" 200 OK
+2026/11/14 00:45:17 INFO:     127.0.0.1:44434 - "GET /api/2.0/mlflow/registered-models/get?name=industrial-risk HTTP/1.1" 200 OK
+2026/11/14 00:45:17 INFO:     127.0.0.1:44434 - "GET /api/2.0/mlflow/registered-models/get?name=industrial-risk HTTP/1.1" 200 OK
+2026/11/14 00:45:17 INFO:     127.0.0.1:44434 - "POST /api/2.0/mlflow/registered-models/alias HTTP/1.1" 200 OK
+2026/11/14 00:45:17 INFO:     127.0.0.1:44434 - "GET /api/2.0/mlflow/registered-models/alias?name=industrial-risk&alias=champion HTTP/1.1" 200 OK
+2026/11/14 00:45:27 INFO:     127.0.0.1:54244 - "GET /api/2.0/mlflow/model-versions/get?name=industrial-risk&version=2 HTTP/1.1" 200 OK
+2026/11/14 00:45:27 INFO:     127.0.0.1:54244 - "GET /api/2.0/mlflow/logged-models/m-9af4915f9e6341d2932fac12004996c1 HTTP/1.1" 200 OK
+2026/11/14 00:45:27 INFO:     127.0.0.1:54244 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-9af4915f9e6341d2932fac12004996c1%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:45:27 INFO:     127.0.0.1:54244 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-9af4915f9e6341d2932fac12004996c1%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:45:27 INFO:     127.0.0.1:54250 - "GET /api/3.0/mlflow/server-info HTTP/1.1" 200 OK
+2026/11/14 00:45:27 INFO:     127.0.0.1:54244 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/MLmodel HTTP/1.1" 200 OK
+2026/11/14 00:45:27 INFO:     127.0.0.1:54260 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/requirements.txt HTTP/1.1" 200 OK
+2026/11/14 00:45:27 INFO:     127.0.0.1:54268 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/conda.yaml HTTP/1.1" 200 OK
+2026/11/14 00:45:27 INFO:     127.0.0.1:54278 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/model.skops HTTP/1.1" 200 OK
+2026/11/14 00:45:27 INFO:     127.0.0.1:54284 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/python_env.yaml HTTP/1.1" 200 OK
+2026/11/14 00:45:27 INFO:     127.0.0.1:54298 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/serving_input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:45:27 INFO:     127.0.0.1:54308 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:45:29 INFO:     127.0.0.1:54298 - "GET /api/2.0/mlflow/runs/get?run_uuid=fc11d0d4b21e4ba2900a4162b93df8e1&run_id=fc11d0d4b21e4ba2900a4162b93df8e1 HTTP/1.1" 200 OK
+2026/11/14 00:45:29 INFO:     127.0.0.1:54298 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Ffc11d0d4b21e4ba2900a4162b93df8e1%2Fartifacts%2Freference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:45:29 INFO:     127.0.0.1:54298 - "GET /api/2.0/mlflow-artifacts/artifacts/1/fc11d0d4b21e4ba2900a4162b93df8e1/artifacts/reference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:45:29 INFO:     127.0.0.1:54298 - "GET /api/2.0/mlflow/runs/get?run_uuid=fc11d0d4b21e4ba2900a4162b93df8e1&run_id=fc11d0d4b21e4ba2900a4162b93df8e1 HTTP/1.1" 200 OK
+2026/11/14 00:45:29 INFO:     127.0.0.1:54298 - "POST /api/2.0/mlflow/logged-models/search HTTP/1.1" 200 OK
+2026/11/14 00:45:30 INFO:     127.0.0.1:54312 - "GET /api/2.0/mlflow/model-versions/get?name=industrial-risk&version=1 HTTP/1.1" 200 OK
+2026/11/14 00:45:30 INFO:     127.0.0.1:54312 - "GET /api/2.0/mlflow/logged-models/m-d3d15408c4c940c6b7d8d6e2d58af36d HTTP/1.1" 200 OK
+2026/11/14 00:45:30 INFO:     127.0.0.1:54312 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:45:30 INFO:     127.0.0.1:54312 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:45:30 INFO:     127.0.0.1:54312 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/model.skops HTTP/1.1" 200 OK
+2026/11/14 00:45:30 INFO:     127.0.0.1:54322 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/MLmodel HTTP/1.1" 200 OK
+2026/11/14 00:45:30 INFO:     127.0.0.1:54330 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/conda.yaml HTTP/1.1" 200 OK
+2026/11/14 00:45:30 INFO:     127.0.0.1:54312 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:45:30 INFO:     127.0.0.1:54332 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/serving_input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:45:30 INFO:     127.0.0.1:54342 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/python_env.yaml HTTP/1.1" 200 OK
+2026/11/14 00:45:30 INFO:     127.0.0.1:54352 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/requirements.txt HTTP/1.1" 200 OK
+2026/11/14 00:45:30 INFO:     127.0.0.1:54342 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:45:30 INFO:     127.0.0.1:54342 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2F798fe8b6a2fb4f9faaa07996a5a344d0%2Fartifacts%2Freference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:45:30 INFO:     127.0.0.1:54342 - "GET /api/2.0/mlflow-artifacts/artifacts/1/798fe8b6a2fb4f9faaa07996a5a344d0/artifacts/reference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:45:30 INFO:     127.0.0.1:54342 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:45:30 INFO:     127.0.0.1:54342 - "POST /api/2.0/mlflow/logged-models/search HTTP/1.1" 200 OK
+2026/11/14 00:45:40 INFO:     127.0.0.1:47822 - "GET /api/2.0/mlflow/model-versions/get?name=industrial-risk&version=1 HTTP/1.1" 200 OK
+2026/11/14 00:45:40 INFO:     127.0.0.1:47822 - "GET /api/2.0/mlflow/logged-models/m-d3d15408c4c940c6b7d8d6e2d58af36d HTTP/1.1" 200 OK
+2026/11/14 00:45:40 INFO:     127.0.0.1:47822 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:45:40 INFO:     127.0.0.1:47822 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:45:40 INFO:     127.0.0.1:47834 - "GET /api/3.0/mlflow/server-info HTTP/1.1" 200 OK
+2026/11/14 00:45:40 INFO:     127.0.0.1:47822 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/conda.yaml HTTP/1.1" 200 OK
+2026/11/14 00:45:40 INFO:     127.0.0.1:47840 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/MLmodel HTTP/1.1" 200 OK
+2026/11/14 00:45:40 INFO:     127.0.0.1:47842 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/python_env.yaml HTTP/1.1" 200 OK
+2026/11/14 00:45:40 INFO:     127.0.0.1:47846 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/serving_input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:45:40 INFO:     127.0.0.1:47840 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/model.skops HTTP/1.1" 200 OK
+2026/11/14 00:45:40 INFO:     127.0.0.1:47822 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/requirements.txt HTTP/1.1" 200 OK
+2026/11/14 00:45:40 INFO:     127.0.0.1:47854 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:45:42 INFO:     127.0.0.1:47854 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:45:42 INFO:     127.0.0.1:47854 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2F798fe8b6a2fb4f9faaa07996a5a344d0%2Fartifacts%2Freference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:45:42 INFO:     127.0.0.1:47854 - "GET /api/2.0/mlflow-artifacts/artifacts/1/798fe8b6a2fb4f9faaa07996a5a344d0/artifacts/reference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:45:42 INFO:     127.0.0.1:47854 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:45:42 INFO:     127.0.0.1:47854 - "POST /api/2.0/mlflow/logged-models/search HTTP/1.1" 200 OK
+2026/11/14 00:45:43 INFO:     127.0.0.1:46670 - "GET /api/2.0/mlflow/model-versions/get?name=industrial-risk&version=1 HTTP/1.1" 200 OK
+2026/11/14 00:45:43 INFO:     127.0.0.1:46670 - "GET /api/2.0/mlflow/logged-models/m-d3d15408c4c940c6b7d8d6e2d58af36d HTTP/1.1" 200 OK
+2026/11/14 00:45:43 INFO:     127.0.0.1:46670 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:45:43 INFO:     127.0.0.1:46670 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:45:43 INFO:     127.0.0.1:46670 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/python_env.yaml HTTP/1.1" 200 OK
+2026/11/14 00:45:43 INFO:     127.0.0.1:46686 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/requirements.txt HTTP/1.1" 200 OK
+2026/11/14 00:45:43 INFO:     127.0.0.1:46670 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/conda.yaml HTTP/1.1" 200 OK
+2026/11/14 00:45:43 INFO:     127.0.0.1:46700 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/model.skops HTTP/1.1" 200 OK
+2026/11/14 00:45:43 INFO:     127.0.0.1:46706 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/MLmodel HTTP/1.1" 200 OK
+2026/11/14 00:45:43 INFO:     127.0.0.1:46710 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/serving_input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:45:43 INFO:     127.0.0.1:46726 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:45:43 INFO:     127.0.0.1:46726 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:45:43 INFO:     127.0.0.1:46726 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2F798fe8b6a2fb4f9faaa07996a5a344d0%2Fartifacts%2Freference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:45:43 INFO:     127.0.0.1:46726 - "GET /api/2.0/mlflow-artifacts/artifacts/1/798fe8b6a2fb4f9faaa07996a5a344d0/artifacts/reference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:45:43 INFO:     127.0.0.1:46726 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:45:43 INFO:     127.0.0.1:46726 - "POST /api/2.0/mlflow/logged-models/search HTTP/1.1" 200 OK
+2026/11/14 00:45:45 INFO:     Shutting down
+2026/11/14 00:45:45 INFO:     Waiting for application shutdown.
+2026/11/14 00:45:45 INFO:     Application shutdown complete.
+2026/11/14 00:45:45 INFO:     Finished server process [1478]
+Registry store URI not provided. Using backend store URI.
+[MLflow] Security middleware enabled. Allowed hosts: 127.0.0.1:5000, localhost:5000.
+2026/11/14 00:45:52 INFO mlflow.server.jobs.executor_registry: Available backends after discovery: local
+2026/11/14 00:45:52 INFO mlflow.server.jobs.executor_registry: Job executor backend 'local' passed requirements check
+/workspace/scratch/65da83183df7/industrial-streaming-mlops/.tools/venv311/lib/python3.11/site-packages/mlflow/server/fastapi_app.py:23: StarletteDeprecationWarning: starlette.middleware.wsgi is deprecated and will be removed in a future release. Please refer to https://github.com/abersheeran/a2wsgi as a replacement.
+  from starlette.middleware.wsgi import WSGIResponder, build_environ
+2026/11/14 00:45:54 INFO:     Started server process [4882]
+2026/11/14 00:45:54 INFO:     Waiting for application startup.
+2026/11/14 00:45:54 INFO:     Application startup complete.
+2026/11/14 00:45:54 INFO:     Uvicorn running on http://127.0.0.1:5000 (Press CTRL+C to quit)
+2026/11/14 00:45:54 INFO:     127.0.0.1:38294 - "GET /health HTTP/1.1" 200 OK
+2026/11/14 00:45:55 INFO:     127.0.0.1:38308 - "GET /api/2.0/mlflow/model-versions/get?name=industrial-risk&version=1 HTTP/1.1" 200 OK
+2026/11/14 00:45:55 INFO:     127.0.0.1:38308 - "GET /api/2.0/mlflow/logged-models/m-d3d15408c4c940c6b7d8d6e2d58af36d HTTP/1.1" 200 OK
+2026/11/14 00:45:55 INFO:     127.0.0.1:38308 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:45:55 INFO:     127.0.0.1:38308 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:45:55 INFO:     127.0.0.1:38308 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/MLmodel HTTP/1.1" 200 OK
+2026/11/14 00:45:55 INFO:     127.0.0.1:38312 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:45:55 INFO:     127.0.0.1:38316 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/model.skops HTTP/1.1" 200 OK
+2026/11/14 00:45:55 INFO:     127.0.0.1:38318 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/conda.yaml HTTP/1.1" 200 OK
+2026/11/14 00:45:55 INFO:     127.0.0.1:38320 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/python_env.yaml HTTP/1.1" 200 OK
+2026/11/14 00:45:55 INFO:     127.0.0.1:38326 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/requirements.txt HTTP/1.1" 200 OK
+2026/11/14 00:45:55 INFO:     127.0.0.1:38330 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/serving_input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:45:55 INFO:     127.0.0.1:38326 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:45:55 INFO:     127.0.0.1:38326 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2F798fe8b6a2fb4f9faaa07996a5a344d0%2Fartifacts%2Freference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:45:55 INFO:     127.0.0.1:38326 - "GET /api/2.0/mlflow-artifacts/artifacts/1/798fe8b6a2fb4f9faaa07996a5a344d0/artifacts/reference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:45:55 INFO:     127.0.0.1:38326 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:45:55 INFO:     127.0.0.1:38326 - "POST /api/2.0/mlflow/logged-models/search HTTP/1.1" 200 OK
+2026/11/14 00:45:56 INFO mlflow.server.jobs.utils: Registered online_scoring_scheduler periodic task (runs every 1 minute)
+2026/11/14 00:45:56 INFO mlflow.server.jobs.utils: Registered trace_archival_scheduler periodic task (polls every 1 minute and no-ops when trace archival is disabled or unconfigured)
+2026/11/14 00:45:56 INFO mlflow.server.jobs.utils: SQL trace rollup scheduler was not registered because rollups are disabled
+2026/11/14 00:46:01 INFO:     127.0.0.1:38340 - "GET /api/2.0/mlflow/model-versions/get?name=industrial-risk&version=1 HTTP/1.1" 200 OK
+2026/11/14 00:46:01 INFO:     127.0.0.1:38340 - "GET /api/2.0/mlflow/logged-models/m-d3d15408c4c940c6b7d8d6e2d58af36d HTTP/1.1" 200 OK
+2026/11/14 00:46:01 INFO:     127.0.0.1:38340 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:46:01 INFO:     127.0.0.1:38340 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2Fmodels%2Fm-d3d15408c4c940c6b7d8d6e2d58af36d%2Fartifacts HTTP/1.1" 200 OK
+2026/11/14 00:46:01 INFO:     127.0.0.1:38346 - "GET /api/3.0/mlflow/server-info HTTP/1.1" 200 OK
+2026/11/14 00:46:01 INFO:     127.0.0.1:38340 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/MLmodel HTTP/1.1" 200 OK
+2026/11/14 00:46:01 INFO:     127.0.0.1:38340 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/model.skops HTTP/1.1" 200 OK
+2026/11/14 00:46:01 INFO:     127.0.0.1:38340 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/python_env.yaml HTTP/1.1" 200 OK
+2026/11/14 00:46:01 INFO:     127.0.0.1:38358 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/requirements.txt HTTP/1.1" 200 OK
+2026/11/14 00:46:01 INFO:     127.0.0.1:38360 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:46:01 INFO:     127.0.0.1:38376 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/serving_input_example.json HTTP/1.1" 200 OK
+2026/11/14 00:46:01 INFO:     127.0.0.1:38390 - "GET /api/2.0/mlflow-artifacts/artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/conda.yaml HTTP/1.1" 200 OK
+2026/11/14 00:46:02 INFO:     127.0.0.1:38376 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:46:02 INFO:     127.0.0.1:38376 - "GET /api/2.0/mlflow-artifacts/artifacts?path=1%2F798fe8b6a2fb4f9faaa07996a5a344d0%2Fartifacts%2Freference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:46:02 INFO:     127.0.0.1:38376 - "GET /api/2.0/mlflow-artifacts/artifacts/1/798fe8b6a2fb4f9faaa07996a5a344d0/artifacts/reference-profile.json HTTP/1.1" 200 OK
+2026/11/14 00:46:02 INFO:     127.0.0.1:38376 - "GET /api/2.0/mlflow/runs/get?run_uuid=798fe8b6a2fb4f9faaa07996a5a344d0&run_id=798fe8b6a2fb4f9faaa07996a5a344d0 HTTP/1.1" 200 OK
+2026/11/14 00:46:02 INFO:     127.0.0.1:38376 - "POST /api/2.0/mlflow/logged-models/search HTTP/1.1" 200 OK
+2026/11/14 00:46:04 INFO:     Shutting down
+2026/11/14 00:46:04 INFO:     Waiting for application shutdown.
+2026/11/14 00:46:04 INFO:     Application shutdown complete.
+2026/11/14 00:46:04 INFO:     Finished server process [4882]

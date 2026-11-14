@@ -1,0 +1,4438 @@
+{
+  "checks": {
+    "alert_business_parity": true,
+    "all_variants_passed": true,
+    "copied_model_artifacts_unchanged": true,
+    "copied_training_unchanged": true,
+    "fixed_input_parity": true,
+    "original_snapshot_unchanged": true,
+    "owned_services_stopped": true,
+    "runner_unchanged": true,
+    "source_unchanged": true,
+    "training_source_unchanged": true
+  },
+  "comparisons": [
+    {
+      "alert_identities_equal": true,
+      "canonical_alerts_equal": true,
+      "canonical_cooldown_equal": true,
+      "canonical_features_equal": true,
+      "canonical_scores_exact": true,
+      "maximum_absolute_score_difference": 0.0,
+      "nonzero_alerts_both_variants": true,
+      "reference": "h24-p1-w1",
+      "same_input": true,
+      "score_identity_equal": true,
+      "scores_within_tolerance": true,
+      "variant": "h24-p3-w1"
+    },
+    {
+      "alert_identities_equal": true,
+      "canonical_alerts_equal": true,
+      "canonical_cooldown_equal": true,
+      "canonical_features_equal": true,
+      "canonical_scores_exact": true,
+      "maximum_absolute_score_difference": 0.0,
+      "nonzero_alerts_both_variants": true,
+      "reference": "h24-p1-w1",
+      "same_input": true,
+      "score_identity_equal": true,
+      "scores_within_tolerance": true,
+      "variant": "h24-p3-w2"
+    }
+  ],
+  "elapsed_seconds": 84.61366680799983,
+  "finished_at": 1794614205.2618911,
+  "inputs": {
+    "2": {
+      "path": "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/input-02h.jsonl",
+      "sha256": "700bde17a029853febdafa3fef0204771ba934350b91999219210df656e7b05c"
+    },
+    "24": {
+      "path": "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/input-24h.jsonl",
+      "sha256": "2dc55c6dac74e8e43753eb4d9c8157ad4f175fbd9ce957d028d16dbcf7078a62"
+    }
+  },
+  "kafka_readiness": {
+    "checked_at": 1794614126.6961904,
+    "cluster": {
+      "authorized_operations": [
+        "CREATE",
+        "ALTER",
+        "DESCRIBE",
+        "CLUSTER_ACTION",
+        "DESCRIBE_CONFIGS",
+        "ALTER_CONFIGS",
+        "IDEMPOTENT_WRITE"
+      ],
+      "brokers": [
+        {
+          "host": "127.0.0.1",
+          "node_id": 1,
+          "port": 19092,
+          "rack": null
+        }
+      ],
+      "cluster_id": "Y-IGX9OARu2R0gYdVpWUEA",
+      "controller_id": 1,
+      "throttle_time_ms": 0
+    },
+    "scope": "successful Kafka cluster and topic metadata requests"
+  },
+  "protocol": {
+    "acceptance": [
+      "source count equals producer acknowledgements",
+      "persisted invariants all true",
+      "availableNow drains and final observed source lag is zero",
+      "all finalized features have predictions from the selected numerical model version",
+      "24h variants have identical canonical features and scores within 1e-12",
+      "each 24h variant persists nonzero alerts and exercises cooldown suppression",
+      "24h variants have identical alert business bodies and per-prediction cooldown outcomes",
+      "alert evidence matches persisted features and the cooldown schedule matches business availability times",
+      "requested topic partitions and actual Spark launch master agree",
+      "training source, artifacts and implementation source remain unchanged"
+    ],
+    "activation": "existing_qualified_candidate",
+    "alert_comparison": {
+      "actual_schema_note": "current alert bodies contain predicted_at_epoch, inference_ms and arrival_to_prediction_ms; no created_at",
+      "comparison": "exact canonical hashes and equality of alert identities, evidence, observations, score, threshold, model and cooldown outcomes",
+      "cooldown": "for every above-threshold prediction, record emitted/not_emitted from persisted alert membership; independently replay the configured cooldown in business availability order",
+      "excluded_execution_fields": [
+        "arrival_to_prediction_ms",
+        "created_at",
+        "inference_ms",
+        "predicted_at_epoch"
+      ],
+      "retained": "all persisted alert body fields except explicitly listed execution timing fields; event_time and available_at remain"
+    },
+    "anomalies": true,
+    "cleanup_budget_reserved_seconds": 20,
+    "config": {
+      "alert_cooldown_seconds": 1800,
+      "false_alert_budget_per_machine_day": 2.0,
+      "feature_version": "v1",
+      "horizon_seconds": 1800,
+      "lateness_seconds": 120,
+      "max_batch_bytes": 16777216,
+      "max_batch_rows": 10000,
+      "max_p95_inference_ms": 1000.0,
+      "max_payload_bytes": 65536,
+      "min_lead_seconds": 300,
+      "min_points": 4,
+      "min_recall": 0.7,
+      "pressure_max_bar": 30.0,
+      "temperature_max_c": 180.0,
+      "temperature_min_c": -40.0,
+      "vibration_max_mm_s": 30.0,
+      "window_seconds": 1800
+    },
+    "input_reuse": "all three 24h variants use the identical JSONL bytes",
+    "interpretation": "four sequential single observations; cold JVM each time, shared warm services/OS cache; no statistical speedup, Big Data, multi-node, cost, Databricks, or real-plant claim",
+    "machines": 4,
+    "max_offsets_per_trigger": 200,
+    "max_worker_wall_seconds": 300,
+    "performance_acceptance_threshold": null,
+    "protocol_id": "streaming-alert-invariance-24h-v2",
+    "resource_scope": {
+      "children_rusage": "OS CPU delta for reaped children, separately reported; do not add to sampled child CPU",
+      "cpu": "sampled per-process user+system CPU deltas; short-lived processes and final sampling tails may be missed",
+      "rss": "sampled resident bytes; simultaneous sums double-count shared pages and are not total host memory",
+      "runner_cpu": "exact process_time delta for benchmark Python, including producer and sampler threads",
+      "sample_interval_seconds": 0.1,
+      "window": "publication start through worker completion; services already started"
+    },
+    "schema_version": 1,
+    "scope": "one host; real JVM Kafka, local Spark, HTTP MLflow and SQLite sink; synthetic data",
+    "score_comparison_absolute_tolerance": 1e-12,
+    "seed": 42,
+    "sites": 2,
+    "start": "2026-06-01T00:00:00Z",
+    "timing_scope": {
+      "end_to_end": "Kafka record timestamp to prediction; includes intentionally preloaded backlog and JVM startup",
+      "inference": "stored model.predict latency, including feature DataFrame conversion",
+      "query_elapsed": "stream() receipt elapsed; excludes initial SparkSession construction",
+      "throughput": "raw sink rows / fresh worker wall time, including Python/JVM startup and shutdown"
+    },
+    "total_wall_budget_seconds": 600,
+    "training": "copy stopped MLflow and training state; compare hashes and training source; no retraining or promotion",
+    "variants": [
+      {
+        "hours": 2,
+        "name": "h02-p1-w1",
+        "partitions": 1,
+        "workers": 1
+      },
+      {
+        "hours": 24,
+        "name": "h24-p1-w1",
+        "partitions": 1,
+        "workers": 1
+      },
+      {
+        "hours": 24,
+        "name": "h24-p3-w1",
+        "partitions": 3,
+        "workers": 1
+      },
+      {
+        "hours": 24,
+        "name": "h24-p3-w2",
+        "partitions": 3,
+        "workers": 2
+      }
+    ],
+    "work_budget_seconds": 580
+  },
+  "runner_sha256": "5ac9fb4de43d42f2b47c3e050b01e922eddea9526e73bc6c9b2387865c50d795",
+  "runtime": {
+    "java": "openjdk version \"17.0.21\" 2026-10-20\nOpenJDK Runtime Environment Temurin-17.0.21+9 (build 17.0.21+9)\nOpenJDK 64-Bit Server VM Temurin-17.0.21+9 (build 17.0.21+9, mixed mode, sharing)\n",
+    "packages": {
+      "kafka-python": "2.3.2",
+      "mlflow": "3.17.2",
+      "numpy": "2.3.5",
+      "pandas": "2.2.3",
+      "psutil": "7.2.2",
+      "pyspark": "3.5.9",
+      "scikit-learn": "1.8.0"
+    },
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "python": "3.11.18"
+  },
+  "schema_version": 1,
+  "selected_model": {
+    "digest": "034e2dfb9204865f9684f1da73fe201264071e4a225af01de41e68ce7ab3deac",
+    "mode": "approved",
+    "qualified": true,
+    "run_id": "fc11d0d4b21e4ba2900a4162b93df8e1",
+    "version": "2"
+  },
+  "services_helper_sha256": "8b395533b92e8cc5886803227fa756de6e757c972bedb73f733b3e11b050e40d",
+  "services_stopped": {
+    "kafka": {
+      "pid": 426,
+      "returncode": 143
+    },
+    "mlflow": {
+      "pid": 917,
+      "returncode": 0
+    }
+  },
+  "source": {
+    "files": {
+      "config/pipeline.json": "ffef2ebac6571f9f6f500454867d108e3e42d3afea24dfb5ad8ba9e5d060756c",
+      "config/spark-jars.lock.json": "825b8daa81b10e0db75307bd9e91b6bd5d103c6dac6e88ddbcefa8ba96c4ed91",
+      "pyproject.toml": "ffb73ca198529b078f843e1d6c97c755a60fc747370a0813dce7728e909da041",
+      "schemas/alert.v1.json": "cd63d301b80c7787b04e35109e83a694bfe233d511dea19c41a57407207c7f50",
+      "schemas/event.v1.json": "f0394a08731ea6a0613bfc9d4b96fa9bdc86423e7b04e7ffaa7939e53c47ae9c",
+      "schemas/feature.v1.json": "ede271e54be995ce486d87038a6af3008771856e3baae6978b7d118e390299f3",
+      "schemas/heartbeat.v1.json": "54a63a7d14e7c31383df7f00d0533794442114a7e71afec1ca2a1637f8225c2b",
+      "schemas/label.v1.json": "ad44e2b2fbef501315e33f50c179b01a53a0e509a61b3b276c0b2784b8db0e4b",
+      "schemas/prediction.v1.json": "443e74cd126814d4a98f3b9f7a621479a4cadc06abfb6198a283f011fbec56a4",
+      "schemas/sensor.v1.json": "00741c7b3c98519807b17f10dca077925a7fd570b19e3e439ba09f4922791ecd",
+      "src/industrial_mlops/__init__.py": "2e5c638b4bfba1c72e36bfe19f671aca329142b11fd6ea54d46b843ff4a38b81",
+      "src/industrial_mlops/__main__.py": "edf7afd7e443bb6b00387b9d10ce81220fe6ceb02c7651cbe692e7d463311ce3",
+      "src/industrial_mlops/benchmark.py": "ef74fd4521b1b3b0ffd278fd1701f5608cb7897d17768dd72375b1c462e94b07",
+      "src/industrial_mlops/cli.py": "64dbb46dcd718b66276de7534648c8bca32d4b0b4408e487c509bc3668b7956c",
+      "src/industrial_mlops/config.py": "22508652ea4976dd574696082aabf6b2967678b10ebc371d188828b7bb91cba3",
+      "src/industrial_mlops/contracts.py": "fb840fb5cd238260beab2dd1d536e59c1c41068987af24886e48de79cbccf85b",
+      "src/industrial_mlops/dashboard.py": "cc028279085f6fa6579e1bfd428e4dd9231eb5372adc83c3bbe756b230ceb68f",
+      "src/industrial_mlops/features.py": "5da77b20264645a13272bbf8b9dd9d38aec5590e7daddb2b849d7d26318b11ac",
+      "src/industrial_mlops/modeling.py": "f7607796985da8c246d120030254df9a02bebba0d0123a87ed5de61bc49848a9",
+      "src/industrial_mlops/monitoring.py": "6bf39fbaccf29fb274ce3a0e682b256f288995af5fa1e8aa691b0439f6767d3e",
+      "src/industrial_mlops/observability.py": "96c1d24039046bb0b7503bd0e905533308660cefb08636f73fdee787720c74e6",
+      "src/industrial_mlops/operations.py": "dc07fa5185db6a275ae5407705b2cb1fee4f8936a562978b521b6af853c7755f",
+      "src/industrial_mlops/registry.py": "67fae36b39879955a82d9262cd1ab357ab736e4ed2be09a8f40bc75b1bf7ba0c",
+      "src/industrial_mlops/simulator.py": "5fdb081c46e621a4de0dbde986fa99c79b59a6809eacaa1e0f9a6aa51c702473",
+      "src/industrial_mlops/store.py": "37d1b66ffa2e4c438ff60084134a47c723fbe1d64ad9ea38e556da47f604148e",
+      "src/industrial_mlops/streaming.py": "52810f07b925e3ef93bdfb6417f05e12f8cb2006cd9370bfdbb9968eb3a885c1",
+      "uv.lock": "18a3f0291ed085a1508823a1a1990d730b8b019621046a141c459a7bbbbee7d1"
+    },
+    "git_commit": "349ec4c892c15b0deeeb34c81a2cc8baeecbf656",
+    "identity": "working-tree-sha256:8756108fa9d3f07592b2a40e51f9da1a07baa2314bda77e413af08b23d930866",
+    "python": "3.11.18"
+  },
+  "started_at": 1794614120.6524618,
+  "status": "passed",
+  "training_reuse": {
+    "files_before_startup": {
+      "services/mlflow": {
+        "artifacts/1/798fe8b6a2fb4f9faaa07996a5a344d0/artifacts/datasets.json": "de68fca638ee3fb1b19fd57494867cd07f2b29f6c586ba57b4805dfc47d0df91",
+        "artifacts/1/798fe8b6a2fb4f9faaa07996a5a344d0/artifacts/qualification.json": "0bdaa5dfb471c1231eec56b3fec3ee45c3cd38fa4a76e0875de7f782784829c2",
+        "artifacts/1/798fe8b6a2fb4f9faaa07996a5a344d0/artifacts/reference-profile.json": "3ab71c519f1b05ebeaf3f7a1427ad23906dc5b215aa09708db81f2564036b515",
+        "artifacts/1/fc11d0d4b21e4ba2900a4162b93df8e1/artifacts/datasets.json": "de68fca638ee3fb1b19fd57494867cd07f2b29f6c586ba57b4805dfc47d0df91",
+        "artifacts/1/fc11d0d4b21e4ba2900a4162b93df8e1/artifacts/qualification.json": "f57469fe49ce5e588b43199a787aee61cf5f8861cccfacc824af4f2749005d30",
+        "artifacts/1/fc11d0d4b21e4ba2900a4162b93df8e1/artifacts/reference-profile.json": "3ab71c519f1b05ebeaf3f7a1427ad23906dc5b215aa09708db81f2564036b515",
+        "artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/MLmodel": "611f53108016f6a19f19fa0f4c0c2523f5eda62c678db78f6862829dbd161195",
+        "artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/conda.yaml": "3bbb3f0fac7f25804d73ab29291c2a764deb77d63b761b0763a09b5cd23cc95e",
+        "artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/input_example.json": "126802fa809b9da2bdb40cd70a5765232adc7ecf64d4525d0e4d4b10d2a98b92",
+        "artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/model.skops": "034e2dfb9204865f9684f1da73fe201264071e4a225af01de41e68ce7ab3deac",
+        "artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/python_env.yaml": "d0521c6fd33d81fd83d510ec9e4670b93c34b7cb7c393609fd55bc47278507f9",
+        "artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/requirements.txt": "ef650654f0fc34c939e16c083721123d07c92a04ca3e23de8bc52e51c3aee56e",
+        "artifacts/1/models/m-9af4915f9e6341d2932fac12004996c1/artifacts/serving_input_example.json": "e54d5a34b5e13590563995b746fb37e86a6aa7a3f9d57890f120796a6e3e4aa0",
+        "artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/MLmodel": "58bc52994a292183ecb066fe44d7439e296aca6dde0d7678088394e0edc6d1a6",
+        "artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/conda.yaml": "3bbb3f0fac7f25804d73ab29291c2a764deb77d63b761b0763a09b5cd23cc95e",
+        "artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/input_example.json": "126802fa809b9da2bdb40cd70a5765232adc7ecf64d4525d0e4d4b10d2a98b92",
+        "artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/model.skops": "7deb73ed17d6f97224c2792c4017a0aca4b86fff620a47d36d4201659d6964b6",
+        "artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/python_env.yaml": "d0521c6fd33d81fd83d510ec9e4670b93c34b7cb7c393609fd55bc47278507f9",
+        "artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/requirements.txt": "ef650654f0fc34c939e16c083721123d07c92a04ca3e23de8bc52e51c3aee56e",
+        "artifacts/1/models/m-d3d15408c4c940c6b7d8d6e2d58af36d/artifacts/serving_input_example.json": "e54d5a34b5e13590563995b746fb37e86a6aa7a3f9d57890f120796a6e3e4aa0",
+        "mlflow.db": "7e4176f733a8ed643b46b5b939850104c2e5e41a62b1d0e5a921df63308a4fab"
+      },
+      "training": {
+        "evaluation-report.json": "d9fb87b22b115af3b3af578a08947718249bffbee9e6c17b8b7bdee40b3bb3a6",
+        "holdout-predictions.csv": "f095027a0dc58fd81d8db35814c17d21a4c5fa8d01e668437801efaaf832a675",
+        "training-report.json": "97d2439f858374d8a4fcda1a9f07d95aea410ff3590889e68530efd9e6cae620"
+      }
+    },
+    "new_training_run": false,
+    "quiescence": "operator-supplied stopped snapshot; before/after copy hashes equal",
+    "source": "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/native-qualification-01",
+    "training_source": {
+      "files": {
+        "src/industrial_mlops/config.py": "22508652ea4976dd574696082aabf6b2967678b10ebc371d188828b7bb91cba3",
+        "src/industrial_mlops/contracts.py": "fb840fb5cd238260beab2dd1d536e59c1c41068987af24886e48de79cbccf85b",
+        "src/industrial_mlops/features.py": "5da77b20264645a13272bbf8b9dd9d38aec5590e7daddb2b849d7d26318b11ac",
+        "src/industrial_mlops/modeling.py": "f7607796985da8c246d120030254df9a02bebba0d0123a87ed5de61bc49848a9",
+        "src/industrial_mlops/monitoring.py": "6bf39fbaccf29fb274ce3a0e682b256f288995af5fa1e8aa691b0439f6767d3e",
+        "src/industrial_mlops/registry.py": "67fae36b39879955a82d9262cd1ab357ab736e4ed2be09a8f40bc75b1bf7ba0c",
+        "src/industrial_mlops/simulator.py": "5fdb081c46e621a4de0dbde986fa99c79b59a6809eacaa1e0f9a6aa51c702473"
+      },
+      "sha256": "3877b2ce47fec9c20c1558104b33dd474bde48cad50f1b0363d4414c756a9cf9"
+    }
+  },
+  "within_total_wall_budget": true,
+  "workloads": [
+    {
+      "activation": {
+        "action": "activate",
+        "activated_at": 1794614134.580841,
+        "feature_version": "v1",
+        "id": 1,
+        "mode": "approved",
+        "model_name": "industrial-risk",
+        "model_version": "2",
+        "run_id": "fc11d0d4b21e4ba2900a4162b93df8e1",
+        "threshold": 0.975
+      },
+      "alert_business": {
+        "above_threshold_predictions": 0,
+        "alerts": 0,
+        "checks": {
+          "alert_evidence_consistent": true,
+          "cooldown_schedule_matches": true,
+          "unique_alert_features": true
+        },
+        "excluded_execution_fields": [
+          "arrival_to_prediction_ms",
+          "created_at",
+          "inference_ms",
+          "predicted_at_epoch"
+        ],
+        "expected_cooldown_suppressed": 0,
+        "persisted_not_emitted": 0
+      },
+      "backlog_progress": [
+        {
+          "basis": "new topic; all input prepublished",
+          "batch_id": null,
+          "offsets_behind": 205
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 0,
+          "offsets_behind": 5
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 1,
+          "offsets_behind": 0
+        }
+      ],
+      "batches": [
+        {
+          "batch_id": 0,
+          "committed_at": 1794614146.63664,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 1,
+          "committed_at": 1794614147.159738,
+          "rows_received": 5
+        }
+      ],
+      "canonical_sha256": {
+        "alerts": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "cooldown": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "features": "d3b592321750df61e25a61cd306b482c7fd2e49165bda4bc98697dd84f376f10",
+        "scores": "52f4e9fbe68ee21c66fc0bd18376c80531831455eca635b376250a7a63f5264e"
+      },
+      "checkpoint": "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h02-p1-w1/checkpoints",
+      "checks": {
+        "alert_evidence_consistent": true,
+        "all_features_scored": true,
+        "backlog_exercised": true,
+        "bounded_batches": true,
+        "candidate_identity": true,
+        "cooldown_schedule_matches": true,
+        "cooldown_suppression_exercised": true,
+        "drained": true,
+        "invariants": true,
+        "latencies_present": true,
+        "nonzero_alerts": true,
+        "partition_count": true,
+        "resources_observed": true,
+        "source_ack_matches": true,
+        "source_lag_zero": true,
+        "spark_version": true,
+        "spark_workers": true,
+        "unique_alert_features": true
+      },
+      "counts": {
+        "accepted": 97,
+        "alerts": 0,
+        "batches": 2,
+        "control": 4,
+        "duplicate": 1,
+        "events": 97,
+        "features": 85,
+        "label": 97,
+        "labels": 97,
+        "pending_events": 0,
+        "pending_predictions": 0,
+        "predictions": 85,
+        "raw": 205,
+        "rejected": 6
+      },
+      "hours": 2,
+      "input_sha256": "700bde17a029853febdafa3fef0204771ba934350b91999219210df656e7b05c",
+      "latency_ms": {
+        "broker_to_prediction": {
+          "p50": 11725.935697555542,
+          "p95": 11754.009342193604,
+          "p99": 11755.67717552185,
+          "samples": 85
+        },
+        "inference": {
+          "p50": 0.6656179994024569,
+          "p95": 1.024999399851367,
+          "p99": 2.1716707601444605,
+          "samples": 85
+        }
+      },
+      "name": "h02-p1-w1",
+      "observed_partition_count": 1,
+      "partitions": 1,
+      "publication": {
+        "acknowledged": 205,
+        "elapsed_seconds": 0.34290251600032207,
+        "events_per_second": 597.837549841155,
+        "offsets": {
+          "0": {
+            "count": 205,
+            "first": 0,
+            "last": 204
+          }
+        },
+        "partitions": 1,
+        "topic": "benchmark-h02-p1-w1"
+      },
+      "query_elapsed_seconds_reported": 9.036440410999603,
+      "raw_records_per_worker_wall_second": 15.420597457227055,
+      "resources": {
+        "measurement_wall_seconds": 13.72207568399972,
+        "observed_spark_masters": [
+          "local[1]"
+        ],
+        "processes": [
+          {
+            "initial_cpu_seconds": 3.07,
+            "last_cpu_seconds": 3.58,
+            "name": "python",
+            "peak_rss_bytes": 278650880,
+            "pid": 5,
+            "role": "runner_python"
+          },
+          {
+            "initial_cpu_seconds": 4.92,
+            "last_cpu_seconds": 6.3500000000000005,
+            "name": "java",
+            "peak_rss_bytes": 371654656,
+            "pid": 426,
+            "role": "kafka_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.8,
+            "last_cpu_seconds": 2.8,
+            "name": "python",
+            "peak_rss_bytes": 257589248,
+            "pid": 917,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 3.0,
+            "last_cpu_seconds": 3.17,
+            "name": "python",
+            "peak_rss_bytes": 265510912,
+            "pid": 920,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.43,
+            "last_cpu_seconds": 2.46,
+            "name": "python",
+            "peak_rss_bytes": 246931456,
+            "pid": 921,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.4,
+            "last_cpu_seconds": 2.43,
+            "name": "python",
+            "peak_rss_bytes": 246996992,
+            "pid": 928,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.39,
+            "last_cpu_seconds": 2.49,
+            "name": "python",
+            "peak_rss_bytes": 246616064,
+            "pid": 930,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.27,
+            "last_cpu_seconds": 2.32,
+            "name": "python",
+            "peak_rss_bytes": 246493184,
+            "pid": 933,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.39,
+            "last_cpu_seconds": 2.5,
+            "name": "python",
+            "peak_rss_bytes": 246706176,
+            "pid": 935,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.36,
+            "last_cpu_seconds": 2.39,
+            "name": "python",
+            "peak_rss_bytes": 247005184,
+            "pid": 937,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.3200000000000003,
+            "last_cpu_seconds": 2.36,
+            "name": "python",
+            "peak_rss_bytes": 246681600,
+            "pid": 939,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.3899999999999997,
+            "last_cpu_seconds": 2.49,
+            "name": "python",
+            "peak_rss_bytes": 250490880,
+            "pid": 940,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 0.08,
+            "last_cpu_seconds": 3.79,
+            "name": "python",
+            "peak_rss_bytes": 281264128,
+            "pid": 1033,
+            "role": "worker_python"
+          },
+          {
+            "initial_cpu_seconds": 0.0,
+            "last_cpu_seconds": 17.89,
+            "name": "python",
+            "peak_rss_bytes": 455823360,
+            "pid": 1034,
+            "role": "worker_descendants"
+          },
+          {
+            "initial_cpu_seconds": 0.0,
+            "last_cpu_seconds": 0.0,
+            "name": "bash",
+            "peak_rss_bytes": 909312,
+            "pid": 1042,
+            "role": "worker_descendants"
+          },
+          {
+            "initial_cpu_seconds": 0.1,
+            "last_cpu_seconds": 0.2,
+            "name": "java",
+            "peak_rss_bytes": 52416512,
+            "pid": 1043,
+            "role": "worker_descendants"
+          }
+        ],
+        "raw_samples": "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h02-p1-w1/resource-samples.jsonl",
+        "reaped_children_cpu_seconds_delta": 3.8474690000000002,
+        "runner_cpu_seconds": 0.5182211300000001,
+        "runner_lifetime_peak_rss_bytes": 278249472,
+        "sampled_cpu_seconds_by_scope": {
+          "kafka_tree": 1.4300000000000006,
+          "mlflow_tree": 0.6600000000000001,
+          "runner_python": 0.5100000000000002,
+          "worker_descendants": 17.990000000000002,
+          "worker_python": 3.71
+        },
+        "sampled_peak_rss_bytes_by_scope": {
+          "all_children": 3608256512,
+          "kafka_tree": 371654656,
+          "mlflow_tree": 2501021696,
+          "runner_python": 278650880,
+          "worker_descendants": 455823360,
+          "worker_python": 281264128
+        },
+        "sampler_errors": 0,
+        "samples": 133,
+        "scope": {
+          "children_rusage": "OS CPU delta for reaped children, separately reported; do not add to sampled child CPU",
+          "cpu": "sampled per-process user+system CPU deltas; short-lived processes and final sampling tails may be missed",
+          "rss": "sampled resident bytes; simultaneous sums double-count shared pages and are not total host memory",
+          "runner_cpu": "exact process_time delta for benchmark Python, including producer and sampler threads",
+          "sample_interval_seconds": 0.1,
+          "window": "publication start through worker completion; services already started"
+        }
+      },
+      "spark": {
+        "drained": true,
+        "elapsed_seconds": 9.036440410999603,
+        "engine": "Spark Structured Streaming",
+        "max_offsets_per_trigger": 200,
+        "mode": "availableNow",
+        "progress": [
+          {
+            "batchId": 0,
+            "durationMs": {
+              "addBatch": 5603,
+              "commitOffsets": 41,
+              "getBatch": 14,
+              "latestOffset": 768,
+              "queryPlanning": 371,
+              "triggerExecution": 6862,
+              "walCommit": 41
+            },
+            "id": "50ad07d6-4b3b-4c56-920d-7632c392d533",
+            "inputRowsPerSecond": 0.0,
+            "name": "benchmark-h02-p1-w1",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 58.283549468162605,
+            "runId": "f2ba2d2a-bafc-4b35-8e1d-03dfd2994a21",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h02-p1-w1]]",
+                "endOffset": {
+                  "benchmark-h02-p1-w1": {
+                    "0": 200
+                  }
+                },
+                "inputRowsPerSecond": 0.0,
+                "latestOffset": {
+                  "benchmark-h02-p1-w1": {
+                    "0": 205
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "5.0",
+                  "maxOffsetsBehindLatest": "5",
+                  "minOffsetsBehindLatest": "5"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 58.283549468162605,
+                "startOffset": null
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:55:39.841Z"
+          },
+          {
+            "batchId": 1,
+            "durationMs": {
+              "addBatch": 356,
+              "commitOffsets": 38,
+              "getBatch": 1,
+              "latestOffset": 1,
+              "queryPlanning": 52,
+              "triggerExecution": 491,
+              "walCommit": 37
+            },
+            "id": "50ad07d6-4b3b-4c56-920d-7632c392d533",
+            "inputRowsPerSecond": 1.453699665649077,
+            "name": "benchmark-h02-p1-w1",
+            "numInputRows": 10,
+            "processedRowsPerSecond": 20.366598778004075,
+            "runId": "f2ba2d2a-bafc-4b35-8e1d-03dfd2994a21",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h02-p1-w1]]",
+                "endOffset": {
+                  "benchmark-h02-p1-w1": {
+                    "0": 205
+                  }
+                },
+                "inputRowsPerSecond": 1.453699665649077,
+                "latestOffset": {
+                  "benchmark-h02-p1-w1": {
+                    "0": 205
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "0.0",
+                  "maxOffsetsBehindLatest": "0",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 10,
+                "processedRowsPerSecond": 20.366598778004075,
+                "startOffset": {
+                  "benchmark-h02-p1-w1": {
+                    "0": 200
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:55:46.720Z"
+          }
+        ],
+        "query_id": "50ad07d6-4b3b-4c56-920d-7632c392d533",
+        "run_id": "f2ba2d2a-bafc-4b35-8e1d-03dfd2994a21",
+        "source_lag": {
+          "offsets_behind": 0,
+          "partitions": [
+            {
+              "behind": 0,
+              "broker_end": 205,
+              "partition": 0,
+              "retained_start": 0,
+              "sink_next": 205
+            }
+          ],
+          "status": "observed",
+          "topic": "benchmark-h02-p1-w1"
+        },
+        "spark_version": "3.5.9",
+        "verification": {
+          "checks": {
+            "accepted_events_balance": true,
+            "alerts_have_predictions": true,
+            "labels_balance": true,
+            "predictions_have_features": true,
+            "source_dispositions_balance": true,
+            "sqlite_integrity": true
+          },
+          "counts": {
+            "accepted": 97,
+            "alerts": 0,
+            "batches": 2,
+            "control": 4,
+            "duplicate": 1,
+            "events": 97,
+            "features": 85,
+            "label": 97,
+            "labels": 97,
+            "pending_events": 0,
+            "pending_predictions": 0,
+            "predictions": 85,
+            "raw": 205,
+            "rejected": 6
+          },
+          "valid": true
+        },
+        "workers": 1
+      },
+      "status": "passed",
+      "store": "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h02-p1-w1/monitor.db",
+      "topic": "benchmark-h02-p1-w1",
+      "verification": {
+        "checks": {
+          "accepted_events_balance": true,
+          "alerts_have_predictions": true,
+          "labels_balance": true,
+          "predictions_have_features": true,
+          "source_dispositions_balance": true,
+          "sqlite_integrity": true
+        },
+        "counts": {
+          "accepted": 97,
+          "alerts": 0,
+          "batches": 2,
+          "control": 4,
+          "duplicate": 1,
+          "events": 97,
+          "features": 85,
+          "label": 97,
+          "labels": 97,
+          "pending_events": 0,
+          "pending_predictions": 0,
+          "predictions": 85,
+          "raw": 205,
+          "rejected": 6
+        },
+        "valid": true
+      },
+      "worker_command": [
+        "--bootstrap",
+        "127.0.0.1:19092",
+        "--topic",
+        "benchmark-h02-p1-w1",
+        "--db",
+        "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h02-p1-w1/monitor.db",
+        "--checkpoint",
+        "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h02-p1-w1/checkpoints",
+        "--tracking-uri",
+        "http://127.0.0.1:5000",
+        "--query-id",
+        "benchmark-h02-p1-w1",
+        "--available-now",
+        "--max-offsets",
+        "200",
+        "--duration-seconds",
+        "275",
+        "--workers",
+        "1",
+        "--report",
+        "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h02-p1-w1/spark-receipt.json"
+      ],
+      "worker_log": "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/evidence/benchmark-h02-p1-w1.log",
+      "worker_wall_limit_seconds": 300,
+      "worker_wall_seconds": 13.293907747000048,
+      "workers": 1
+    },
+    {
+      "activation": {
+        "action": "activate",
+        "activated_at": 1794614148.337579,
+        "feature_version": "v1",
+        "id": 1,
+        "mode": "approved",
+        "model_name": "industrial-risk",
+        "model_version": "2",
+        "run_id": "fc11d0d4b21e4ba2900a4162b93df8e1",
+        "threshold": 0.975
+      },
+      "alert_business": {
+        "above_threshold_predictions": 22,
+        "alerts": 4,
+        "checks": {
+          "alert_evidence_consistent": true,
+          "cooldown_schedule_matches": true,
+          "unique_alert_features": true
+        },
+        "excluded_execution_fields": [
+          "arrival_to_prediction_ms",
+          "created_at",
+          "inference_ms",
+          "predicted_at_epoch"
+        ],
+        "expected_cooldown_suppressed": 18,
+        "persisted_not_emitted": 18
+      },
+      "backlog_progress": [
+        {
+          "basis": "new topic; all input prepublished",
+          "batch_id": null,
+          "offsets_behind": 2317
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 0,
+          "offsets_behind": 2117
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 1,
+          "offsets_behind": 1917
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 2,
+          "offsets_behind": 1717
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 3,
+          "offsets_behind": 1517
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 4,
+          "offsets_behind": 1317
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 5,
+          "offsets_behind": 1117
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 6,
+          "offsets_behind": 917
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 7,
+          "offsets_behind": 717
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 8,
+          "offsets_behind": 517
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 9,
+          "offsets_behind": 317
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 10,
+          "offsets_behind": 117
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 11,
+          "offsets_behind": 0
+        }
+      ],
+      "batches": [
+        {
+          "batch_id": 0,
+          "committed_at": 1794614158.4200933,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 1,
+          "committed_at": 1794614159.0112302,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 2,
+          "committed_at": 1794614159.5218308,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 3,
+          "committed_at": 1794614159.9550042,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 4,
+          "committed_at": 1794614160.4257479,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 5,
+          "committed_at": 1794614160.8134592,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 6,
+          "committed_at": 1794614161.2413394,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 7,
+          "committed_at": 1794614161.6603112,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 8,
+          "committed_at": 1794614162.173606,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 9,
+          "committed_at": 1794614162.5728922,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 10,
+          "committed_at": 1794614164.04786,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 11,
+          "committed_at": 1794614164.3819506,
+          "rows_received": 117
+        }
+      ],
+      "canonical_sha256": {
+        "alerts": "6cf04022fa55afe17d566f7b5ca4966a94a08dbc5f7340e943cec1bea7d8f7f7",
+        "cooldown": "ad0df3abcae829bd176d434359d25b839c72d1e9800bb70ccda3d908db939dc1",
+        "features": "4caa4dab8572a56cb8fd06f5bdca1a91a728cb8d99557934bf2c9258755cefac",
+        "scores": "51845092434cce336cd621fd5d8da60c723960d991fa84c749bd77be8e753b4b"
+      },
+      "checkpoint": "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h24-p1-w1/checkpoints",
+      "checks": {
+        "alert_evidence_consistent": true,
+        "all_features_scored": true,
+        "backlog_exercised": true,
+        "bounded_batches": true,
+        "candidate_identity": true,
+        "cooldown_schedule_matches": true,
+        "cooldown_suppression_exercised": true,
+        "drained": true,
+        "invariants": true,
+        "latencies_present": true,
+        "nonzero_alerts": true,
+        "partition_count": true,
+        "resources_observed": true,
+        "source_ack_matches": true,
+        "source_lag_zero": true,
+        "spark_version": true,
+        "spark_workers": true,
+        "unique_alert_features": true
+      },
+      "counts": {
+        "accepted": 1153,
+        "alerts": 4,
+        "batches": 12,
+        "control": 4,
+        "duplicate": 1,
+        "events": 1153,
+        "features": 1141,
+        "label": 1153,
+        "labels": 1153,
+        "pending_events": 0,
+        "pending_predictions": 0,
+        "predictions": 1141,
+        "raw": 2317,
+        "rejected": 6
+      },
+      "hours": 24,
+      "input_sha256": "2dc55c6dac74e8e43753eb4d9c8157ad4f175fbd9ce957d028d16dbcf7078a62",
+      "latency_ms": {
+        "broker_to_prediction": {
+          "p50": 12023.072242736816,
+          "p95": 14903.675556182861,
+          "p99": 15261.162948608398,
+          "samples": 1141
+        },
+        "inference": {
+          "p50": 0.671569000587624,
+          "p95": 0.9456699999645934,
+          "p99": 1.4608080000471082,
+          "samples": 1141
+        }
+      },
+      "name": "h24-p1-w1",
+      "observed_partition_count": 1,
+      "partitions": 1,
+      "publication": {
+        "acknowledged": 2317,
+        "elapsed_seconds": 0.7559513659998629,
+        "events_per_second": 3065.0119891448417,
+        "offsets": {
+          "0": {
+            "count": 2317,
+            "first": 0,
+            "last": 2316
+          }
+        },
+        "partitions": 1,
+        "topic": "benchmark-h24-p1-w1"
+      },
+      "query_elapsed_seconds_reported": 12.53642965400013,
+      "raw_records_per_worker_wall_second": 143.18035411353952,
+      "resources": {
+        "measurement_wall_seconds": 17.000309971000206,
+        "observed_spark_masters": [
+          "local[1]"
+        ],
+        "processes": [
+          {
+            "initial_cpu_seconds": 3.62,
+            "last_cpu_seconds": 4.55,
+            "name": "python",
+            "peak_rss_bytes": 281653248,
+            "pid": 5,
+            "role": "runner_python"
+          },
+          {
+            "initial_cpu_seconds": 6.36,
+            "last_cpu_seconds": 7.92,
+            "name": "java",
+            "peak_rss_bytes": 377577472,
+            "pid": 426,
+            "role": "kafka_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.8,
+            "last_cpu_seconds": 2.8,
+            "name": "python",
+            "peak_rss_bytes": 257589248,
+            "pid": 917,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 3.17,
+            "last_cpu_seconds": 3.36,
+            "name": "python",
+            "peak_rss_bytes": 265551872,
+            "pid": 920,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.46,
+            "last_cpu_seconds": 2.46,
+            "name": "python",
+            "peak_rss_bytes": 246931456,
+            "pid": 921,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.43,
+            "last_cpu_seconds": 2.49,
+            "name": "python",
+            "peak_rss_bytes": 247005184,
+            "pid": 928,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.5,
+            "last_cpu_seconds": 2.54,
+            "name": "python",
+            "peak_rss_bytes": 246616064,
+            "pid": 930,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.32,
+            "last_cpu_seconds": 2.3899999999999997,
+            "name": "python",
+            "peak_rss_bytes": 246493184,
+            "pid": 933,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.5,
+            "last_cpu_seconds": 2.54,
+            "name": "python",
+            "peak_rss_bytes": 246706176,
+            "pid": 935,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.39,
+            "last_cpu_seconds": 2.43,
+            "name": "python",
+            "peak_rss_bytes": 247017472,
+            "pid": 937,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.36,
+            "last_cpu_seconds": 2.41,
+            "name": "python",
+            "peak_rss_bytes": 246689792,
+            "pid": 939,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.49,
+            "last_cpu_seconds": 2.54,
+            "name": "python",
+            "peak_rss_bytes": 250490880,
+            "pid": 940,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 0.05,
+            "last_cpu_seconds": 5.27,
+            "name": "python",
+            "peak_rss_bytes": 299495424,
+            "pid": 1346,
+            "role": "worker_python"
+          },
+          {
+            "initial_cpu_seconds": 0.0,
+            "last_cpu_seconds": 25.549999999999997,
+            "name": "bash",
+            "peak_rss_bytes": 621961216,
+            "pid": 1347,
+            "role": "worker_descendants"
+          },
+          {
+            "initial_cpu_seconds": 0.0,
+            "last_cpu_seconds": 0.0,
+            "name": "bash",
+            "peak_rss_bytes": 909312,
+            "pid": 1355,
+            "role": "worker_descendants"
+          },
+          {
+            "initial_cpu_seconds": 0.0,
+            "last_cpu_seconds": 0.3,
+            "name": "java",
+            "peak_rss_bytes": 61571072,
+            "pid": 1356,
+            "role": "worker_descendants"
+          },
+          {
+            "initial_cpu_seconds": 0.0,
+            "last_cpu_seconds": 0.0,
+            "name": "readlink",
+            "peak_rss_bytes": 94208,
+            "pid": 1837,
+            "role": "worker_descendants"
+          },
+          {
+            "initial_cpu_seconds": 0.0,
+            "last_cpu_seconds": 0.0,
+            "name": "chmod",
+            "peak_rss_bytes": 794624,
+            "pid": 1936,
+            "role": "worker_descendants"
+          }
+        ],
+        "raw_samples": "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h24-p1-w1/resource-samples.jsonl",
+        "reaped_children_cpu_seconds_delta": 5.282128,
+        "runner_cpu_seconds": 0.9400418810000004,
+        "runner_lifetime_peak_rss_bytes": 281292800,
+        "sampled_cpu_seconds_by_scope": {
+          "kafka_tree": 1.5599999999999996,
+          "mlflow_tree": 0.54,
+          "runner_python": 0.9299999999999997,
+          "worker_descendants": 25.849999999999998,
+          "worker_python": 5.22
+        },
+        "sampled_peak_rss_bytes_by_scope": {
+          "all_children": 3799474176,
+          "kafka_tree": 377577472,
+          "mlflow_tree": 2501091328,
+          "runner_python": 281653248,
+          "worker_descendants": 621961216,
+          "worker_python": 299495424
+        },
+        "sampler_errors": 0,
+        "samples": 165,
+        "scope": {
+          "children_rusage": "OS CPU delta for reaped children, separately reported; do not add to sampled child CPU",
+          "cpu": "sampled per-process user+system CPU deltas; short-lived processes and final sampling tails may be missed",
+          "rss": "sampled resident bytes; simultaneous sums double-count shared pages and are not total host memory",
+          "runner_cpu": "exact process_time delta for benchmark Python, including producer and sampler threads",
+          "sample_interval_seconds": 0.1,
+          "window": "publication start through worker completion; services already started"
+        }
+      },
+      "spark": {
+        "drained": true,
+        "elapsed_seconds": 12.53642965400013,
+        "engine": "Spark Structured Streaming",
+        "max_offsets_per_trigger": 200,
+        "mode": "availableNow",
+        "progress": [
+          {
+            "batchId": 0,
+            "durationMs": {
+              "addBatch": 4089,
+              "commitOffsets": 29,
+              "getBatch": 12,
+              "latestOffset": 543,
+              "queryPlanning": 274,
+              "triggerExecution": 5011,
+              "walCommit": 42
+            },
+            "id": "168a3c41-d841-4543-9178-9b95c5920e1c",
+            "inputRowsPerSecond": 0.0,
+            "name": "benchmark-h24-p1-w1",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 79.80845969672787,
+            "runId": "771aa5de-8f9c-4b9d-8b0c-0d97b8caaa34",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p1-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 200
+                  }
+                },
+                "inputRowsPerSecond": 0.0,
+                "latestOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 2317
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "2117.0",
+                  "maxOffsetsBehindLatest": "2117",
+                  "minOffsetsBehindLatest": "2117"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 79.80845969672787,
+                "startOffset": null
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:55:53.459Z"
+          },
+          {
+            "batchId": 1,
+            "durationMs": {
+              "addBatch": 482,
+              "commitOffsets": 32,
+              "getBatch": 0,
+              "latestOffset": 1,
+              "queryPlanning": 38,
+              "triggerExecution": 586,
+              "walCommit": 29
+            },
+            "id": "168a3c41-d841-4543-9178-9b95c5920e1c",
+            "inputRowsPerSecond": 79.58615200955035,
+            "name": "benchmark-h24-p1-w1",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 682.5938566552901,
+            "runId": "771aa5de-8f9c-4b9d-8b0c-0d97b8caaa34",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p1-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 400
+                  }
+                },
+                "inputRowsPerSecond": 79.58615200955035,
+                "latestOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 2317
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "1917.0",
+                  "maxOffsetsBehindLatest": "1917",
+                  "minOffsetsBehindLatest": "1917"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 682.5938566552901,
+                "startOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 200
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:55:58.485Z"
+          },
+          {
+            "batchId": 2,
+            "durationMs": {
+              "addBatch": 408,
+              "commitOffsets": 29,
+              "getBatch": 0,
+              "latestOffset": 1,
+              "queryPlanning": 29,
+              "triggerExecution": 503,
+              "walCommit": 31
+            },
+            "id": "168a3c41-d841-4543-9178-9b95c5920e1c",
+            "inputRowsPerSecond": 681.4310051107326,
+            "name": "benchmark-h24-p1-w1",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 795.2286282306163,
+            "runId": "771aa5de-8f9c-4b9d-8b0c-0d97b8caaa34",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p1-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 600
+                  }
+                },
+                "inputRowsPerSecond": 681.4310051107326,
+                "latestOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 2317
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "1717.0",
+                  "maxOffsetsBehindLatest": "1717",
+                  "minOffsetsBehindLatest": "1717"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 795.2286282306163,
+                "startOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 400
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:55:59.072Z"
+          },
+          {
+            "batchId": 3,
+            "durationMs": {
+              "addBatch": 354,
+              "commitOffsets": 32,
+              "getBatch": 1,
+              "latestOffset": 0,
+              "queryPlanning": 35,
+              "triggerExecution": 453,
+              "walCommit": 28
+            },
+            "id": "168a3c41-d841-4543-9178-9b95c5920e1c",
+            "inputRowsPerSecond": 793.6507936507936,
+            "name": "benchmark-h24-p1-w1",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 883.0022075055188,
+            "runId": "771aa5de-8f9c-4b9d-8b0c-0d97b8caaa34",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p1-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 800
+                  }
+                },
+                "inputRowsPerSecond": 793.6507936507936,
+                "latestOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 2317
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "1517.0",
+                  "maxOffsetsBehindLatest": "1517",
+                  "minOffsetsBehindLatest": "1517"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 883.0022075055188,
+                "startOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 600
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:55:59.576Z"
+          },
+          {
+            "batchId": 4,
+            "durationMs": {
+              "addBatch": 343,
+              "commitOffsets": 26,
+              "getBatch": 0,
+              "latestOffset": 0,
+              "queryPlanning": 44,
+              "triggerExecution": 449,
+              "walCommit": 31
+            },
+            "id": "168a3c41-d841-4543-9178-9b95c5920e1c",
+            "inputRowsPerSecond": 883.0022075055188,
+            "name": "benchmark-h24-p1-w1",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 888.8888888888889,
+            "runId": "771aa5de-8f9c-4b9d-8b0c-0d97b8caaa34",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p1-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 1000
+                  }
+                },
+                "inputRowsPerSecond": 883.0022075055188,
+                "latestOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 2317
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "1317.0",
+                  "maxOffsetsBehindLatest": "1317",
+                  "minOffsetsBehindLatest": "1317"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 888.8888888888889,
+                "startOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 800
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:00.029Z"
+          },
+          {
+            "batchId": 5,
+            "durationMs": {
+              "addBatch": 315,
+              "commitOffsets": 28,
+              "getBatch": 0,
+              "latestOffset": 1,
+              "queryPlanning": 25,
+              "triggerExecution": 396,
+              "walCommit": 25
+            },
+            "id": "168a3c41-d841-4543-9178-9b95c5920e1c",
+            "inputRowsPerSecond": 888.8888888888889,
+            "name": "benchmark-h24-p1-w1",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 1010.10101010101,
+            "runId": "771aa5de-8f9c-4b9d-8b0c-0d97b8caaa34",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p1-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 1200
+                  }
+                },
+                "inputRowsPerSecond": 888.8888888888889,
+                "latestOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 2317
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "1117.0",
+                  "maxOffsetsBehindLatest": "1117",
+                  "minOffsetsBehindLatest": "1117"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 1010.10101010101,
+                "startOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 1000
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:00.479Z"
+          },
+          {
+            "batchId": 6,
+            "durationMs": {
+              "addBatch": 360,
+              "commitOffsets": 26,
+              "getBatch": 0,
+              "latestOffset": 1,
+              "queryPlanning": 22,
+              "triggerExecution": 435,
+              "walCommit": 25
+            },
+            "id": "168a3c41-d841-4543-9178-9b95c5920e1c",
+            "inputRowsPerSecond": 1007.5566750629722,
+            "name": "benchmark-h24-p1-w1",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 919.5402298850574,
+            "runId": "771aa5de-8f9c-4b9d-8b0c-0d97b8caaa34",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p1-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 1400
+                  }
+                },
+                "inputRowsPerSecond": 1007.5566750629722,
+                "latestOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 2317
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "917.0",
+                  "maxOffsetsBehindLatest": "917",
+                  "minOffsetsBehindLatest": "917"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 919.5402298850574,
+                "startOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 1200
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:00.876Z"
+          },
+          {
+            "batchId": 7,
+            "durationMs": {
+              "addBatch": 455,
+              "commitOffsets": 25,
+              "getBatch": 0,
+              "latestOffset": 0,
+              "queryPlanning": 17,
+              "triggerExecution": 524,
+              "walCommit": 24
+            },
+            "id": "168a3c41-d841-4543-9178-9b95c5920e1c",
+            "inputRowsPerSecond": 917.4311926605504,
+            "name": "benchmark-h24-p1-w1",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 763.3587786259542,
+            "runId": "771aa5de-8f9c-4b9d-8b0c-0d97b8caaa34",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p1-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 1600
+                  }
+                },
+                "inputRowsPerSecond": 917.4311926605504,
+                "latestOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 2317
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "717.0",
+                  "maxOffsetsBehindLatest": "717",
+                  "minOffsetsBehindLatest": "717"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 763.3587786259542,
+                "startOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 1400
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:01.312Z"
+          },
+          {
+            "batchId": 8,
+            "durationMs": {
+              "addBatch": 342,
+              "commitOffsets": 24,
+              "getBatch": 0,
+              "latestOffset": 1,
+              "queryPlanning": 18,
+              "triggerExecution": 409,
+              "walCommit": 22
+            },
+            "id": "168a3c41-d841-4543-9178-9b95c5920e1c",
+            "inputRowsPerSecond": 761.9047619047619,
+            "name": "benchmark-h24-p1-w1",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 977.9951100244499,
+            "runId": "771aa5de-8f9c-4b9d-8b0c-0d97b8caaa34",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p1-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 1800
+                  }
+                },
+                "inputRowsPerSecond": 761.9047619047619,
+                "latestOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 2317
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "517.0",
+                  "maxOffsetsBehindLatest": "517",
+                  "minOffsetsBehindLatest": "517"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 977.9951100244499,
+                "startOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 1600
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:01.837Z"
+          },
+          {
+            "batchId": 9,
+            "durationMs": {
+              "addBatch": 338,
+              "commitOffsets": 26,
+              "getBatch": 1,
+              "latestOffset": 0,
+              "queryPlanning": 16,
+              "triggerExecution": 405,
+              "walCommit": 22
+            },
+            "id": "168a3c41-d841-4543-9178-9b95c5920e1c",
+            "inputRowsPerSecond": 975.609756097561,
+            "name": "benchmark-h24-p1-w1",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 987.6543209876543,
+            "runId": "771aa5de-8f9c-4b9d-8b0c-0d97b8caaa34",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p1-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 2000
+                  }
+                },
+                "inputRowsPerSecond": 975.609756097561,
+                "latestOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 2317
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "317.0",
+                  "maxOffsetsBehindLatest": "317",
+                  "minOffsetsBehindLatest": "317"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 987.6543209876543,
+                "startOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 1800
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:02.247Z"
+          },
+          {
+            "batchId": 10,
+            "durationMs": {
+              "addBatch": 1410,
+              "commitOffsets": 26,
+              "getBatch": 0,
+              "latestOffset": 1,
+              "queryPlanning": 18,
+              "triggerExecution": 1480,
+              "walCommit": 24
+            },
+            "id": "168a3c41-d841-4543-9178-9b95c5920e1c",
+            "inputRowsPerSecond": 985.2216748768473,
+            "name": "benchmark-h24-p1-w1",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 270.27027027027026,
+            "runId": "771aa5de-8f9c-4b9d-8b0c-0d97b8caaa34",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p1-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 2200
+                  }
+                },
+                "inputRowsPerSecond": 985.2216748768473,
+                "latestOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 2317
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "117.0",
+                  "maxOffsetsBehindLatest": "117",
+                  "minOffsetsBehindLatest": "117"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 270.27027027027026,
+                "startOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 2000
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:02.653Z"
+          },
+          {
+            "batchId": 11,
+            "durationMs": {
+              "addBatch": 242,
+              "commitOffsets": 25,
+              "getBatch": 0,
+              "latestOffset": 0,
+              "queryPlanning": 23,
+              "triggerExecution": 316,
+              "walCommit": 23
+            },
+            "id": "168a3c41-d841-4543-9178-9b95c5920e1c",
+            "inputRowsPerSecond": 158.00135043889264,
+            "name": "benchmark-h24-p1-w1",
+            "numInputRows": 234,
+            "processedRowsPerSecond": 740.506329113924,
+            "runId": "771aa5de-8f9c-4b9d-8b0c-0d97b8caaa34",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p1-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 2317
+                  }
+                },
+                "inputRowsPerSecond": 158.00135043889264,
+                "latestOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 2317
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "0.0",
+                  "maxOffsetsBehindLatest": "0",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 234,
+                "processedRowsPerSecond": 740.506329113924,
+                "startOffset": {
+                  "benchmark-h24-p1-w1": {
+                    "0": 2200
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:04.134Z"
+          }
+        ],
+        "query_id": "168a3c41-d841-4543-9178-9b95c5920e1c",
+        "run_id": "771aa5de-8f9c-4b9d-8b0c-0d97b8caaa34",
+        "source_lag": {
+          "offsets_behind": 0,
+          "partitions": [
+            {
+              "behind": 0,
+              "broker_end": 2317,
+              "partition": 0,
+              "retained_start": 0,
+              "sink_next": 2317
+            }
+          ],
+          "status": "observed",
+          "topic": "benchmark-h24-p1-w1"
+        },
+        "spark_version": "3.5.9",
+        "verification": {
+          "checks": {
+            "accepted_events_balance": true,
+            "alerts_have_predictions": true,
+            "labels_balance": true,
+            "predictions_have_features": true,
+            "source_dispositions_balance": true,
+            "sqlite_integrity": true
+          },
+          "counts": {
+            "accepted": 1153,
+            "alerts": 4,
+            "batches": 12,
+            "control": 4,
+            "duplicate": 1,
+            "events": 1153,
+            "features": 1141,
+            "label": 1153,
+            "labels": 1153,
+            "pending_events": 0,
+            "pending_predictions": 0,
+            "predictions": 1141,
+            "raw": 2317,
+            "rejected": 6
+          },
+          "valid": true
+        },
+        "workers": 1
+      },
+      "status": "passed",
+      "store": "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h24-p1-w1/monitor.db",
+      "topic": "benchmark-h24-p1-w1",
+      "verification": {
+        "checks": {
+          "accepted_events_balance": true,
+          "alerts_have_predictions": true,
+          "labels_balance": true,
+          "predictions_have_features": true,
+          "source_dispositions_balance": true,
+          "sqlite_integrity": true
+        },
+        "counts": {
+          "accepted": 1153,
+          "alerts": 4,
+          "batches": 12,
+          "control": 4,
+          "duplicate": 1,
+          "events": 1153,
+          "features": 1141,
+          "label": 1153,
+          "labels": 1153,
+          "pending_events": 0,
+          "pending_predictions": 0,
+          "predictions": 1141,
+          "raw": 2317,
+          "rejected": 6
+        },
+        "valid": true
+      },
+      "worker_command": [
+        "--bootstrap",
+        "127.0.0.1:19092",
+        "--topic",
+        "benchmark-h24-p1-w1",
+        "--db",
+        "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h24-p1-w1/monitor.db",
+        "--checkpoint",
+        "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h24-p1-w1/checkpoints",
+        "--tracking-uri",
+        "http://127.0.0.1:5000",
+        "--query-id",
+        "benchmark-h24-p1-w1",
+        "--available-now",
+        "--max-offsets",
+        "200",
+        "--duration-seconds",
+        "275",
+        "--workers",
+        "1",
+        "--report",
+        "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h24-p1-w1/spark-receipt.json"
+      ],
+      "worker_log": "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/evidence/benchmark-h24-p1-w1.log",
+      "worker_wall_limit_seconds": 300,
+      "worker_wall_seconds": 16.182387691000258,
+      "workers": 1
+    },
+    {
+      "activation": {
+        "action": "activate",
+        "activated_at": 1794614165.4094577,
+        "feature_version": "v1",
+        "id": 1,
+        "mode": "approved",
+        "model_name": "industrial-risk",
+        "model_version": "2",
+        "run_id": "fc11d0d4b21e4ba2900a4162b93df8e1",
+        "threshold": 0.975
+      },
+      "alert_business": {
+        "above_threshold_predictions": 22,
+        "alerts": 4,
+        "checks": {
+          "alert_evidence_consistent": true,
+          "cooldown_schedule_matches": true,
+          "unique_alert_features": true
+        },
+        "excluded_execution_fields": [
+          "arrival_to_prediction_ms",
+          "created_at",
+          "inference_ms",
+          "predicted_at_epoch"
+        ],
+        "expected_cooldown_suppressed": 18,
+        "persisted_not_emitted": 18
+      },
+      "backlog_progress": [
+        {
+          "basis": "new topic; all input prepublished",
+          "batch_id": null,
+          "offsets_behind": 2317
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 0,
+          "offsets_behind": 2117
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 1,
+          "offsets_behind": 1918
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 2,
+          "offsets_behind": 1719
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 3,
+          "offsets_behind": 1520
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 4,
+          "offsets_behind": 1320
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 5,
+          "offsets_behind": 1120
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 6,
+          "offsets_behind": 920
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 7,
+          "offsets_behind": 720
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 8,
+          "offsets_behind": 520
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 9,
+          "offsets_behind": 320
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 10,
+          "offsets_behind": 120
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 11,
+          "offsets_behind": 0
+        }
+      ],
+      "batches": [
+        {
+          "batch_id": 0,
+          "committed_at": 1794614176.085709,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 1,
+          "committed_at": 1794614176.7534294,
+          "rows_received": 199
+        },
+        {
+          "batch_id": 2,
+          "committed_at": 1794614177.3109448,
+          "rows_received": 199
+        },
+        {
+          "batch_id": 3,
+          "committed_at": 1794614177.8334029,
+          "rows_received": 199
+        },
+        {
+          "batch_id": 4,
+          "committed_at": 1794614178.302104,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 5,
+          "committed_at": 1794614178.7427852,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 6,
+          "committed_at": 1794614179.222058,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 7,
+          "committed_at": 1794614179.7385325,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 8,
+          "committed_at": 1794614180.353141,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 9,
+          "committed_at": 1794614180.8245997,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 10,
+          "committed_at": 1794614183.3689992,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 11,
+          "committed_at": 1794614183.818719,
+          "rows_received": 120
+        }
+      ],
+      "canonical_sha256": {
+        "alerts": "6cf04022fa55afe17d566f7b5ca4966a94a08dbc5f7340e943cec1bea7d8f7f7",
+        "cooldown": "ad0df3abcae829bd176d434359d25b839c72d1e9800bb70ccda3d908db939dc1",
+        "features": "4caa4dab8572a56cb8fd06f5bdca1a91a728cb8d99557934bf2c9258755cefac",
+        "scores": "51845092434cce336cd621fd5d8da60c723960d991fa84c749bd77be8e753b4b"
+      },
+      "checkpoint": "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h24-p3-w1/checkpoints",
+      "checks": {
+        "alert_evidence_consistent": true,
+        "all_features_scored": true,
+        "backlog_exercised": true,
+        "bounded_batches": true,
+        "candidate_identity": true,
+        "cooldown_schedule_matches": true,
+        "cooldown_suppression_exercised": true,
+        "drained": true,
+        "invariants": true,
+        "latencies_present": true,
+        "nonzero_alerts": true,
+        "partition_count": true,
+        "resources_observed": true,
+        "source_ack_matches": true,
+        "source_lag_zero": true,
+        "spark_version": true,
+        "spark_workers": true,
+        "unique_alert_features": true
+      },
+      "counts": {
+        "accepted": 1153,
+        "alerts": 4,
+        "batches": 12,
+        "control": 4,
+        "duplicate": 1,
+        "events": 1153,
+        "features": 1141,
+        "label": 1153,
+        "labels": 1153,
+        "pending_events": 0,
+        "pending_predictions": 0,
+        "predictions": 1141,
+        "raw": 2317,
+        "rejected": 6
+      },
+      "hours": 24,
+      "input_sha256": "2dc55c6dac74e8e43753eb4d9c8157ad4f175fbd9ce957d028d16dbcf7078a62",
+      "latency_ms": {
+        "broker_to_prediction": {
+          "p50": 12962.63861656189,
+          "p95": 17449.53489303589,
+          "p99": 17920.66559791565,
+          "samples": 1141
+        },
+        "inference": {
+          "p50": 0.6772410006306018,
+          "p95": 0.9875329997157678,
+          "p99": 1.6399687994635304,
+          "samples": 1141
+        }
+      },
+      "name": "h24-p3-w1",
+      "observed_partition_count": 3,
+      "partitions": 3,
+      "publication": {
+        "acknowledged": 2317,
+        "elapsed_seconds": 0.46155915899998945,
+        "events_per_second": 5019.941549897947,
+        "offsets": {
+          "0": {
+            "count": 1739,
+            "first": 0,
+            "last": 1738
+          },
+          "1": {
+            "count": 1,
+            "first": 0,
+            "last": 0
+          },
+          "2": {
+            "count": 577,
+            "first": 0,
+            "last": 576
+          }
+        },
+        "partitions": 3,
+        "topic": "benchmark-h24-p3-w1"
+      },
+      "query_elapsed_seconds_reported": 15.652581461999944,
+      "raw_records_per_worker_wall_second": 122.22739040752484,
+      "resources": {
+        "measurement_wall_seconds": 19.46584556200014,
+        "observed_spark_masters": [
+          "local[1]"
+        ],
+        "processes": [
+          {
+            "initial_cpu_seconds": 4.62,
+            "last_cpu_seconds": 5.47,
+            "name": "python",
+            "peak_rss_bytes": 291811328,
+            "pid": 5,
+            "role": "runner_python"
+          },
+          {
+            "initial_cpu_seconds": 7.92,
+            "last_cpu_seconds": 8.92,
+            "name": "java",
+            "peak_rss_bytes": 381554688,
+            "pid": 426,
+            "role": "kafka_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.8,
+            "last_cpu_seconds": 2.8,
+            "name": "python",
+            "peak_rss_bytes": 257589248,
+            "pid": 917,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 3.36,
+            "last_cpu_seconds": 3.49,
+            "name": "python",
+            "peak_rss_bytes": 265625600,
+            "pid": 920,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.46,
+            "last_cpu_seconds": 2.46,
+            "name": "python",
+            "peak_rss_bytes": 246931456,
+            "pid": 921,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.49,
+            "last_cpu_seconds": 2.5100000000000002,
+            "name": "python",
+            "peak_rss_bytes": 247005184,
+            "pid": 928,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.54,
+            "last_cpu_seconds": 2.57,
+            "name": "python",
+            "peak_rss_bytes": 246620160,
+            "pid": 930,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.3899999999999997,
+            "last_cpu_seconds": 2.45,
+            "name": "python",
+            "peak_rss_bytes": 246497280,
+            "pid": 933,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.54,
+            "last_cpu_seconds": 2.58,
+            "name": "python",
+            "peak_rss_bytes": 246710272,
+            "pid": 935,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.43,
+            "last_cpu_seconds": 2.46,
+            "name": "python",
+            "peak_rss_bytes": 247017472,
+            "pid": 937,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.41,
+            "last_cpu_seconds": 2.45,
+            "name": "python",
+            "peak_rss_bytes": 246689792,
+            "pid": 939,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.54,
+            "last_cpu_seconds": 2.5700000000000003,
+            "name": "python",
+            "peak_rss_bytes": 250490880,
+            "pid": 940,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 0.0,
+            "last_cpu_seconds": 5.37,
+            "name": "python",
+            "peak_rss_bytes": 299831296,
+            "pid": 2246,
+            "role": "worker_python"
+          },
+          {
+            "initial_cpu_seconds": 0.0,
+            "last_cpu_seconds": 25.2,
+            "name": "bash",
+            "peak_rss_bytes": 786771968,
+            "pid": 2247,
+            "role": "worker_descendants"
+          },
+          {
+            "initial_cpu_seconds": 0.0,
+            "last_cpu_seconds": 0.0,
+            "name": "bash",
+            "peak_rss_bytes": 909312,
+            "pid": 2255,
+            "role": "worker_descendants"
+          },
+          {
+            "initial_cpu_seconds": 0.08,
+            "last_cpu_seconds": 0.08,
+            "name": "java",
+            "peak_rss_bytes": 41934848,
+            "pid": 2256,
+            "role": "worker_descendants"
+          },
+          {
+            "initial_cpu_seconds": 0.0,
+            "last_cpu_seconds": 0.0,
+            "name": "chmod",
+            "peak_rss_bytes": 0,
+            "pid": 2699,
+            "role": "worker_descendants"
+          },
+          {
+            "initial_cpu_seconds": 0.0,
+            "last_cpu_seconds": 0.0,
+            "name": "readlink",
+            "peak_rss_bytes": 253952,
+            "pid": 2996,
+            "role": "worker_descendants"
+          }
+        ],
+        "raw_samples": "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h24-p3-w1/resource-samples.jsonl",
+        "reaped_children_cpu_seconds_delta": 5.430243000000003,
+        "runner_cpu_seconds": 0.8594202510000004,
+        "runner_lifetime_peak_rss_bytes": 293482496,
+        "sampled_cpu_seconds_by_scope": {
+          "kafka_tree": 1.0,
+          "mlflow_tree": 0.3800000000000008,
+          "runner_python": 0.8499999999999996,
+          "worker_descendants": 25.2,
+          "worker_python": 5.37
+        },
+        "sampled_peak_rss_bytes_by_scope": {
+          "all_children": 3949129728,
+          "kafka_tree": 381554688,
+          "mlflow_tree": 2501177344,
+          "runner_python": 291811328,
+          "worker_descendants": 786771968,
+          "worker_python": 299831296
+        },
+        "sampler_errors": 0,
+        "samples": 189,
+        "scope": {
+          "children_rusage": "OS CPU delta for reaped children, separately reported; do not add to sampled child CPU",
+          "cpu": "sampled per-process user+system CPU deltas; short-lived processes and final sampling tails may be missed",
+          "rss": "sampled resident bytes; simultaneous sums double-count shared pages and are not total host memory",
+          "runner_cpu": "exact process_time delta for benchmark Python, including producer and sampler threads",
+          "sample_interval_seconds": 0.1,
+          "window": "publication start through worker completion; services already started"
+        }
+      },
+      "spark": {
+        "drained": true,
+        "elapsed_seconds": 15.652581461999944,
+        "engine": "Spark Structured Streaming",
+        "max_offsets_per_trigger": 200,
+        "mode": "availableNow",
+        "progress": [
+          {
+            "batchId": 0,
+            "durationMs": {
+              "addBatch": 5578,
+              "commitOffsets": 30,
+              "getBatch": 13,
+              "latestOffset": 499,
+              "queryPlanning": 249,
+              "triggerExecution": 6422,
+              "walCommit": 35
+            },
+            "id": "2f2243a9-d449-4a83-afab-f309cda24352",
+            "inputRowsPerSecond": 0.0,
+            "name": "benchmark-h24-p3-w1",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 62.27619492449011,
+            "runId": "cc396b7e-9bf2-4f16-be89-f03f4f73eae4",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 150,
+                    "1": 1,
+                    "2": 49
+                  }
+                },
+                "inputRowsPerSecond": 0.0,
+                "latestOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "705.6666666666666",
+                  "maxOffsetsBehindLatest": "1589",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 62.27619492449011,
+                "startOffset": null
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:09.717Z"
+          },
+          {
+            "batchId": 1,
+            "durationMs": {
+              "addBatch": 534,
+              "commitOffsets": 26,
+              "getBatch": 1,
+              "latestOffset": 2,
+              "queryPlanning": 43,
+              "triggerExecution": 639,
+              "walCommit": 29
+            },
+            "id": "2f2243a9-d449-4a83-afab-f309cda24352",
+            "inputRowsPerSecond": 61.83004505204288,
+            "name": "benchmark-h24-p3-w1",
+            "numInputRows": 398,
+            "processedRowsPerSecond": 622.848200312989,
+            "runId": "cc396b7e-9bf2-4f16-be89-f03f4f73eae4",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 300,
+                    "1": 1,
+                    "2": 98
+                  }
+                },
+                "inputRowsPerSecond": 61.83004505204288,
+                "latestOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "639.3333333333334",
+                  "maxOffsetsBehindLatest": "1439",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 398,
+                "processedRowsPerSecond": 622.848200312989,
+                "startOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 150,
+                    "1": 1,
+                    "2": 49
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:16.154Z"
+          },
+          {
+            "batchId": 2,
+            "durationMs": {
+              "addBatch": 482,
+              "commitOffsets": 33,
+              "getBatch": 0,
+              "latestOffset": 1,
+              "queryPlanning": 29,
+              "triggerExecution": 574,
+              "walCommit": 25
+            },
+            "id": "2f2243a9-d449-4a83-afab-f309cda24352",
+            "inputRowsPerSecond": 621.875,
+            "name": "benchmark-h24-p3-w1",
+            "numInputRows": 398,
+            "processedRowsPerSecond": 693.3797909407666,
+            "runId": "cc396b7e-9bf2-4f16-be89-f03f4f73eae4",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 450,
+                    "1": 1,
+                    "2": 147
+                  }
+                },
+                "inputRowsPerSecond": 621.875,
+                "latestOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "573.0",
+                  "maxOffsetsBehindLatest": "1289",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 398,
+                "processedRowsPerSecond": 693.3797909407666,
+                "startOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 300,
+                    "1": 1,
+                    "2": 98
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:16.794Z"
+          },
+          {
+            "batchId": 3,
+            "durationMs": {
+              "addBatch": 421,
+              "commitOffsets": 29,
+              "getBatch": 1,
+              "latestOffset": 1,
+              "queryPlanning": 24,
+              "triggerExecution": 514,
+              "walCommit": 36
+            },
+            "id": "2f2243a9-d449-4a83-afab-f309cda24352",
+            "inputRowsPerSecond": 692.1739130434784,
+            "name": "benchmark-h24-p3-w1",
+            "numInputRows": 398,
+            "processedRowsPerSecond": 774.3190661478599,
+            "runId": "cc396b7e-9bf2-4f16-be89-f03f4f73eae4",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 599,
+                    "1": 1,
+                    "2": 197
+                  }
+                },
+                "inputRowsPerSecond": 692.1739130434784,
+                "latestOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "506.6666666666667",
+                  "maxOffsetsBehindLatest": "1140",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 398,
+                "processedRowsPerSecond": 774.3190661478599,
+                "startOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 450,
+                    "1": 1,
+                    "2": 147
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:17.369Z"
+          },
+          {
+            "batchId": 4,
+            "durationMs": {
+              "addBatch": 392,
+              "commitOffsets": 24,
+              "getBatch": 1,
+              "latestOffset": 1,
+              "queryPlanning": 23,
+              "triggerExecution": 470,
+              "walCommit": 26
+            },
+            "id": "2f2243a9-d449-4a83-afab-f309cda24352",
+            "inputRowsPerSecond": 776.6990291262135,
+            "name": "benchmark-h24-p3-w1",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 851.0638297872341,
+            "runId": "cc396b7e-9bf2-4f16-be89-f03f4f73eae4",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 749,
+                    "1": 1,
+                    "2": 247
+                  }
+                },
+                "inputRowsPerSecond": 776.6990291262135,
+                "latestOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "440.0",
+                  "maxOffsetsBehindLatest": "990",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 851.0638297872341,
+                "startOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 599,
+                    "1": 1,
+                    "2": 197
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:17.884Z"
+          },
+          {
+            "batchId": 5,
+            "durationMs": {
+              "addBatch": 372,
+              "commitOffsets": 23,
+              "getBatch": 0,
+              "latestOffset": 1,
+              "queryPlanning": 22,
+              "triggerExecution": 443,
+              "walCommit": 23
+            },
+            "id": "2f2243a9-d449-4a83-afab-f309cda24352",
+            "inputRowsPerSecond": 849.2569002123142,
+            "name": "benchmark-h24-p3-w1",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 902.9345372460497,
+            "runId": "cc396b7e-9bf2-4f16-be89-f03f4f73eae4",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 899,
+                    "1": 1,
+                    "2": 297
+                  }
+                },
+                "inputRowsPerSecond": 849.2569002123142,
+                "latestOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "373.3333333333333",
+                  "maxOffsetsBehindLatest": "840",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 902.9345372460497,
+                "startOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 749,
+                    "1": 1,
+                    "2": 247
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:18.355Z"
+          },
+          {
+            "batchId": 6,
+            "durationMs": {
+              "addBatch": 402,
+              "commitOffsets": 24,
+              "getBatch": 0,
+              "latestOffset": 1,
+              "queryPlanning": 22,
+              "triggerExecution": 479,
+              "walCommit": 27
+            },
+            "id": "2f2243a9-d449-4a83-afab-f309cda24352",
+            "inputRowsPerSecond": 900.9009009009009,
+            "name": "benchmark-h24-p3-w1",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 835.0730688935282,
+            "runId": "cc396b7e-9bf2-4f16-be89-f03f4f73eae4",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1049,
+                    "1": 1,
+                    "2": 347
+                  }
+                },
+                "inputRowsPerSecond": 900.9009009009009,
+                "latestOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "306.6666666666667",
+                  "maxOffsetsBehindLatest": "690",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 835.0730688935282,
+                "startOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 899,
+                    "1": 1,
+                    "2": 297
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:18.799Z"
+          },
+          {
+            "batchId": 7,
+            "durationMs": {
+              "addBatch": 579,
+              "commitOffsets": 31,
+              "getBatch": 0,
+              "latestOffset": 1,
+              "queryPlanning": 28,
+              "triggerExecution": 666,
+              "walCommit": 24
+            },
+            "id": "2f2243a9-d449-4a83-afab-f309cda24352",
+            "inputRowsPerSecond": 833.3333333333334,
+            "name": "benchmark-h24-p3-w1",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 600.6006006006006,
+            "runId": "cc396b7e-9bf2-4f16-be89-f03f4f73eae4",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1199,
+                    "1": 1,
+                    "2": 397
+                  }
+                },
+                "inputRowsPerSecond": 833.3333333333334,
+                "latestOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "240.0",
+                  "maxOffsetsBehindLatest": "540",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 600.6006006006006,
+                "startOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1049,
+                    "1": 1,
+                    "2": 347
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:19.279Z"
+          },
+          {
+            "batchId": 8,
+            "durationMs": {
+              "addBatch": 414,
+              "commitOffsets": 32,
+              "getBatch": 1,
+              "latestOffset": 1,
+              "queryPlanning": 19,
+              "triggerExecution": 500,
+              "walCommit": 31
+            },
+            "id": "2f2243a9-d449-4a83-afab-f309cda24352",
+            "inputRowsPerSecond": 599.7001499250374,
+            "name": "benchmark-h24-p3-w1",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 798.4031936127744,
+            "runId": "cc396b7e-9bf2-4f16-be89-f03f4f73eae4",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1349,
+                    "1": 1,
+                    "2": 447
+                  }
+                },
+                "inputRowsPerSecond": 599.7001499250374,
+                "latestOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "173.33333333333334",
+                  "maxOffsetsBehindLatest": "390",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 798.4031936127744,
+                "startOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1199,
+                    "1": 1,
+                    "2": 397
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:19.946Z"
+          },
+          {
+            "batchId": 9,
+            "durationMs": {
+              "addBatch": 381,
+              "commitOffsets": 29,
+              "getBatch": 0,
+              "latestOffset": 1,
+              "queryPlanning": 19,
+              "triggerExecution": 460,
+              "walCommit": 26
+            },
+            "id": "2f2243a9-d449-4a83-afab-f309cda24352",
+            "inputRowsPerSecond": 798.4031936127744,
+            "name": "benchmark-h24-p3-w1",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 869.5652173913043,
+            "runId": "cc396b7e-9bf2-4f16-be89-f03f4f73eae4",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1499,
+                    "1": 1,
+                    "2": 497
+                  }
+                },
+                "inputRowsPerSecond": 798.4031936127744,
+                "latestOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "106.66666666666667",
+                  "maxOffsetsBehindLatest": "240",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 869.5652173913043,
+                "startOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1349,
+                    "1": 1,
+                    "2": 447
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:20.447Z"
+          },
+          {
+            "batchId": 10,
+            "durationMs": {
+              "addBatch": 2459,
+              "commitOffsets": 90,
+              "getBatch": 0,
+              "latestOffset": 1,
+              "queryPlanning": 20,
+              "triggerExecution": 2606,
+              "walCommit": 30
+            },
+            "id": "2f2243a9-d449-4a83-afab-f309cda24352",
+            "inputRowsPerSecond": 867.6789587852494,
+            "name": "benchmark-h24-p3-w1",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 153.49194167306217,
+            "runId": "cc396b7e-9bf2-4f16-be89-f03f4f73eae4",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1649,
+                    "1": 1,
+                    "2": 547
+                  }
+                },
+                "inputRowsPerSecond": 867.6789587852494,
+                "latestOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "40.0",
+                  "maxOffsetsBehindLatest": "90",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 153.49194167306217,
+                "startOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1499,
+                    "1": 1,
+                    "2": 497
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:20.908Z"
+          },
+          {
+            "batchId": 11,
+            "durationMs": {
+              "addBatch": 291,
+              "commitOffsets": 23,
+              "getBatch": 1,
+              "latestOffset": 4,
+              "queryPlanning": 28,
+              "triggerExecution": 378,
+              "walCommit": 28
+            },
+            "id": "2f2243a9-d449-4a83-afab-f309cda24352",
+            "inputRowsPerSecond": 91.77820267686424,
+            "name": "benchmark-h24-p3-w1",
+            "numInputRows": 240,
+            "processedRowsPerSecond": 634.9206349206349,
+            "runId": "cc396b7e-9bf2-4f16-be89-f03f4f73eae4",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w1]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "inputRowsPerSecond": 91.77820267686424,
+                "latestOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "0.0",
+                  "maxOffsetsBehindLatest": "0",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 240,
+                "processedRowsPerSecond": 634.9206349206349,
+                "startOffset": {
+                  "benchmark-h24-p3-w1": {
+                    "0": 1649,
+                    "1": 1,
+                    "2": 547
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:23.523Z"
+          }
+        ],
+        "query_id": "2f2243a9-d449-4a83-afab-f309cda24352",
+        "run_id": "cc396b7e-9bf2-4f16-be89-f03f4f73eae4",
+        "source_lag": {
+          "offsets_behind": 0,
+          "partitions": [
+            {
+              "behind": 0,
+              "broker_end": 1739,
+              "partition": 0,
+              "retained_start": 0,
+              "sink_next": 1739
+            },
+            {
+              "behind": 0,
+              "broker_end": 1,
+              "partition": 1,
+              "retained_start": 0,
+              "sink_next": 1
+            },
+            {
+              "behind": 0,
+              "broker_end": 577,
+              "partition": 2,
+              "retained_start": 0,
+              "sink_next": 577
+            }
+          ],
+          "status": "observed",
+          "topic": "benchmark-h24-p3-w1"
+        },
+        "spark_version": "3.5.9",
+        "verification": {
+          "checks": {
+            "accepted_events_balance": true,
+            "alerts_have_predictions": true,
+            "labels_balance": true,
+            "predictions_have_features": true,
+            "source_dispositions_balance": true,
+            "sqlite_integrity": true
+          },
+          "counts": {
+            "accepted": 1153,
+            "alerts": 4,
+            "batches": 12,
+            "control": 4,
+            "duplicate": 1,
+            "events": 1153,
+            "features": 1141,
+            "label": 1153,
+            "labels": 1153,
+            "pending_events": 0,
+            "pending_predictions": 0,
+            "predictions": 1141,
+            "raw": 2317,
+            "rejected": 6
+          },
+          "valid": true
+        },
+        "workers": 1
+      },
+      "status": "passed",
+      "store": "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h24-p3-w1/monitor.db",
+      "topic": "benchmark-h24-p3-w1",
+      "verification": {
+        "checks": {
+          "accepted_events_balance": true,
+          "alerts_have_predictions": true,
+          "labels_balance": true,
+          "predictions_have_features": true,
+          "source_dispositions_balance": true,
+          "sqlite_integrity": true
+        },
+        "counts": {
+          "accepted": 1153,
+          "alerts": 4,
+          "batches": 12,
+          "control": 4,
+          "duplicate": 1,
+          "events": 1153,
+          "features": 1141,
+          "label": 1153,
+          "labels": 1153,
+          "pending_events": 0,
+          "pending_predictions": 0,
+          "predictions": 1141,
+          "raw": 2317,
+          "rejected": 6
+        },
+        "valid": true
+      },
+      "worker_command": [
+        "--bootstrap",
+        "127.0.0.1:19092",
+        "--topic",
+        "benchmark-h24-p3-w1",
+        "--db",
+        "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h24-p3-w1/monitor.db",
+        "--checkpoint",
+        "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h24-p3-w1/checkpoints",
+        "--tracking-uri",
+        "http://127.0.0.1:5000",
+        "--query-id",
+        "benchmark-h24-p3-w1",
+        "--available-now",
+        "--max-offsets",
+        "200",
+        "--duration-seconds",
+        "275",
+        "--workers",
+        "1",
+        "--report",
+        "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h24-p3-w1/spark-receipt.json"
+      ],
+      "worker_log": "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/evidence/benchmark-h24-p3-w1.log",
+      "worker_wall_limit_seconds": 300,
+      "worker_wall_seconds": 18.956471149999743,
+      "workers": 1
+    },
+    {
+      "activation": {
+        "action": "activate",
+        "activated_at": 1794614184.9545166,
+        "feature_version": "v1",
+        "id": 1,
+        "mode": "approved",
+        "model_name": "industrial-risk",
+        "model_version": "2",
+        "run_id": "fc11d0d4b21e4ba2900a4162b93df8e1",
+        "threshold": 0.975
+      },
+      "alert_business": {
+        "above_threshold_predictions": 22,
+        "alerts": 4,
+        "checks": {
+          "alert_evidence_consistent": true,
+          "cooldown_schedule_matches": true,
+          "unique_alert_features": true
+        },
+        "excluded_execution_fields": [
+          "arrival_to_prediction_ms",
+          "created_at",
+          "inference_ms",
+          "predicted_at_epoch"
+        ],
+        "expected_cooldown_suppressed": 18,
+        "persisted_not_emitted": 18
+      },
+      "backlog_progress": [
+        {
+          "basis": "new topic; all input prepublished",
+          "batch_id": null,
+          "offsets_behind": 2317
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 0,
+          "offsets_behind": 2117
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 1,
+          "offsets_behind": 1918
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 2,
+          "offsets_behind": 1719
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 3,
+          "offsets_behind": 1520
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 4,
+          "offsets_behind": 1320
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 5,
+          "offsets_behind": 1120
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 6,
+          "offsets_behind": 920
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 7,
+          "offsets_behind": 720
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 8,
+          "offsets_behind": 520
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 9,
+          "offsets_behind": 320
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 10,
+          "offsets_behind": 120
+        },
+        {
+          "basis": "Spark source endOffset compared with producer acknowledgements",
+          "batch_id": 11,
+          "offsets_behind": 0
+        }
+      ],
+      "batches": [
+        {
+          "batch_id": 0,
+          "committed_at": 1794614195.5713954,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 1,
+          "committed_at": 1794614196.1796443,
+          "rows_received": 199
+        },
+        {
+          "batch_id": 2,
+          "committed_at": 1794614196.789357,
+          "rows_received": 199
+        },
+        {
+          "batch_id": 3,
+          "committed_at": 1794614197.524881,
+          "rows_received": 199
+        },
+        {
+          "batch_id": 4,
+          "committed_at": 1794614198.0091798,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 5,
+          "committed_at": 1794614198.4925342,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 6,
+          "committed_at": 1794614199.0138965,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 7,
+          "committed_at": 1794614199.4440377,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 8,
+          "committed_at": 1794614200.0611343,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 9,
+          "committed_at": 1794614200.5542858,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 10,
+          "committed_at": 1794614202.5636978,
+          "rows_received": 200
+        },
+        {
+          "batch_id": 11,
+          "committed_at": 1794614202.8863099,
+          "rows_received": 120
+        }
+      ],
+      "canonical_sha256": {
+        "alerts": "6cf04022fa55afe17d566f7b5ca4966a94a08dbc5f7340e943cec1bea7d8f7f7",
+        "cooldown": "ad0df3abcae829bd176d434359d25b839c72d1e9800bb70ccda3d908db939dc1",
+        "features": "4caa4dab8572a56cb8fd06f5bdca1a91a728cb8d99557934bf2c9258755cefac",
+        "scores": "51845092434cce336cd621fd5d8da60c723960d991fa84c749bd77be8e753b4b"
+      },
+      "checkpoint": "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h24-p3-w2/checkpoints",
+      "checks": {
+        "alert_evidence_consistent": true,
+        "all_features_scored": true,
+        "backlog_exercised": true,
+        "bounded_batches": true,
+        "candidate_identity": true,
+        "cooldown_schedule_matches": true,
+        "cooldown_suppression_exercised": true,
+        "drained": true,
+        "invariants": true,
+        "latencies_present": true,
+        "nonzero_alerts": true,
+        "partition_count": true,
+        "resources_observed": true,
+        "source_ack_matches": true,
+        "source_lag_zero": true,
+        "spark_version": true,
+        "spark_workers": true,
+        "unique_alert_features": true
+      },
+      "counts": {
+        "accepted": 1153,
+        "alerts": 4,
+        "batches": 12,
+        "control": 4,
+        "duplicate": 1,
+        "events": 1153,
+        "features": 1141,
+        "label": 1153,
+        "labels": 1153,
+        "pending_events": 0,
+        "pending_predictions": 0,
+        "predictions": 1141,
+        "raw": 2317,
+        "rejected": 6
+      },
+      "hours": 24,
+      "input_sha256": "2dc55c6dac74e8e43753eb4d9c8157ad4f175fbd9ce957d028d16dbcf7078a62",
+      "latency_ms": {
+        "broker_to_prediction": {
+          "p50": 13191.048622131348,
+          "p95": 17142.20643043518,
+          "p99": 17484.744215011597,
+          "samples": 1141
+        },
+        "inference": {
+          "p50": 0.6795810004405212,
+          "p95": 1.1104589993919944,
+          "p99": 1.7047612001988441,
+          "samples": 1141
+        }
+      },
+      "name": "h24-p3-w2",
+      "observed_partition_count": 3,
+      "partitions": 3,
+      "publication": {
+        "acknowledged": 2317,
+        "elapsed_seconds": 0.42292456599989237,
+        "events_per_second": 5478.518360649189,
+        "offsets": {
+          "0": {
+            "count": 1739,
+            "first": 0,
+            "last": 1738
+          },
+          "1": {
+            "count": 1,
+            "first": 0,
+            "last": 0
+          },
+          "2": {
+            "count": 577,
+            "first": 0,
+            "last": 576
+          }
+        },
+        "partitions": 3,
+        "topic": "benchmark-h24-p3-w2"
+      },
+      "query_elapsed_seconds_reported": 14.824528559999635,
+      "raw_records_per_worker_wall_second": 124.26795139600989,
+      "resources": {
+        "measurement_wall_seconds": 19.110926235999614,
+        "observed_spark_masters": [
+          "local[2]"
+        ],
+        "processes": [
+          {
+            "initial_cpu_seconds": 5.54,
+            "last_cpu_seconds": 6.42,
+            "name": "python",
+            "peak_rss_bytes": 295014400,
+            "pid": 5,
+            "role": "runner_python"
+          },
+          {
+            "initial_cpu_seconds": 8.92,
+            "last_cpu_seconds": 9.9,
+            "name": "java",
+            "peak_rss_bytes": 390889472,
+            "pid": 426,
+            "role": "kafka_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.8,
+            "last_cpu_seconds": 2.8,
+            "name": "python",
+            "peak_rss_bytes": 256454656,
+            "pid": 917,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 3.49,
+            "last_cpu_seconds": 3.65,
+            "name": "python",
+            "peak_rss_bytes": 264630272,
+            "pid": 920,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.46,
+            "last_cpu_seconds": 2.47,
+            "name": "python",
+            "peak_rss_bytes": 245817344,
+            "pid": 921,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.5100000000000002,
+            "last_cpu_seconds": 2.5500000000000003,
+            "name": "python",
+            "peak_rss_bytes": 245907456,
+            "pid": 928,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.57,
+            "last_cpu_seconds": 2.61,
+            "name": "python",
+            "peak_rss_bytes": 245526528,
+            "pid": 930,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.45,
+            "last_cpu_seconds": 2.5,
+            "name": "python",
+            "peak_rss_bytes": 245444608,
+            "pid": 933,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.58,
+            "last_cpu_seconds": 2.61,
+            "name": "python",
+            "peak_rss_bytes": 245678080,
+            "pid": 935,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.46,
+            "last_cpu_seconds": 2.49,
+            "name": "python",
+            "peak_rss_bytes": 245829632,
+            "pid": 937,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.45,
+            "last_cpu_seconds": 2.5,
+            "name": "python",
+            "peak_rss_bytes": 245604352,
+            "pid": 939,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 2.5700000000000003,
+            "last_cpu_seconds": 2.63,
+            "name": "python",
+            "peak_rss_bytes": 249532416,
+            "pid": 940,
+            "role": "mlflow_tree"
+          },
+          {
+            "initial_cpu_seconds": 0.08,
+            "last_cpu_seconds": 5.34,
+            "name": "python",
+            "peak_rss_bytes": 299462656,
+            "pid": 3170,
+            "role": "worker_python"
+          },
+          {
+            "initial_cpu_seconds": 0.0,
+            "last_cpu_seconds": 25.24,
+            "name": "bash",
+            "peak_rss_bytes": 683679744,
+            "pid": 3171,
+            "role": "worker_descendants"
+          },
+          {
+            "initial_cpu_seconds": 0.0,
+            "last_cpu_seconds": 0.0,
+            "name": "bash",
+            "peak_rss_bytes": 909312,
+            "pid": 3179,
+            "role": "worker_descendants"
+          },
+          {
+            "initial_cpu_seconds": 0.12000000000000001,
+            "last_cpu_seconds": 0.12000000000000001,
+            "name": "java",
+            "peak_rss_bytes": 48394240,
+            "pid": 3180,
+            "role": "worker_descendants"
+          }
+        ],
+        "raw_samples": "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h24-p3-w2/resource-samples.jsonl",
+        "reaped_children_cpu_seconds_delta": 5.431096999999996,
+        "runner_cpu_seconds": 0.877417318,
+        "runner_lifetime_peak_rss_bytes": 294862848,
+        "sampled_cpu_seconds_by_scope": {
+          "kafka_tree": 0.9800000000000004,
+          "mlflow_tree": 0.4699999999999993,
+          "runner_python": 0.8799999999999999,
+          "worker_descendants": 25.24,
+          "worker_python": 5.26
+        },
+        "sampled_peak_rss_bytes_by_scope": {
+          "all_children": 3861073920,
+          "kafka_tree": 390889472,
+          "mlflow_tree": 2490212352,
+          "runner_python": 295014400,
+          "worker_descendants": 683679744,
+          "worker_python": 299462656
+        },
+        "sampler_errors": 0,
+        "samples": 185,
+        "scope": {
+          "children_rusage": "OS CPU delta for reaped children, separately reported; do not add to sampled child CPU",
+          "cpu": "sampled per-process user+system CPU deltas; short-lived processes and final sampling tails may be missed",
+          "rss": "sampled resident bytes; simultaneous sums double-count shared pages and are not total host memory",
+          "runner_cpu": "exact process_time delta for benchmark Python, including producer and sampler threads",
+          "sample_interval_seconds": 0.1,
+          "window": "publication start through worker completion; services already started"
+        }
+      },
+      "spark": {
+        "drained": true,
+        "elapsed_seconds": 14.824528559999635,
+        "engine": "Spark Structured Streaming",
+        "max_offsets_per_trigger": 200,
+        "mode": "availableNow",
+        "progress": [
+          {
+            "batchId": 0,
+            "durationMs": {
+              "addBatch": 5183,
+              "commitOffsets": 27,
+              "getBatch": 18,
+              "latestOffset": 554,
+              "queryPlanning": 274,
+              "triggerExecution": 6114,
+              "walCommit": 37
+            },
+            "id": "45bf260c-e07c-4f2d-811e-e21b58168e64",
+            "inputRowsPerSecond": 0.0,
+            "name": "benchmark-h24-p3-w2",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 65.42361792607132,
+            "runId": "7bb59fe0-be1f-4ebe-b142-7fcaacc84802",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w2]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 150,
+                    "1": 1,
+                    "2": 49
+                  }
+                },
+                "inputRowsPerSecond": 0.0,
+                "latestOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "705.6666666666666",
+                  "maxOffsetsBehindLatest": "1589",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 65.42361792607132,
+                "startOffset": null
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:29.498Z"
+          },
+          {
+            "batchId": 1,
+            "durationMs": {
+              "addBatch": 504,
+              "commitOffsets": 29,
+              "getBatch": 1,
+              "latestOffset": 2,
+              "queryPlanning": 37,
+              "triggerExecution": 605,
+              "walCommit": 29
+            },
+            "id": "45bf260c-e07c-4f2d-811e-e21b58168e64",
+            "inputRowsPerSecond": 64.99020248203789,
+            "name": "benchmark-h24-p3-w2",
+            "numInputRows": 398,
+            "processedRowsPerSecond": 657.8512396694215,
+            "runId": "7bb59fe0-be1f-4ebe-b142-7fcaacc84802",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w2]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 300,
+                    "1": 1,
+                    "2": 98
+                  }
+                },
+                "inputRowsPerSecond": 64.99020248203789,
+                "latestOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "639.3333333333334",
+                  "maxOffsetsBehindLatest": "1439",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 398,
+                "processedRowsPerSecond": 657.8512396694215,
+                "startOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 150,
+                    "1": 1,
+                    "2": 49
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:35.622Z"
+          },
+          {
+            "batchId": 2,
+            "durationMs": {
+              "addBatch": 528,
+              "commitOffsets": 24,
+              "getBatch": 0,
+              "latestOffset": 1,
+              "queryPlanning": 29,
+              "triggerExecution": 619,
+              "walCommit": 30
+            },
+            "id": "45bf260c-e07c-4f2d-811e-e21b58168e64",
+            "inputRowsPerSecond": 656.7656765676568,
+            "name": "benchmark-h24-p3-w2",
+            "numInputRows": 398,
+            "processedRowsPerSecond": 642.9725363489499,
+            "runId": "7bb59fe0-be1f-4ebe-b142-7fcaacc84802",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w2]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 450,
+                    "1": 1,
+                    "2": 147
+                  }
+                },
+                "inputRowsPerSecond": 656.7656765676568,
+                "latestOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "573.0",
+                  "maxOffsetsBehindLatest": "1289",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 398,
+                "processedRowsPerSecond": 642.9725363489499,
+                "startOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 300,
+                    "1": 1,
+                    "2": 98
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:36.228Z"
+          },
+          {
+            "batchId": 3,
+            "durationMs": {
+              "addBatch": 648,
+              "commitOffsets": 26,
+              "getBatch": 0,
+              "latestOffset": 1,
+              "queryPlanning": 29,
+              "triggerExecution": 735,
+              "walCommit": 25
+            },
+            "id": "45bf260c-e07c-4f2d-811e-e21b58168e64",
+            "inputRowsPerSecond": 641.9354838709678,
+            "name": "benchmark-h24-p3-w2",
+            "numInputRows": 398,
+            "processedRowsPerSecond": 541.4965986394558,
+            "runId": "7bb59fe0-be1f-4ebe-b142-7fcaacc84802",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w2]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 599,
+                    "1": 1,
+                    "2": 197
+                  }
+                },
+                "inputRowsPerSecond": 641.9354838709678,
+                "latestOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "506.6666666666667",
+                  "maxOffsetsBehindLatest": "1140",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 398,
+                "processedRowsPerSecond": 541.4965986394558,
+                "startOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 450,
+                    "1": 1,
+                    "2": 147
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:36.848Z"
+          },
+          {
+            "batchId": 4,
+            "durationMs": {
+              "addBatch": 391,
+              "commitOffsets": 26,
+              "getBatch": 1,
+              "latestOffset": 1,
+              "queryPlanning": 35,
+              "triggerExecution": 483,
+              "walCommit": 26
+            },
+            "id": "45bf260c-e07c-4f2d-811e-e21b58168e64",
+            "inputRowsPerSecond": 543.4782608695652,
+            "name": "benchmark-h24-p3-w2",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 828.1573498964804,
+            "runId": "7bb59fe0-be1f-4ebe-b142-7fcaacc84802",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w2]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 749,
+                    "1": 1,
+                    "2": 247
+                  }
+                },
+                "inputRowsPerSecond": 543.4782608695652,
+                "latestOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "440.0",
+                  "maxOffsetsBehindLatest": "990",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 828.1573498964804,
+                "startOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 599,
+                    "1": 1,
+                    "2": 197
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:37.584Z"
+          },
+          {
+            "batchId": 5,
+            "durationMs": {
+              "addBatch": 397,
+              "commitOffsets": 25,
+              "getBatch": 1,
+              "latestOffset": 1,
+              "queryPlanning": 30,
+              "triggerExecution": 482,
+              "walCommit": 24
+            },
+            "id": "45bf260c-e07c-4f2d-811e-e21b58168e64",
+            "inputRowsPerSecond": 826.4462809917355,
+            "name": "benchmark-h24-p3-w2",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 829.8755186721992,
+            "runId": "7bb59fe0-be1f-4ebe-b142-7fcaacc84802",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w2]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 899,
+                    "1": 1,
+                    "2": 297
+                  }
+                },
+                "inputRowsPerSecond": 826.4462809917355,
+                "latestOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "373.3333333333333",
+                  "maxOffsetsBehindLatest": "840",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 829.8755186721992,
+                "startOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 749,
+                    "1": 1,
+                    "2": 247
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:38.068Z"
+          },
+          {
+            "batchId": 6,
+            "durationMs": {
+              "addBatch": 445,
+              "commitOffsets": 33,
+              "getBatch": 0,
+              "latestOffset": 1,
+              "queryPlanning": 22,
+              "triggerExecution": 531,
+              "walCommit": 26
+            },
+            "id": "45bf260c-e07c-4f2d-811e-e21b58168e64",
+            "inputRowsPerSecond": 828.1573498964804,
+            "name": "benchmark-h24-p3-w2",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 753.2956685499058,
+            "runId": "7bb59fe0-be1f-4ebe-b142-7fcaacc84802",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w2]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1049,
+                    "1": 1,
+                    "2": 347
+                  }
+                },
+                "inputRowsPerSecond": 828.1573498964804,
+                "latestOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "306.6666666666667",
+                  "maxOffsetsBehindLatest": "690",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 753.2956685499058,
+                "startOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 899,
+                    "1": 1,
+                    "2": 297
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:38.551Z"
+          },
+          {
+            "batchId": 7,
+            "durationMs": {
+              "addBatch": 480,
+              "commitOffsets": 35,
+              "getBatch": 0,
+              "latestOffset": 1,
+              "queryPlanning": 23,
+              "triggerExecution": 562,
+              "walCommit": 22
+            },
+            "id": "45bf260c-e07c-4f2d-811e-e21b58168e64",
+            "inputRowsPerSecond": 751.8796992481202,
+            "name": "benchmark-h24-p3-w2",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 710.4795737122558,
+            "runId": "7bb59fe0-be1f-4ebe-b142-7fcaacc84802",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w2]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1199,
+                    "1": 1,
+                    "2": 397
+                  }
+                },
+                "inputRowsPerSecond": 751.8796992481202,
+                "latestOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "240.0",
+                  "maxOffsetsBehindLatest": "540",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 710.4795737122558,
+                "startOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1049,
+                    "1": 1,
+                    "2": 347
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:39.083Z"
+          },
+          {
+            "batchId": 8,
+            "durationMs": {
+              "addBatch": 407,
+              "commitOffsets": 34,
+              "getBatch": 1,
+              "latestOffset": 1,
+              "queryPlanning": 24,
+              "triggerExecution": 495,
+              "walCommit": 26
+            },
+            "id": "45bf260c-e07c-4f2d-811e-e21b58168e64",
+            "inputRowsPerSecond": 709.2198581560284,
+            "name": "benchmark-h24-p3-w2",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 808.0808080808081,
+            "runId": "7bb59fe0-be1f-4ebe-b142-7fcaacc84802",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w2]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1349,
+                    "1": 1,
+                    "2": 447
+                  }
+                },
+                "inputRowsPerSecond": 709.2198581560284,
+                "latestOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "173.33333333333334",
+                  "maxOffsetsBehindLatest": "390",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 808.0808080808081,
+                "startOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1199,
+                    "1": 1,
+                    "2": 397
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:39.647Z"
+          },
+          {
+            "batchId": 9,
+            "durationMs": {
+              "addBatch": 412,
+              "commitOffsets": 23,
+              "getBatch": 0,
+              "latestOffset": 1,
+              "queryPlanning": 22,
+              "triggerExecution": 485,
+              "walCommit": 25
+            },
+            "id": "45bf260c-e07c-4f2d-811e-e21b58168e64",
+            "inputRowsPerSecond": 806.4516129032259,
+            "name": "benchmark-h24-p3-w2",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 824.7422680412371,
+            "runId": "7bb59fe0-be1f-4ebe-b142-7fcaacc84802",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w2]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1499,
+                    "1": 1,
+                    "2": 497
+                  }
+                },
+                "inputRowsPerSecond": 806.4516129032259,
+                "latestOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "106.66666666666667",
+                  "maxOffsetsBehindLatest": "240",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 824.7422680412371,
+                "startOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1349,
+                    "1": 1,
+                    "2": 447
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:40.143Z"
+          },
+          {
+            "batchId": 10,
+            "durationMs": {
+              "addBatch": 1931,
+              "commitOffsets": 25,
+              "getBatch": 0,
+              "latestOffset": 0,
+              "queryPlanning": 20,
+              "triggerExecution": 2001,
+              "walCommit": 22
+            },
+            "id": "45bf260c-e07c-4f2d-811e-e21b58168e64",
+            "inputRowsPerSecond": 824.7422680412371,
+            "name": "benchmark-h24-p3-w2",
+            "numInputRows": 400,
+            "processedRowsPerSecond": 199.9000499750125,
+            "runId": "7bb59fe0-be1f-4ebe-b142-7fcaacc84802",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w2]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1649,
+                    "1": 1,
+                    "2": 547
+                  }
+                },
+                "inputRowsPerSecond": 824.7422680412371,
+                "latestOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "40.0",
+                  "maxOffsetsBehindLatest": "90",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 400,
+                "processedRowsPerSecond": 199.9000499750125,
+                "startOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1499,
+                    "1": 1,
+                    "2": 497
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:40.628Z"
+          },
+          {
+            "batchId": 11,
+            "durationMs": {
+              "addBatch": 257,
+              "commitOffsets": 28,
+              "getBatch": 1,
+              "latestOffset": 1,
+              "queryPlanning": 17,
+              "triggerExecution": 326,
+              "walCommit": 21
+            },
+            "id": "45bf260c-e07c-4f2d-811e-e21b58168e64",
+            "inputRowsPerSecond": 119.88011988011989,
+            "name": "benchmark-h24-p3-w2",
+            "numInputRows": 240,
+            "processedRowsPerSecond": 736.1963190184049,
+            "runId": "7bb59fe0-be1f-4ebe-b142-7fcaacc84802",
+            "sink": {
+              "description": "ForeachBatchSink",
+              "numOutputRows": -1
+            },
+            "sources": [
+              {
+                "description": "KafkaV2[Subscribe[benchmark-h24-p3-w2]]",
+                "endOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "inputRowsPerSecond": 119.88011988011989,
+                "latestOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1739,
+                    "1": 1,
+                    "2": 577
+                  }
+                },
+                "metrics": {
+                  "avgOffsetsBehindLatest": "0.0",
+                  "maxOffsetsBehindLatest": "0",
+                  "minOffsetsBehindLatest": "0"
+                },
+                "numInputRows": 240,
+                "processedRowsPerSecond": 736.1963190184049,
+                "startOffset": {
+                  "benchmark-h24-p3-w2": {
+                    "0": 1649,
+                    "1": 1,
+                    "2": 547
+                  }
+                }
+              }
+            ],
+            "stateOperators": [],
+            "timestamp": "2026-11-13T23:56:42.630Z"
+          }
+        ],
+        "query_id": "45bf260c-e07c-4f2d-811e-e21b58168e64",
+        "run_id": "7bb59fe0-be1f-4ebe-b142-7fcaacc84802",
+        "source_lag": {
+          "offsets_behind": 0,
+          "partitions": [
+            {
+              "behind": 0,
+              "broker_end": 1739,
+              "partition": 0,
+              "retained_start": 0,
+              "sink_next": 1739
+            },
+            {
+              "behind": 0,
+              "broker_end": 1,
+              "partition": 1,
+              "retained_start": 0,
+              "sink_next": 1
+            },
+            {
+              "behind": 0,
+              "broker_end": 577,
+              "partition": 2,
+              "retained_start": 0,
+              "sink_next": 577
+            }
+          ],
+          "status": "observed",
+          "topic": "benchmark-h24-p3-w2"
+        },
+        "spark_version": "3.5.9",
+        "verification": {
+          "checks": {
+            "accepted_events_balance": true,
+            "alerts_have_predictions": true,
+            "labels_balance": true,
+            "predictions_have_features": true,
+            "source_dispositions_balance": true,
+            "sqlite_integrity": true
+          },
+          "counts": {
+            "accepted": 1153,
+            "alerts": 4,
+            "batches": 12,
+            "control": 4,
+            "duplicate": 1,
+            "events": 1153,
+            "features": 1141,
+            "label": 1153,
+            "labels": 1153,
+            "pending_events": 0,
+            "pending_predictions": 0,
+            "predictions": 1141,
+            "raw": 2317,
+            "rejected": 6
+          },
+          "valid": true
+        },
+        "workers": 2
+      },
+      "status": "passed",
+      "store": "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h24-p3-w2/monitor.db",
+      "topic": "benchmark-h24-p3-w2",
+      "verification": {
+        "checks": {
+          "accepted_events_balance": true,
+          "alerts_have_predictions": true,
+          "labels_balance": true,
+          "predictions_have_features": true,
+          "source_dispositions_balance": true,
+          "sqlite_integrity": true
+        },
+        "counts": {
+          "accepted": 1153,
+          "alerts": 4,
+          "batches": 12,
+          "control": 4,
+          "duplicate": 1,
+          "events": 1153,
+          "features": 1141,
+          "label": 1153,
+          "labels": 1153,
+          "pending_events": 0,
+          "pending_predictions": 0,
+          "predictions": 1141,
+          "raw": 2317,
+          "rejected": 6
+        },
+        "valid": true
+      },
+      "worker_command": [
+        "--bootstrap",
+        "127.0.0.1:19092",
+        "--topic",
+        "benchmark-h24-p3-w2",
+        "--db",
+        "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h24-p3-w2/monitor.db",
+        "--checkpoint",
+        "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h24-p3-w2/checkpoints",
+        "--tracking-uri",
+        "http://127.0.0.1:5000",
+        "--query-id",
+        "benchmark-h24-p3-w2",
+        "--available-now",
+        "--max-offsets",
+        "200",
+        "--duration-seconds",
+        "275",
+        "--workers",
+        "2",
+        "--report",
+        "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/variants/h24-p3-w2/spark-receipt.json"
+      ],
+      "worker_log": "/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/evidence/benchmark-h24-p3-w2.log",
+      "worker_wall_limit_seconds": 300,
+      "worker_wall_seconds": 18.645193502999973,
+      "workers": 2
+    }
+  ]
+}

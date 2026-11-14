@@ -1,0 +1,127 @@
+26/11/14 00:43:19 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+26/11/14 00:43:19 WARN MacAddressUtil: Failed to find a usable hardware address from the network interfaces; using random bytes: 61:62:2b:21:8e:39:2f:11
+26/11/14 00:43:21 WARN ResolveWriteToStream: spark.sql.adaptive.enabled is not supported in streaming DataFrames/Datasets and will be disabled.
+26/11/14 00:43:22 WARN AdminClientConfig: These configurations '[key.deserializer, value.deserializer, enable.auto.commit, max.poll.records, auto.offset.reset]' were supplied but are not used yet.
+{
+  "drained": true,
+  "elapsed_seconds": 1.7971750690003319,
+  "engine": "Spark Structured Streaming",
+  "max_offsets_per_trigger": 1000,
+  "mode": "availableNow",
+  "progress": [
+    {
+      "batchId": 4,
+      "durationMs": {
+        "latestOffset": 337,
+        "triggerExecution": 389
+      },
+      "id": "6a3dacaf-e89e-4756-9fee-0f2e116a919a",
+      "inputRowsPerSecond": 0.0,
+      "name": "qualification",
+      "numInputRows": 0,
+      "processedRowsPerSecond": 0.0,
+      "runId": "a71feced-6bfd-4c61-8a0a-d5ab2460148b",
+      "sink": {
+        "description": "ForeachBatchSink",
+        "numOutputRows": -1
+      },
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[qualification]]",
+          "endOffset": {
+            "qualification": {
+              "0": 585,
+              "1": 2309,
+              "2": 577
+            }
+          },
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": {
+            "qualification": {
+              "0": 585,
+              "1": 2309,
+              "2": 577
+            }
+          },
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": {
+            "qualification": {
+              "0": 585,
+              "1": 2309,
+              "2": 577
+            }
+          }
+        }
+      ],
+      "stateOperators": [],
+      "timestamp": "2026-11-13T23:43:22.025Z"
+    }
+  ],
+  "query_id": "6a3dacaf-e89e-4756-9fee-0f2e116a919a",
+  "run_id": "a71feced-6bfd-4c61-8a0a-d5ab2460148b",
+  "source_lag": {
+    "offsets_behind": 0,
+    "partitions": [
+      {
+        "behind": 0,
+        "broker_end": 585,
+        "partition": 0,
+        "retained_start": 0,
+        "sink_next": 585
+      },
+      {
+        "behind": 0,
+        "broker_end": 2309,
+        "partition": 1,
+        "retained_start": 0,
+        "sink_next": 2309
+      },
+      {
+        "behind": 0,
+        "broker_end": 577,
+        "partition": 2,
+        "retained_start": 0,
+        "sink_next": 577
+      }
+    ],
+    "status": "observed",
+    "topic": "qualification"
+  },
+  "spark_version": "3.5.9",
+  "verification": {
+    "checks": {
+      "accepted_events_balance": true,
+      "alerts_have_predictions": true,
+      "labels_balance": true,
+      "predictions_have_features": true,
+      "source_dispositions_balance": true,
+      "sqlite_integrity": true
+    },
+    "counts": {
+      "accepted": 1729,
+      "alerts": 12,
+      "batches": 4,
+      "control": 6,
+      "duplicate": 1,
+      "events": 1729,
+      "features": 1711,
+      "label": 1729,
+      "labels": 1729,
+      "pending_events": 0,
+      "pending_predictions": 0,
+      "predictions": 1711,
+      "raw": 3471,
+      "rejected": 6
+    },
+    "valid": true
+  },
+  "workers": 2
+}

@@ -15,6 +15,7 @@ behaviour, or a remote Kafka connection. The evidence report records what ran.
 | Kafka | `apache/kafka:3.9.2` JVM image | Real KRaft broker with persistent topic data; one broker is sufficient for local recovery exercises | [Official downloads](https://kafka.apache.org/community/downloads/), [KRaft quick start](https://kafka.apache.org/39/getting-started/quickstart/) |
 | MLflow client/server | 3.17.2 | HTTP experiment tracking, persistent artifacts, numerical registry versions and aliases | [Release metadata](https://pypi.org/project/mlflow/3.17.2/), [server documentation](https://mlflow.org/docs/latest/self-hosting/architecture/tracking-server/), [registry workflow](https://mlflow.org/docs/latest/ml/model-registry/workflow/) |
 | uv | 0.13.6 | Frozen dependency resolution and reproducible environment installation | [Published distribution](https://pypi.org/project/uv/0.13.6/) |
+| psutil (development profile) | 7.2.2 | Explicit resource-sampling dependency for the real streaming comparison | [Official release metadata](https://pypi.org/project/psutil/7.2.2/) |
 
 These are selected pins, not a claim that every component is the latest release.
 `uv.lock` locks Python dependency resolution. Container tags and Debian package
@@ -31,6 +32,20 @@ and does not need Maven access. The native setup uses the fixed
 Python's standard proxy handling. The JVM then receives explicit `spark.jars`
 paths and does not need Ivy network access. A dependency download failure is a
 setup failure, not a passing integration test.
+
+### Telemetry and client API boundaries
+
+MLflow usage telemetry is disabled before SDK initialization and explicitly in the
+native, container and CI process environments using `MLFLOW_DISABLE_TELEMETRY=true`
+and `DO_NOT_TRACK=true`. The project SDK entrypoint defaults to the MLflow opt-out
+as well. [MLflow documents these controls](https://mlflow.org/docs/latest/community/usage-tracking/).
+The installed-SDK check requires `get_telemetry_client() is None`. This setting is
+separate from the pipeline's own local operational measurements.
+
+The pinned `kafka-python==2.3.2` consumer takes the offset lookup timeout from its
+constructor's `request_timeout_ms`; `beginning_offsets(partitions)` and
+`end_offsets(partitions)` do not accept a per-call `timeout_ms` keyword. Strict API
+regressions cover this boundary, and real qualification requires observed zero lag.
 
 ### Native Kafka connector classpath
 

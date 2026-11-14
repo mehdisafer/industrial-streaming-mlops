@@ -1,0 +1,128 @@
+[
+  {
+    "source": "state/final-checks/pytest.log",
+    "destination": "docs/evidence/checks/pytest.log",
+    "sha256": "c7d3209179a29d42bf6b58938dc2f7ce7f1b294c743014fbd0d924d2bb641de1",
+    "exact_copy": true
+  },
+  {
+    "source": "state/final-checks/pytest.xml",
+    "destination": "docs/evidence/checks/pytest.xml",
+    "sha256": "8ac0038224a49cbdd3a14628e7c3fb85ec96b57f300c764bbee085a3787f23fb",
+    "exact_copy": true
+  },
+  {
+    "source": "state/final-checks/ruff.log",
+    "destination": "docs/evidence/checks/ruff.log",
+    "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "exact_copy": true
+  },
+  {
+    "source": "state/final-checks/dependency-audit.json",
+    "destination": "docs/evidence/checks/dependency-audit.json",
+    "sha256": "c3aa64d9fa8ef53f2edcb81997940af9aa60b9c6081112067e26042a1df81b61",
+    "exact_copy": true
+  },
+  {
+    "source": "state/final-checks/dependency-audit.log",
+    "destination": "docs/evidence/checks/dependency-audit.log",
+    "sha256": "15950a68a7ed99c59779717acefdceb3f69cfd31bde67d2c954f2a3cea4d7955",
+    "exact_copy": true
+  },
+  {
+    "source": "state/final-checks/telemetry-optout.json",
+    "destination": "docs/evidence/checks/telemetry-optout.json",
+    "sha256": "847ec865da102a914fc7a5d4cbe2c6f514a30ad91407fd8ed8a9e6df25a9c393",
+    "exact_copy": true
+  },
+  {
+    "source": "state/final-checks/container-guard-checks.json",
+    "destination": "docs/evidence/checks/container-guard-checks.json",
+    "sha256": "a06b89550f8eac06ce8be2fadc2a7deba97693f3b0c572186649831f804792c9",
+    "exact_copy": true
+  },
+  {
+    "source": "state/final-checks/ci-scope-checks.json",
+    "destination": "docs/evidence/checks/ci-scope-checks.json",
+    "sha256": "aeb72918d78b66e488017eb6853f1f6cc2ecc26968a0ffe233a25cb7c1b50485",
+    "exact_copy": true
+  },
+  {
+    "source": "state/final-checks/ci-scope-checks-before-job-concurrency.json",
+    "destination": "docs/evidence/checks/ci-scope-checks-before-job-concurrency.json",
+    "sha256": "3dd55293f4c5f923cc6537c6e7f51b8c051d8eb2287100bd8ff17cd544082b22",
+    "exact_copy": true
+  },
+  {
+    "source": "state/final-checks/component-review-notes.json",
+    "destination": "docs/evidence/checks/component-review-notes.json",
+    "sha256": "a63394619505bf7ea623af3fc8e8f9153a6ce5882e22b91a7144b9b578d08070",
+    "exact_copy": true
+  },
+  {
+    "source": "state/final-checks/github-actions-source-run.json",
+    "destination": "docs/evidence/checks/github-actions-source-run.json",
+    "sha256": "49c9172dab640a7ea277b9ec5e78a61037be448c9586220befa3a1e8c9638844",
+    "exact_copy": true
+  },
+  {
+    "source": "state/final-checks/github-actions-source-jobs.json",
+    "destination": "docs/evidence/checks/github-actions-source-jobs.json",
+    "sha256": "b56bc7aa25ed72fe6c7fb74266cc9f0c6c79f9c9227c530188d648493371cc84",
+    "exact_copy": true
+  },
+  {
+    "source": "state/final-checks/repository-administration-readbacks.json",
+    "destination": "docs/evidence/checks/repository-administration-readbacks.json",
+    "sha256": "1720a1e5b0495a44b953d5485aae1c1a662cedd5a59c22ee5b2e024429fb89c7",
+    "exact_copy": true
+  },
+  {
+    "source": "state/final-checks/release-source-binding.json",
+    "destination": "docs/evidence/checks/release-source-binding.json",
+    "sha256": "4a2fdd2198942876e654149e2b67eb39fcff5f867009e6a3bf4bdc48c84a2ad5",
+    "exact_copy": true
+  },
+  {
+    "source": "state/final-checks/dashboard-js-smoke.json",
+    "destination": "docs/evidence/checks/dashboard-js-smoke.json",
+    "sha256": "c6b7d5633ec4384b6f67940d46abf60f67f69392280077f6a2b855e1c548bd15",
+    "exact_copy": true
+  },
+  {
+    "source": "state/dependency-audit.json",
+    "destination": "docs/evidence/checks/dependency-audit-before-fixes.json",
+    "sha256": "60b71108554dc8c2450592638f608ec43917c4e7bb916e29f5b33cc665d3da9f",
+    "exact_copy": true
+  },
+  {
+    "source": "state/dependency-audit-patched.json",
+    "destination": "docs/evidence/checks/dependency-audit-before-psutil.json",
+    "sha256": "6ea43c7933a1436a9db6b6b35169b00e09c7cac070d924709337e51fad278463",
+    "exact_copy": true
+  },
+  {
+    "source": "state/dashboard-capture/render-limit.json",
+    "destination": "docs/evidence/checks/dashboard-render-limit.json",
+    "sha256": "61bb907e4b850b9aee7e04fffaebec53617c0deebe0f706e3428def9d59ee38c",
+    "exact_copy": true
+  },
+  {
+    "source": "state/final-checks/hosted-history-audit.json",
+    "destination": "docs/evidence/checks/hosted-history-audit.json",
+    "sha256": "10f11fa60ebcb332f4178025f571dbff16a91c7e9844d07878b72a5553fb0411",
+    "exact_copy": true
+  },
+  {
+    "source": "state/final-checks/hosted-history-audit-six-commit.json",
+    "destination": "docs/evidence/checks/hosted-history-audit-six-commit.json",
+    "sha256": "513c9dc95e641c902c18bf621bd40bfe4391d1a2617f2bb55a9b24b59905112c",
+    "exact_copy": true
+  },
+  {
+    "source": "state/final-checks/security-inventory.json",
+    "destination": "docs/evidence/checks/security-inventory.json",
+    "sha256": "b5046fb0e69703136ef33398aacf50c523674eaba3b45f17defd13002d1dfca2",
+    "exact_copy": true
+  }
+]

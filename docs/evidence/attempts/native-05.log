@@ -1,0 +1,26 @@
+{"stage": "starting_real_services"}
+{"stage": "reusing_registered_models_with_matching_training_source"}
+{"stage": "publishing_telemetry_with_poison_late_and_duplicate_cases"}
+Traceback (most recent call last):
+  File "/workspace/scratch/65da83183df7/industrial-streaming-mlops/scripts/qualify_native.py", line 476, in <module>
+    main()
+  File "/workspace/scratch/65da83183df7/industrial-streaming-mlops/scripts/qualify_native.py", line 261, in main
+    publish(42, args.hours, "2026-05-01T00:00:00Z", "initial")
+  File "/workspace/scratch/65da83183df7/industrial-streaming-mlops/scripts/qualify_native.py", line 240, in publish
+    receipt = produce(str(path), "127.0.0.1:19092", topic, partitions=partitions)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/65da83183df7/industrial-streaming-mlops/src/industrial_mlops/streaming.py", line 28, in produce
+    admin.create_topics([NewTopic(topic, partitions, 1, topic_configs={
+  File "/workspace/scratch/65da83183df7/industrial-streaming-mlops/.tools/venv311/lib/python3.11/site-packages/kafka/admin/client.py", line 523, in create_topics
+    return self._send_request_to_controller(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/65da83183df7/industrial-streaming-mlops/.tools/venv311/lib/python3.11/site-packages/kafka/admin/client.py", line 406, in _send_request_to_controller
+    response = self.send_request(request, node_id=self._controller_id)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/65da83183df7/industrial-streaming-mlops/.tools/venv311/lib/python3.11/site-packages/kafka/admin/client.py", line 379, in send_request
+    self._wait_for_futures([future]) # raises exception on failure
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/65da83183df7/industrial-streaming-mlops/.tools/venv311/lib/python3.11/site-packages/kafka/admin/client.py", line 372, in _wait_for_futures
+    raise future.exception  # pylint: disable-msg=raising-bad-type
+    ^^^^^^^^^^^^^^^^^^^^^^
+kafka.errors.RequestTimedOutError: [Error 7] RequestTimedOutError: Request timed out after 60000.0 ms

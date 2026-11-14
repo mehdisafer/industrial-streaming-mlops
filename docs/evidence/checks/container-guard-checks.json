@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-13T23:40:10.248049+00:00",
+  "scope": "Shell safety and CI ownership guards using explicit Docker, socket and curl stubs; no Docker daemon, containers, Kafka, Spark or MLflow services executed.",
+  "real_container_execution": false,
+  "original_result": {
+    "source": "Observed output of temporary inline Python harness in this session",
+    "tool_output_chunk_id": "31e956",
+    "temporary_harness_retained": false
+  },
+  "cases": [
+    {
+      "name": "refuse-container",
+      "status": "passed",
+      "observed_exit_code": 64
+    },
+    {
+      "name": "refuse-volume",
+      "status": "passed",
+      "observed_exit_code": 64
+    },
+    {
+      "name": "refuse-network",
+      "status": "passed",
+      "observed_exit_code": 64
+    },
+    {
+      "name": "refuse-evidence",
+      "status": "passed",
+      "observed_exit_code": 64
+    },
+    {
+      "name": "refuse-port",
+      "status": "passed",
+      "observed_exit_code": 1
+    },
+    {
+      "name": "default-name",
+      "status": "passed",
+      "observed_exit_code": 0
+    },
+    {
+      "name": "build-failure",
+      "status": "passed",
+      "observed_exit_code": 77
+    },
+    {
+      "name": "startup-failure",
+      "status": "passed",
+      "observed_exit_code": 78
+    },
+    {
+      "name": "success-cleanup",
+      "status": "passed",
+      "observed_exit_code": 0
+    },
+    {
+      "name": "ci-complete",
+      "status": "passed",
+      "observed_exit_code": 0
+    },
+    {
+      "name": "ci-no-owner",
+      "status": "passed",
+      "observed_exit_code": 0
+    },
+    {
+      "name": "ci-wrong-owner",
+      "status": "passed",
+      "observed_exit_code": 0
+    },
+    {
+      "name": "ci-fallback",
+      "status": "passed",
+      "observed_exit_code": 0
+    }
+  ],
+  "case_count": 13,
+  "static_checks": [
+    {
+      "name": "integration shell syntax",
+      "command": "bash -n scripts/integration.sh",
+      "status": "passed"
+    },
+    {
+      "name": "workflow YAML parse",
+      "method": "yaml.load with yaml.BaseLoader; global telemetry environment and real-integration job assertions",
+      "status": "passed"
+    },
+    {
+      "name": "every CI run block shell syntax",
+      "method": "Each parsed run block passed on stdin to bash -n",
+      "status": "passed"
+    }
+  ],
+  "asserted_invariants": [
+    "Existing resources never mutated by refused preflight",
+    "Existing evidence sentinel preserved",
+    "No -v or --volumes cleanup arguments",
+    "Only exact owned Compose project targeted",
+    "Startup-failure and success cleanup ran once",
+    "Original pre-cleanup receipts retained",
+    "CI skipped completed, missing-owner and mismatched-owner cleanup"
+  ],
+  "files": {
+    "scripts/integration.sh": {
+      "sha256": "40840c4f23f3e95ce47bb128e1343256c21b8d70d23ef89c2f05b71bfbbd24de"
+    },
+    ".github/workflows/ci.yml": {
+      "sha256": "e94218f255430d58efc22f06b9d5b59887f8c6d4b323aa77a681e8146bc15c85"
+    }
+  },
+  "limitations": [
+    "The stubs qualify shell control flow only. They do not establish Docker API compatibility or container/service qualification.",
+    "These observed checks are distinct from the native integration qualification."
+  ]
+}

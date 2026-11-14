@@ -17,7 +17,7 @@ deployment and acceptance path; local Spark does not qualify the provider.
   messages, pending predictions, machine alerts and prediction-versus-label evidence.
 - A fixed alert budget: **at most 2 false alerts per machine-day**, with at least
   **70% useful failure recall** and **5 minutes of actionable lead** on the held-out
-  synthetic evaluation. Model-only p95 inference must stay below 1,000 ms.
+  synthetic evaluation. Model-only p95 inference must be at most 1,000 ms.
 - Explicit shadow mode when a model has not met its recorded gates.
 - Numerical model activation and compatible rollback, separate from registry promotion.
 - A raw ledger containing Kafka coordinates, original payload bytes and dispositions,
@@ -28,20 +28,90 @@ criteria, not a maintenance service-level guarantee for real equipment.
 
 ## Qualification status
 
-The [acceptance register](docs/acceptance.md) distinguishes implementation, executed
-tests and outstanding qualifications. Original receipts are published with the
-reviewed source; a green unit test is not a Kafka or Databricks integration result.
+I keep the original receipts, source identities and failed attempts in the
+[evidence index](docs/evidence/README.md). The [acceptance register](docs/acceptance.md)
+separates the completed local checks from the remaining platform and release gates.
 
 | Area | Current boundary |
 |---|---|
-| Contracts, causal features, delayed labels, sink recovery | Executable tests in this repository |
-| MLflow registry and lifecycle | Real HTTP registration, persistent reload and alias readbacks |
-| Kafka/Spark/full local recovery | Reproducible native and container qualification scripts |
-| Databricks | Provider implementation prepared; authorized workspace run still required |
-| Distributed capacity | Not claimed; the reference sink is intentionally single-host |
-| Public release | Owner license decision and public visibility authorization remain open |
+| Application tests | **110 passed in 4.87 s**; [checks and audit receipts](docs/evidence/checks/README.md) |
+| Native Kafka/Spark/MLflow and recovery | **21 checks passed** in native08; [original service evidence](docs/evidence/native/README.md) |
+| Model evaluation | Baseline and candidate met the recorded synthetic holdout gates; [original evaluation](docs/evidence/model/README.md) |
+| Streaming comparison | Four measured variants; exact business-output parity across the three 24-hour variants; [benchmark evidence](docs/evidence/benchmark/README.md) |
+| Container profile | **Not executed**: Docker was unavailable in the qualification environment |
+| Hosted CI | Jobs failed with no executed steps and runner ID 0; cause unresolved, no hosted pass |
+| Databricks | **Open**: implementation prepared; no authorized workspace run |
+| Public release | Private repository; owner license and public-visibility decisions remain open |
 
-See [scope and delivery issue #1](https://github.com/mehdisafer/industrial-streaming-mlops/issues/1).
+See [scope issue #1](https://github.com/mehdisafer/industrial-streaming-mlops/issues/1)
+and [delivery review #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2)
+for the review state. The prepared release candidate is `v0.1.0-rc.1`; a tag and
+GitHub release have not been published.
+
+## Observed outcomes
+
+### Local service chain and recovery
+
+[Native08](docs/evidence/native/README.md) reconciled **4,380 raw records** into 2,164
+accepted sensor events, 2,164 delayed labels, 24 heartbeats, 24 rejects and four
+duplicates. It persisted **2,092 predictions and 12 alerts**, with no pending events
+or predictions and observed lag of **zero offsets in each of three partitions**.
+All 21 checks completed in 201.998 seconds, including service startup and recovery.
+
+During an active Spark query, the broker stop-to-restart interval was 15.379 seconds;
+the same active worker subsequently consumed 303 newly published recovery records.
+The run also exercised failures before and after the sink commit, unavailable-model
+recovery, candidate activation, rollback on new telemetry and stopped-state restore
+of the database, Kafka logs, MLflow artifacts and checkpoint. The restored checkpoint
+resumed with zero new input rows and no duplicate effects. This restore observation
+covers an already caught-up checkpoint; new input after restore remains a separate
+test.
+
+The dashboard returned real HTTP HTML and JSON from that sink. A separate minimal
+DOM/fetch test executed its actual JavaScript against the saved snapshot and produced
+12 alert rows and 40 prediction rows. Chromium could not start because of the
+environment's Unix-socket restriction, so browser layout and screenshot review remain
+open. See the [dashboard check scope](docs/evidence/checks/README.md).
+
+### Held-out maintenance evaluation
+
+The [original model evaluation](docs/evidence/model/README.md) used six machines and
+72 simulated hours per train/validation/test split. The final holdout contains
+**5,166 labeled feature rows, 24 failures and 17.9375 machine-days**. The following
+metrics apply the 30-minute alert cooldown and the five-minute useful-lead rule:
+
+| Model | False alerts | False alerts / machine-day | Useful failure recall | Alert precision | Median true-alert lead, s |
+|---|---:|---:|---:|---:|---:|
+| Baseline | 29 | 1.6167 | 87.5% | 42% | 919.36 |
+| Candidate | 1 | 0.055749 | 100% | 96% | 962.61 |
+
+Thresholds were selected on validation before final-test scoring. Both models met
+the recorded gates. These are operational alert/failure metrics on the synthetic
+feature-availability timeline, distinct from per-event classification recall and
+wall-clock warning time. They establish behavior on this simulator; field-data
+generalization, calibration and uncertainty estimates remain open.
+
+### Bounded streaming measurements
+
+[Benchmark03](docs/evidence/benchmark/README.md) completed in 84.614 seconds. All input
+was published before each fresh worker started. The measured worker time includes
+Python/JVM startup and shutdown.
+
+| Simulated workload | Raw records | Kafka partitions / Spark local threads | Worker wall, s | Raw records / worker wall s |
+|---|---:|---:|---:|---:|
+| 2 hours | 205 | 1 / 1 | 13.294 | 15.42 |
+| 24 hours | 2,317 | 1 / 1 | 16.182 | 143.18 |
+| 24 hours | 2,317 | 3 / 1 | 18.956 | 122.23 |
+| 24 hours | 2,317 | 3 / 2 | 18.645 | 124.27 |
+
+Each 24-hour variant produced **1,141 predictions and four alerts**, with 18 additional
+above-threshold predictions suppressed by cooldown. Features, scores, alert business
+fields and cooldown outcomes matched exactly across those variants; all drained to
+zero observed source lag. The 2-hour case produced 85 predictions and zero alerts.
+These are single-host measurements from one run per configuration, with a driver/SQLite
+sink. They provide no statistical speedup or distributed-scale claim. Original
+latency, CPU/RSS and Spark progress measurements are retained with their boundaries
+in the benchmark evidence.
 
 ## Architecture
 
@@ -74,6 +144,9 @@ and [verified dependency baseline](docs/compatibility.md).
 Requirements: Docker Engine with Compose v2, and a reference budget of four CPUs,
 8 GiB RAM and 10 GiB free disk. These are requested local limits, not measured minimums.
 The broker, registry and dashboard are published on loopback only.
+This container profile is implemented but unexecuted in this delivery; the observed
+integration results above come from the native path. Its smoke script also requires
+Bash, curl and Python 3 on the host.
 
 ```bash
 git clone https://github.com/mehdisafer/industrial-streaming-mlops.git
@@ -130,11 +203,14 @@ supervisor, retention policy and the target deployment review described in the r
 ## Native isolated execution
 
 The native path starts the real JVM broker, MLflow server, Spark and dashboard as
-owned child processes. It is useful when Docker is unavailable.
+owned child processes. It requires Linux x86-64, Python 3, Bash, curl and tar, with
+loopback ports 5000, 8080, 19092 and 19093 free. The bootstrap downloads and verifies
+the pinned Java and Kafka binaries.
 
 ```bash
 python -m pip install uv==0.13.6
-uv sync --frozen --python 3.11
+export MLFLOW_DISABLE_TELEMETRY=true DO_NOT_TRACK=true
+uv sync --frozen --python 3.11.18
 bash scripts/bootstrap_native.sh
 uv run python scripts/fetch_spark_jars.py
 uv run python scripts/qualify_native.py \
@@ -144,7 +220,12 @@ uv run python scripts/qualify_native.py \
 Use a new work directory for each qualification. The runner preserves original logs,
 input manifests, model identities, source hashes and failed attempts. It stops only
 its own child processes. Native Linux x86-64 binaries are pinned and checked; the
-Docker reference is the portable route for Windows and macOS.
+container reference targets a Linux container runtime. Windows and macOS hosts have
+not been qualified in this delivery.
+
+The SDK, native child processes and container services explicitly disable MLflow
+usage telemetry. The opt-out is checked against the installed SDK; it is separate
+from the local operational metrics stored by this application.
 
 ## What the tests exercise
 
@@ -153,19 +234,45 @@ uv run pytest -q -m "not integration"
 uv run ruff check src tests scripts databricks
 bash scripts/integration.sh
 uv run industrial-mlops benchmark --output state/local-benchmark.json
+uv run python scripts/benchmark_streaming.py \
+  --work-dir state/streaming-benchmark-001 --reuse-training-from state/native-run-001
 ```
 
 The native qualification tests a real unavailable registry, pending prediction
 recovery, batch/stream feature and prediction parity, failures before and after
 the sink commit, a broker interruption during an active query, candidate activation,
 rollback on new telemetry, the live dashboard and restoration of stopped state.
-The container script is a smaller smoke profile with real broker/worker interruptions.
-Their receipts state exactly which checks executed.
+The container script implements a smaller smoke profile with broker/worker interruption
+steps. It still needs a real Docker execution. Native and container receipts are
+separate.
+
+The container smoke script allocates a fresh Compose project, rejects existing
+project resources or occupied loopback ports, and preserves original evidence before
+stopping its own services. Its named volumes remain available for inspection. Stop
+the interactive demo first if it occupies ports 5000, 8080 or 19092.
 
 The standalone benchmark measures the local feature/SQLite sink only. Spark progress
 contains source throughput and trigger timing; neither result demonstrates multi-node
 capacity. Workloads, partitions, concurrency and measured resource scope belong in
 the report, not in an unsupported scalability headline.
+
+The real streaming comparison adds 2-hour and 24-hour workloads, then reuses identical
+24-hour input with one/three Kafka partitions and one/two Spark local worker threads.
+Every variant has its own store and checkpoint, a fresh JVM, and a 200-offset trigger
+bound. It compares feature/score identities, backlog drainage, measured latencies,
+CPU and RSS within a ten-minute total budget. Model training is reused only when its
+source manifest matches; the benchmark performs no promotion.
+
+The workflow is configured to run lightweight checks on every relevant event and
+select heavy integration for changes in executable/configuration paths or manual
+dispatch, with a conservative full run when no comparison base is available.
+Documentation-only pushes in an existing code PR are checked against that push's
+previous head. Only the selected heavy job joins a per-PR/ref concurrency group;
+it preserves a running job and allows one pending job. Local Git fixtures and static
+workflow checks exercised this selection, but hosted scheduling remains unexecuted.
+The [check evidence](docs/evidence/checks/README.md) also records 123 audited Python
+dependencies with zero known advisories at scan time; that result is limited to the
+recorded environment and advisory database.
 
 ## Data and model semantics
 
@@ -205,6 +312,12 @@ No Databricks execution is claimed from these local tests.
 - [Acceptance criteria and prioritized backlog](docs/acceptance.md)
 - [Release preparation and publication decisions](docs/release-notes.md)
 - [Python dependency lock](uv.lock) and [JVM connector lock](config/spark-jars.lock.json)
+
+The next milestones are a real container/hosted-CI run, an authorized Databricks
+qualification, browser rendering review, and the owner decisions needed for a public
+release. Longer unattended operation also needs retention limits and supervision;
+multi-node serving/state, authenticated service exposure and external model validation
+are future work. The [acceptance register](docs/acceptance.md) records these boundaries.
 
 No client code, identifiers or data are used. The synthetic generator has no third-party
 dataset dependency. This repository currently has no owner-approved license; third-party

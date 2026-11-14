@@ -1,0 +1,153 @@
+{
+  "protocol": {
+    "acceptance": "all persisted invariants true; no performance gate or scale claim",
+    "batch_rows": 500,
+    "hours": [
+      2,
+      8,
+      24
+    ],
+    "machines": 4
+  },
+  "scope": "single-process local SQLite/feature sink; excludes Kafka, Spark and model inference",
+  "source": {
+    "files": {
+      "config/pipeline.json": "ffef2ebac6571f9f6f500454867d108e3e42d3afea24dfb5ad8ba9e5d060756c",
+      "pyproject.toml": "b3fe417056289ace5563313af398502a55b4f9a5823064f79f574928af2265ae",
+      "schemas/alert.v1.json": "cd63d301b80c7787b04e35109e83a694bfe233d511dea19c41a57407207c7f50",
+      "schemas/event.v1.json": "f0394a08731ea6a0613bfc9d4b96fa9bdc86423e7b04e7ffaa7939e53c47ae9c",
+      "schemas/feature.v1.json": "ede271e54be995ce486d87038a6af3008771856e3baae6978b7d118e390299f3",
+      "schemas/heartbeat.v1.json": "54a63a7d14e7c31383df7f00d0533794442114a7e71afec1ca2a1637f8225c2b",
+      "schemas/label.v1.json": "ad44e2b2fbef501315e33f50c179b01a53a0e509a61b3b276c0b2784b8db0e4b",
+      "schemas/prediction.v1.json": "443e74cd126814d4a98f3b9f7a621479a4cadc06abfb6198a283f011fbec56a4",
+      "schemas/sensor.v1.json": "00741c7b3c98519807b17f10dca077925a7fd570b19e3e439ba09f4922791ecd",
+      "src/industrial_mlops/__init__.py": "7b49e8e47648934eb2aee18f5c922e6b2dad8035051ef9946e6b933ac8afbc02",
+      "src/industrial_mlops/__main__.py": "edf7afd7e443bb6b00387b9d10ce81220fe6ceb02c7651cbe692e7d463311ce3",
+      "src/industrial_mlops/benchmark.py": "ef74fd4521b1b3b0ffd278fd1701f5608cb7897d17768dd72375b1c462e94b07",
+      "src/industrial_mlops/cli.py": "6a288c83db5dac415984dc78650c649e452ec80a8234c20bb7823e24d3587968",
+      "src/industrial_mlops/config.py": "22508652ea4976dd574696082aabf6b2967678b10ebc371d188828b7bb91cba3",
+      "src/industrial_mlops/contracts.py": "fb840fb5cd238260beab2dd1d536e59c1c41068987af24886e48de79cbccf85b",
+      "src/industrial_mlops/dashboard.py": "cc028279085f6fa6579e1bfd428e4dd9231eb5372adc83c3bbe756b230ceb68f",
+      "src/industrial_mlops/features.py": "5da77b20264645a13272bbf8b9dd9d38aec5590e7daddb2b849d7d26318b11ac",
+      "src/industrial_mlops/modeling.py": "f7607796985da8c246d120030254df9a02bebba0d0123a87ed5de61bc49848a9",
+      "src/industrial_mlops/monitoring.py": "6bf39fbaccf29fb274ce3a0e682b256f288995af5fa1e8aa691b0439f6767d3e",
+      "src/industrial_mlops/observability.py": "b4eaad1365dd0b5a268632869376fd41ad0d3c94b0376fb69c32187c36a27bbe",
+      "src/industrial_mlops/operations.py": "dc07fa5185db6a275ae5407705b2cb1fee4f8936a562978b521b6af853c7755f",
+      "src/industrial_mlops/registry.py": "67fae36b39879955a82d9262cd1ab357ab736e4ed2be09a8f40bc75b1bf7ba0c",
+      "src/industrial_mlops/simulator.py": "5fdb081c46e621a4de0dbde986fa99c79b59a6809eacaa1e0f9a6aa51c702473",
+      "src/industrial_mlops/store.py": "69410b81ed231c3be2cd32108d787565a97acdcfc56e631ea9bdb0b519cc0043",
+      "src/industrial_mlops/streaming.py": "c5c73192e52ba9088ec6bd36713810859f45759f25828bdf7eda5dd3dfcfc099",
+      "uv.lock": "9d87a70fa04ed64fd01b1b7e3fb3ca5753db380e8a1577d19980de662b5dd271"
+    },
+    "git_commit": null,
+    "identity": "working-tree-sha256:43b0dc43e2fa3365cae351991ed1057391e6bed236ba8df95b270d78a45f1bbc",
+    "python": "3.11.18"
+  },
+  "workloads": [
+    {
+      "cpu_seconds": 0.024802774,
+      "elapsed_seconds": 0.024214929999743617,
+      "hours": 2,
+      "process_max_rss_kib": 23416,
+      "raw_records": 196,
+      "records_per_second": 8094.179913056747,
+      "verification": {
+        "checks": {
+          "accepted_events_balance": true,
+          "alerts_have_predictions": true,
+          "labels_balance": true,
+          "predictions_have_features": true,
+          "source_dispositions_balance": true,
+          "sqlite_integrity": true
+        },
+        "counts": {
+          "accepted": 96,
+          "alerts": 0,
+          "batches": 1,
+          "control": 4,
+          "duplicate": 0,
+          "events": 96,
+          "features": 84,
+          "label": 96,
+          "labels": 96,
+          "pending_events": 0,
+          "pending_predictions": 84,
+          "predictions": 0,
+          "raw": 196,
+          "rejected": 0
+        },
+        "valid": true
+      }
+    },
+    {
+      "cpu_seconds": 0.094811866,
+      "elapsed_seconds": 0.09127712000008614,
+      "hours": 8,
+      "process_max_rss_kib": 26104,
+      "raw_records": 772,
+      "records_per_second": 8457.760279895678,
+      "verification": {
+        "checks": {
+          "accepted_events_balance": true,
+          "alerts_have_predictions": true,
+          "labels_balance": true,
+          "predictions_have_features": true,
+          "source_dispositions_balance": true,
+          "sqlite_integrity": true
+        },
+        "counts": {
+          "accepted": 384,
+          "alerts": 0,
+          "batches": 2,
+          "control": 4,
+          "duplicate": 0,
+          "events": 384,
+          "features": 372,
+          "label": 384,
+          "labels": 384,
+          "pending_events": 0,
+          "pending_predictions": 372,
+          "predictions": 0,
+          "raw": 772,
+          "rejected": 0
+        },
+        "valid": true
+      }
+    },
+    {
+      "cpu_seconds": 0.37782935,
+      "elapsed_seconds": 0.3691955209997104,
+      "hours": 24,
+      "process_max_rss_kib": 30840,
+      "raw_records": 2308,
+      "records_per_second": 6251.430119602697,
+      "verification": {
+        "checks": {
+          "accepted_events_balance": true,
+          "alerts_have_predictions": true,
+          "labels_balance": true,
+          "predictions_have_features": true,
+          "source_dispositions_balance": true,
+          "sqlite_integrity": true
+        },
+        "counts": {
+          "accepted": 1152,
+          "alerts": 0,
+          "batches": 5,
+          "control": 4,
+          "duplicate": 0,
+          "events": 1152,
+          "features": 1140,
+          "label": 1152,
+          "labels": 1152,
+          "pending_events": 0,
+          "pending_predictions": 1140,
+          "predictions": 0,
+          "raw": 2308,
+          "rejected": 0
+        },
+        "valid": true
+      }
+    }
+  ]
+}

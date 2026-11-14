@@ -1,0 +1,17 @@
+{
+  "scope": "Actual dashboard JavaScript executed against the original native08 HTTP snapshot using an explicit minimal DOM/fetch double; no browser rendering, layout or screenshot claim.",
+  "cards": [
+    "Raw messages 4380",
+    "Accepted sensors 2164",
+    "Rejected / duplicates 24 / 4",
+    "Predictions 2092",
+    "Maintenance alerts 12"
+  ],
+  "alert_rows": 12,
+  "prediction_rows": 40,
+  "status_text": "ready · 1s since batch",
+  "model_text": "Active model: industrial-risk / v1 · approved · 0 pending predictions",
+  "source_js_sha256": "f74f2f371c255c2e39920aff0991e6df74761c6ade1951d26e77dc85465c6064",
+  "snapshot_sha256": "57bc3749a6ac50d73371caadcf997f1b9425f8eb945410d38d32a045f35888ff",
+  "passed": true
+}

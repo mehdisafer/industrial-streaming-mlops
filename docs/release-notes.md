@@ -1,61 +1,118 @@
-# v0.1.0 release candidate
+# Prepared notes for v0.1.0-rc.1
 
-## Intended outcome
+This is the private review candidate for an executable synthetic maintenance workflow.
+The notes are prepared for release review; no `v0.1.0-rc.1` tag or GitHub release has
+been published. [PR #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2)
+and the [acceptance register](acceptance.md) track review and outstanding gates.
 
-An executable synthetic maintenance workflow with real Kafka ingestion, Spark
-micro-batches, causal feature state, MLflow numerical model versions, alert evidence,
-operator monitoring and explicit recovery.
+## Intended outcome and changes
 
-## Included changes
+I built this reference so that a maintenance warning can be traced from Kafka
+coordinates through a causal sensor window, numerical MLflow model version and
+eventual delayed label. It includes:
 
-- Strict versioned contracts and deterministic sensor/failure/label scenarios.
-- Shared point-in-time feature computation and semantic compatibility signatures.
-- Temporal train/validation/test protocol with a fixed maintenance alert budget.
-- Persistent HTTP MLflow tracking, reviewed model serialization, promotion and rollback.
-- Atomic local source/feature/prediction/alert sink, checkpoint binding and replay controls.
-- Read-only maintenance dashboard, source dispositions and observed-alert monitoring.
-- Bounded native/container qualification, failure injection and restoration procedures.
-- Existing-compute Databricks bundle, Delta adapter and evidence collection.
-- Frozen Python/JVM dependencies, CI and component/security inventory.
+- Strict versioned sensor/label/heartbeat contracts, fixed units and deterministic
+  degradation/failure scenarios with duplicate, late and poison inputs.
+- Shared point-in-time features, warm-up behavior and semantic compatibility
+  signatures; labels and simulator truth never enter the feature matrix.
+- Temporal train/validation/test evaluation with a fixed false-alert budget,
+  validation-selected thresholds and an explicit explainable baseline.
+- Persistent HTTP MLflow tracking and registry, reviewed artifact serialization,
+  numerical activation, separate alias promotion and compatible local rollback.
+- Atomic SQLite source/feature/prediction/alert persistence, exact original payload
+  bytes, checkpoint binding and replay controls.
+- A read-only dashboard and monitoring based on persisted alerts and available
+  labels; drift does not automatically promote a model.
+- Bounded native/container qualification procedures, fault injection, stopped-state
+  backup/restore, and an existing-compute Databricks/Delta qualification path.
+- Locked Python/JVM dependencies, scoped CI selection, isolated container smoke
+  safeguards, component inventory and original evidence with source hashes.
 
-## Evidence requirement
+## Executed verification
 
-The reviewed pull request and `docs/evidence/` identify the exact execution receipts.
-Native qualification, container qualification and provider qualification are separate.
-No production reliability, distributed capacity or vendor qualification is inferred
-from a unit test, local run or deployment template.
+| Evidence | Observed result |
+|---|---|
+| [Application checks](evidence/checks/README.md) | 110 tests passed in 4.87 s; Python advisory audit covered 123 dependencies with zero known findings at scan time |
+| [Native08](evidence/native/README.md) | All 21 checks passed in 201.998 s; 4,380 raw records, 2,092 predictions, 12 alerts and zero observed source lag across three partitions |
+| [Recovery and restoration](evidence/native/README.md) | Before/after-commit recovery, unavailable-model replay, active broker interruption, candidate activation, rollback and restored caught-up checkpoint with no duplicate effects |
+| [Model holdout](evidence/model/README.md) | On 5,166 labeled rows / 24 failures, candidate useful recall 100%, alert precision 96%, one false alert (0.055749 per machine-day); baseline useful recall 87.5%, precision 42%, 29 false alerts |
+| [Streaming benchmark03](evidence/benchmark/README.md) | Four 2-hour/24-hour variants completed in 84.614 s; the three identical 24-hour inputs produced exact feature/score/alert/cooldown parity, each with 1,141 predictions, four alerts and 18 cooldown suppressions |
+| [Dashboard checks](evidence/checks/README.md) | Real HTTP HTML/JSON and actual JavaScript against the original snapshot using a minimal DOM/fetch double; 12 alert rows and 40 prediction rows |
 
-## Remaining release decisions
+The benchmark's worker throughput includes Python/JVM startup and shutdown. The
+24-hour variants measured 143.18, 122.23 and 124.27 raw records per worker wall second
+for one partition/one thread, three partitions/one thread and three partitions/two
+threads respectively. These single-host, single-run observations do not establish
+statistical speedup, distributed capacity or production service levels.
 
-- The owner must explicitly select the repository license. No LICENSE file has been
-  invented or copied from another project.
-- Public visibility has not been authorized. The repository remains private.
-- Databricks requires an authorized workspace, existing compute and storage,
-  reachable Kafka and trusted model artifacts, with a bounded run budget.
-- Repository administration capabilities are not exposed by the current GitHub
-  connector. Description, topics and branch protection are prepared below for
-  an authorized administration step; they are not reported as configured.
+Model results describe generated data and simulated lead from feature availability;
+they do not establish industrial generalization or wall-clock advance warning. The
+original native01 training result was reused unchanged for later qualification.
+Earlier failed/blocked attempts and the superseded native07 lag observation remain
+in [the attempt history](evidence/attempts/README.md). The [evidence index](evidence/README.md)
+links exact source identities and original receipts rather than substituting a later
+commit for code that was actually executed.
+
+## Open gates and publication decisions
+
+- **Container qualification is not executed.** Docker was unavailable. Hosted CI
+  jobs failed with no executed steps and runner ID 0; their cause remains unresolved.
+  Local shell/scope checks do not represent hosted or container success.
+- **Databricks remains open.** It needs an authorized workspace, existing compute
+  and storage, reachable Kafka and trusted artifacts, with a bounded run budget.
+- **Browser presentation remains open.** Chromium startup was blocked by an
+  environment Unix-socket restriction. No screenshot or layout acceptance is claimed.
+- The owner must select the repository license. No owner-approved LICENSE exists;
+  third-party components retain their own licenses. The repository remains private,
+  and public visibility requires its separate owner decision.
+- Repository readbacks show description `null` and topics `[]`. The available
+  integration exposes no supported metadata or release mutation tools, so the
+  proposed settings and these release notes remain prepared material.
+- The rulesets endpoint returned HTTP 403 with an upgrade-or-public-visibility
+  requirement. The main-branch protection endpoint separately returned HTTP 403
+  because the resource was inaccessible to the integration. These are distinct
+  restrictions despite the repository readback showing the user's admin permission.
+  Neither response establishes the cause of the Actions failures. No plan upgrade,
+  public change, protection configuration or release publication is implied.
+
+The [original check/API receipts](evidence/checks/README.md) record those observations.
+The PR records the source review and verified merge state. Tag/release publication
+requires its own verified action and is not implied by merging the source.
 
 Suggested description:
 
-> Traceable industrial maintenance alerts with Kafka, Spark, MLflow and a separately qualified Databricks deployment.
+> Traceable industrial maintenance alerts with Kafka, Spark, MLflow and a separate Databricks qualification path.
 
 Suggested topics:
 
 `data-engineering`, `mlops`, `kafka`, `spark`, `structured-streaming`, `mlflow`,
 `databricks`, `predictive-maintenance`, `data-quality`, `python`
 
-Suggested main-branch rule: require the meaningful CI checks and a pull request;
-disable force pushes and deletion; do not invent an independent approval or purchase
-a plan to obtain unavailable private-repository protections.
+Suggested main-branch rule: require the meaningful checks and a pull request;
+disable force pushes and deletion. Any integration evidence requirement should apply
+to source changes while allowing documented documentation-only skips. No independent
+approval or paid protection plan is assumed.
 
-## Migration and rollback
+The workflow now gates heavy integration by changed source/configuration paths.
+Documentation-only pushes do not cancel a running heavy job: concurrency applies
+only to the selected integration job, with running-job cancellation disabled and
+one pending job per PR/ref group. Hosted scheduler behavior still needs execution.
+
+## Migration, rollback and operating limits
 
 The initial persistence schema is version 1. Configuration identity is bound to the
-store and checkpoint. Changed feature semantics require a new dataset/feature/model
-qualification and an explicit store/checkpoint migration. Never delete a checkpoint
-to make an incompatible change appear successful.
+store and checkpoint. Changed feature semantics require a new feature/model
+qualification and an explicit store/checkpoint migration. General in-place migration
+is not implemented; preserve the original state and retained source data.
 
-Model rollback selects the previous compatible activated numerical version. Existing
-predictions remain immutable and attributable to the model that actually produced them.
-See the [operations runbook](operations.md) for stopped-state backup and relocation.
+`rollback` activates the previous compatible local numerical deployment. It leaves
+registry aliases separate and preserves existing predictions with their original
+model provenance. The [operations runbook](operations.md) describes stopped-state
+backup and the controlled relocation of a verified copied checkpoint. The observed
+restore resumed an already caught-up checkpoint; fresh input after restore and
+cross-host restoration remain additional qualification work.
+
+This release candidate remains a bounded single-host reference. Complete local
+database/evidence retention, supervision, authenticated exposure, distributed feature
+state, multi-node recovery and representative external model evaluation are
+[prioritized follow-up](acceptance.md), not delivered production capabilities.

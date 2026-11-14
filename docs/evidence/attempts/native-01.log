@@ -1,0 +1,30 @@
+{"stage": "starting_real_services"}
+{"stage": "training_with_fixed_protocol"}
+2026/11/14 00:02:44 INFO mlflow.tracking.fluent: Experiment with name 'industrial-monitoring' does not exist. Creating a new experiment.
+2026/11/14 00:02:44 INFO mlflow.utils.uv_utils: Detected uv project: found uv.lock and pyproject.toml in /workspace/scratch/65da83183df7/industrial-streaming-mlops
+Successfully registered model 'industrial-risk'.
+2026/11/14 00:02:46 INFO mlflow.store.model_registry.abstract_store: Waiting up to 120 seconds for model version to finish creation. Model name: industrial-risk, version 1
+Created version '1' of model 'industrial-risk'.
+2026/11/14 00:02:46 INFO mlflow.utils.uv_utils: Detected uv project: found uv.lock and pyproject.toml in /workspace/scratch/65da83183df7/industrial-streaming-mlops
+Registered model 'industrial-risk' already exists. Creating a new version of this model...
+2026/11/14 00:02:46 INFO mlflow.store.model_registry.abstract_store: Waiting up to 120 seconds for model version to finish creation. Model name: industrial-risk, version 2
+Created version '2' of model 'industrial-risk'.
+🏃 View run baseline-5639521de699 at: http://127.0.0.1:5000/#/experiments/1/runs/798fe8b6a2fb4f9faaa07996a5a344d0
+🧪 View experiment at: http://127.0.0.1:5000/#/experiments/1
+🏃 View run candidate-5639521de699 at: http://127.0.0.1:5000/#/experiments/1/runs/fc11d0d4b21e4ba2900a4162b93df8e1
+🧪 View experiment at: http://127.0.0.1:5000/#/experiments/1
+{"stage": "publishing_telemetry_with_poison_late_and_duplicate_cases"}
+Traceback (most recent call last):
+  File "/workspace/scratch/65da83183df7/industrial-streaming-mlops/scripts/qualify_native.py", line 389, in <module>
+    main()
+  File "/workspace/scratch/65da83183df7/industrial-streaming-mlops/scripts/qualify_native.py", line 215, in main
+    publish(42, args.hours, "2026-05-01T00:00:00Z", "initial")
+  File "/workspace/scratch/65da83183df7/industrial-streaming-mlops/scripts/qualify_native.py", line 200, in publish
+    receipt = produce(str(path), "127.0.0.1:19092", topic, partitions=partitions)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/65da83183df7/industrial-streaming-mlops/src/industrial_mlops/streaming.py", line 39, in produce
+    producer = KafkaProducer(
+               ^^^^^^^^^^^^^^
+  File "/workspace/scratch/65da83183df7/industrial-streaming-mlops/.tools/venv311/lib/python3.11/site-packages/kafka/producer/kafka.py", line 539, in __init__
+    raise Errors.KafkaConfigurationError("Must set 'max_in_flight_requests_per_connection' to 1 in order"
+kafka.errors.KafkaConfigurationError: KafkaConfigurationError: Must set 'max_in_flight_requests_per_connection' to 1 in order to use the idempotent producer. Otherwise we cannot guarantee idempotence.

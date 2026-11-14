@@ -1,0 +1,130 @@
+{"stage": "starting_real_services"}
+{"stage": "reusing_registered_models_with_matching_training_source"}
+{"stage": "publishing_telemetry_with_poison_late_and_duplicate_cases"}
+{"stage": "consuming_with_unavailable_model"}
+https://repo.maven.apache.org/maven2 added as a remote repository with the name: repo-1
+:: loading settings :: url = jar:file:/workspace/scratch/65da83183df7/industrial-streaming-mlops/.tools/venv311/lib/python3.11/site-packages/pyspark/jars/ivy-2.5.3.jar!/org/apache/ivy/core/settings/ivysettings.xml
+Ivy Default Cache set to: /home/agent/.ivy2/cache
+The jars for the packages stored in: /home/agent/.ivy2/jars
+org.apache.spark#spark-sql-kafka-0-10_2.12 added as a dependency
+:: resolving dependencies :: org.apache.spark#spark-submit-parent-5261346d-0375-42b9-a7b5-4a95c1758da2;1.0
+	confs: [default]
+You probably access the destination server through a proxy server that is not well configured.
+You probably access the destination server through a proxy server that is not well configured.
+You probably access the destination server through a proxy server that is not well configured.
+You probably access the destination server through a proxy server that is not well configured.
+You probably access the destination server through a proxy server that is not well configured.
+You probably access the destination server through a proxy server that is not well configured.
+:: resolution report :: resolve 193ms :: artifacts dl 0ms
+	:: modules in use:
+	---------------------------------------------------------------------
+	|                  |            modules            ||   artifacts   |
+	|       conf       | number| search|dwnlded|evicted|| number|dwnlded|
+	---------------------------------------------------------------------
+	|      default     |   1   |   0   |   0   |   0   ||   0   |   0   |
+	---------------------------------------------------------------------
+
+:: problems summary ::
+:::: WARNINGS
+	Host repo1.maven.org not found. url=https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.9/spark-sql-kafka-0-10_2.12-3.5.9.pom
+
+	Host repo1.maven.org not found. url=https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.9/spark-sql-kafka-0-10_2.12-3.5.9.jar
+
+	Host repos.spark-packages.org not found. url=https://repos.spark-packages.org/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.9/spark-sql-kafka-0-10_2.12-3.5.9.pom
+
+	Host repos.spark-packages.org not found. url=https://repos.spark-packages.org/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.9/spark-sql-kafka-0-10_2.12-3.5.9.jar
+
+	Host repo.maven.apache.org not found. url=https://repo.maven.apache.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.9/spark-sql-kafka-0-10_2.12-3.5.9.pom
+
+	Host repo.maven.apache.org not found. url=https://repo.maven.apache.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.9/spark-sql-kafka-0-10_2.12-3.5.9.jar
+
+		module not found: org.apache.spark#spark-sql-kafka-0-10_2.12;3.5.9
+
+	==== local-m2-cache: tried
+
+	  file:/home/agent/.m2/repository/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.9/spark-sql-kafka-0-10_2.12-3.5.9.pom
+
+	  -- artifact org.apache.spark#spark-sql-kafka-0-10_2.12;3.5.9!spark-sql-kafka-0-10_2.12.jar:
+
+	  file:/home/agent/.m2/repository/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.9/spark-sql-kafka-0-10_2.12-3.5.9.jar
+
+	==== local-ivy-cache: tried
+
+	  /home/agent/.ivy2/local/org.apache.spark/spark-sql-kafka-0-10_2.12/3.5.9/ivys/ivy.xml
+
+	  -- artifact org.apache.spark#spark-sql-kafka-0-10_2.12;3.5.9!spark-sql-kafka-0-10_2.12.jar:
+
+	  /home/agent/.ivy2/local/org.apache.spark/spark-sql-kafka-0-10_2.12/3.5.9/jars/spark-sql-kafka-0-10_2.12.jar
+
+	==== central: tried
+
+	  https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.9/spark-sql-kafka-0-10_2.12-3.5.9.pom
+
+	  -- artifact org.apache.spark#spark-sql-kafka-0-10_2.12;3.5.9!spark-sql-kafka-0-10_2.12.jar:
+
+	  https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.9/spark-sql-kafka-0-10_2.12-3.5.9.jar
+
+	==== spark-packages: tried
+
+	  https://repos.spark-packages.org/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.9/spark-sql-kafka-0-10_2.12-3.5.9.pom
+
+	  -- artifact org.apache.spark#spark-sql-kafka-0-10_2.12;3.5.9!spark-sql-kafka-0-10_2.12.jar:
+
+	  https://repos.spark-packages.org/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.9/spark-sql-kafka-0-10_2.12-3.5.9.jar
+
+	==== repo-1: tried
+
+	  https://repo.maven.apache.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.9/spark-sql-kafka-0-10_2.12-3.5.9.pom
+
+	  -- artifact org.apache.spark#spark-sql-kafka-0-10_2.12;3.5.9!spark-sql-kafka-0-10_2.12.jar:
+
+	  https://repo.maven.apache.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.9/spark-sql-kafka-0-10_2.12-3.5.9.jar
+
+		::::::::::::::::::::::::::::::::::::::::::::::
+
+		::          UNRESOLVED DEPENDENCIES         ::
+
+		::::::::::::::::::::::::::::::::::::::::::::::
+
+		:: org.apache.spark#spark-sql-kafka-0-10_2.12;3.5.9: not found
+
+		::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
+:: USE VERBOSE OR DEBUG MESSAGE LEVEL FOR MORE DETAILS
+Exception in thread "main" java.lang.RuntimeException: [unresolved dependency: org.apache.spark#spark-sql-kafka-0-10_2.12;3.5.9: not found]
+	at org.apache.spark.deploy.SparkSubmitUtils$.resolveMavenCoordinates(SparkSubmit.scala:1613)
+	at org.apache.spark.util.DependencyUtils$.resolveMavenDependencies(DependencyUtils.scala:185)
+	at org.apache.spark.deploy.SparkSubmit.prepareSubmitEnvironment(SparkSubmit.scala:339)
+	at org.apache.spark.deploy.SparkSubmit.org$apache$spark$deploy$SparkSubmit$$runMain(SparkSubmit.scala:969)
+	at org.apache.spark.deploy.SparkSubmit.doRunMain$1(SparkSubmit.scala:199)
+	at org.apache.spark.deploy.SparkSubmit.submit(SparkSubmit.scala:222)
+	at org.apache.spark.deploy.SparkSubmit.doSubmit(SparkSubmit.scala:91)
+	at org.apache.spark.deploy.SparkSubmit$$anon$2.doSubmit(SparkSubmit.scala:1125)
+	at org.apache.spark.deploy.SparkSubmit$.main(SparkSubmit.scala:1134)
+	at org.apache.spark.deploy.SparkSubmit.main(SparkSubmit.scala)
+Traceback (most recent call last):
+  File "/workspace/scratch/65da83183df7/industrial-streaming-mlops/scripts/qualify_native.py", line 444, in <module>
+    main()
+  File "/workspace/scratch/65da83183df7/industrial-streaming-mlops/scripts/qualify_native.py", line 238, in main
+    consume()
+  File "/workspace/scratch/65da83183df7/industrial-streaming-mlops/scripts/qualify_native.py", line 226, in consume
+    result = stream(
+             ^^^^^^^
+  File "/workspace/scratch/65da83183df7/industrial-streaming-mlops/src/industrial_mlops/streaming.py", line 148, in stream
+    spark = builder.getOrCreate()
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/65da83183df7/industrial-streaming-mlops/.tools/venv311/lib/python3.11/site-packages/pyspark/sql/session.py", line 497, in getOrCreate
+    sc = SparkContext.getOrCreate(sparkConf)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/65da83183df7/industrial-streaming-mlops/.tools/venv311/lib/python3.11/site-packages/pyspark/context.py", line 515, in getOrCreate
+    SparkContext(conf=conf or SparkConf())
+  File "/workspace/scratch/65da83183df7/industrial-streaming-mlops/.tools/venv311/lib/python3.11/site-packages/pyspark/context.py", line 201, in __init__
+    SparkContext._ensure_initialized(self, gateway=gateway, conf=conf)
+  File "/workspace/scratch/65da83183df7/industrial-streaming-mlops/.tools/venv311/lib/python3.11/site-packages/pyspark/context.py", line 436, in _ensure_initialized
+    SparkContext._gateway = gateway or launch_gateway(conf)
+                                       ^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/65da83183df7/industrial-streaming-mlops/.tools/venv311/lib/python3.11/site-packages/pyspark/java_gateway.py", line 107, in launch_gateway
+    raise PySparkRuntimeError(
+pyspark.errors.exceptions.base.PySparkRuntimeError: [JAVA_GATEWAY_EXITED] Java gateway process exited before sending its port number.

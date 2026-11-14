@@ -1,0 +1,6 @@
+{"stage":"starting_benchmark_services"}
+{"hours":2,"name":"h02-p1-w1","partitions":1,"stage":"running_benchmark_variant","workers":1}
+{"hours":24,"name":"h24-p1-w1","partitions":1,"stage":"running_benchmark_variant","workers":1}
+{"hours":24,"name":"h24-p3-w1","partitions":3,"stage":"running_benchmark_variant","workers":1}
+{"hours":24,"name":"h24-p3-w2","partitions":3,"stage":"running_benchmark_variant","workers":2}
+{"evidence":"/workspace/scratch/65da83183df7/industrial-streaming-mlops/state/streaming-benchmark-03/evidence/benchmark.json","stage":"benchmark_finished","status":"passed"}

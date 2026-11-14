@@ -1,0 +1,14 @@
+{
+  "acknowledged": 205,
+  "elapsed_seconds": 0.34290251600032207,
+  "events_per_second": 597.837549841155,
+  "offsets": {
+    "0": {
+      "count": 205,
+      "first": 0,
+      "last": 204
+    }
+  },
+  "partitions": 1,
+  "topic": "benchmark-h02-p1-w1"
+}
