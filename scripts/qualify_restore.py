@@ -260,6 +260,7 @@ def main() -> None:
         "protocol": {"machines": args.machines, "sites": 2, "training_hours_per_split": 72,
                      "initial_hours": 24, "retained_backlog_hours": 2, "fresh_input_hours": 2,
                      "seeds": [42, 45, 46], "partitions": 3, "local_threads": 2,
+                     "jvm_active_processor_count": 2,
                      "max_offsets_per_trigger": 200, "total_budget_seconds": args.budget_seconds,
                      "broker_listen_timeout_seconds": 90,
                      "mlflow_background_job_execution": False,
@@ -272,7 +273,9 @@ def main() -> None:
     report["service_profile"] = {
         "mlflow_background_job_execution": services.env.get("MLFLOW_SERVER_ENABLE_JOB_EXECUTION"),
         "mlflow_http_workers": 1,
-        "scope": "Owned local tracking/artifact/registry server; unused background job execution is disabled",
+        "jvm_active_processor_count": 2,
+        "jvm_processor_limit_scope": "JVM ergonomics and availableProcessors; not an OS CPU quota or a total thread cap",
+        "scope": "Owned native Kafka/Spark JVMs and local MLflow tracking/artifact/registry server; unused MLflow background jobs are disabled",
     }
     write_json(work / "evidence" / "protocol.json", report)
     uri, bootstrap, topic, query = "http://127.0.0.1:5000", "127.0.0.1:19092", "restore-backlog", "restore-backlog"
@@ -497,6 +500,9 @@ def main() -> None:
         report["checks"]["one_query_identity_across_distinct_worker_runs"] = (
             len({r["query_id"] for r in report["streams"].values()}) == 1
             and len({r["run_id"] for r in report["streams"].values()}) == len(report["streams"]))
+        report["checks"]["all_spark_jvms_observe_declared_processor_count"] = (
+            len(report["streams"]) == 4
+            and all(r.get("jvm_available_processors") == 2 for r in report["streams"].values()))
         with Store(restored_db, config, readonly=True) as store:
             final_lag = source_lag(store, bootstrap, topic)
             report["final_source_lag"] = final_lag

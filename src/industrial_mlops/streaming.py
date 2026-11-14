@@ -278,10 +278,12 @@ def stream(
     spark.sparkContext.setLogLevel("WARN")
     query = None
     started = time.perf_counter()
-    result = {"engine": "Spark Structured Streaming", "spark_version": spark.version,
+    result = {"engine": "Spark Structured Streaming",
               "mode": "availableNow" if available_now else "duration",
               "workers": workers, "max_offsets_per_trigger": max_offsets}
     try:
+        result["spark_version"] = spark.version
+        result["jvm_available_processors"] = int(spark._jvm.java.lang.Runtime.getRuntime().availableProcessors())
         source = (
             spark.readStream.format("kafka")
             .option("kafka.bootstrap.servers", bootstrap)

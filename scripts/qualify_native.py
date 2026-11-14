@@ -44,6 +44,13 @@ class Services:
             "MLFLOW_HTTP_REQUEST_MAX_RETRIES": "0", "KAFKA_HEAP_OPTS": "-Xms256m -Xmx512m",
             "SPARK_KAFKA_JARS": str(tools / "spark-jars"),
         })
+        # Size JVM ergonomics explicitly in this owned native profile. This is
+        # not a CPU quota; retain caller options and put the reviewed value last.
+        processor_option = "-XX:ActiveProcessorCount=2"
+        java_options = self.env.get("JAVA_TOOL_OPTIONS", "")
+        if java_options.split()[-1:] != [processor_option]:
+            separator = "" if not java_options or java_options[-1].isspace() else " "
+            self.env["JAVA_TOOL_OPTIONS"] = java_options + separator + processor_option
         os.environ.update(self.env)
 
     def start(self, name, command):
