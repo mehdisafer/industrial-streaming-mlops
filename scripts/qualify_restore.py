@@ -176,13 +176,19 @@ def main() -> None:
                      "seeds": [42, 45, 46], "partitions": 3, "local_threads": 2,
                      "max_offsets_per_trigger": 200, "total_budget_seconds": args.budget_seconds,
                      "broker_listen_timeout_seconds": 90,
+                     "mlflow_background_job_execution": False,
                      "cleanup_reserve_seconds": 180, "config": config.to_dict()},
         "checks": {}, "publications": [], "streams": {}, "resources": {},
         "business_protocol_complete": False,
         "provider": "not_executed", "cross_host_restore": "not_executed",
     }
-    write_json(work / "evidence" / "protocol.json", report)
     services, restored_services = ObservedServices(work, tools), None
+    report["service_profile"] = {
+        "mlflow_background_job_execution": services.env.get("MLFLOW_SERVER_ENABLE_JOB_EXECUTION"),
+        "mlflow_http_workers": 1,
+        "scope": "Owned local tracking/artifact/registry server; unused background job execution is disabled",
+    }
+    write_json(work / "evidence" / "protocol.json", report)
     uri, bootstrap, topic, query = "http://127.0.0.1:5000", "127.0.0.1:19092", "restore-backlog", "restore-backlog"
     db, checkpoint = work / "pipeline" / "monitor.db", work / "checkpoints"
     all_events = []
@@ -262,6 +268,10 @@ def main() -> None:
     try:
         from industrial_mlops.registry import RegistryClient
         from industrial_mlops.streaming import source_lag
+        report["checks"]["unused_mlflow_background_jobs_disabled"] = (
+            report["service_profile"]["mlflow_background_job_execution"] == "false")
+        if not report["checks"]["unused_mlflow_background_jobs_disabled"]:
+            raise ValueError("The bounded local profile must disable unused MLflow background jobs")
         emit("restore_starting_owned_mlflow")
         services.mlflow()
         emit("restore_training_fixed_protocol")

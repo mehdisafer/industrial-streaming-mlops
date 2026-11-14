@@ -40,6 +40,7 @@ class Services:
             "OPENBLAS_NUM_THREADS": "1", "OMP_NUM_THREADS": "1", "MKL_NUM_THREADS": "1",
             "MLFLOW_DISABLE_AGENT_HINT": "1", "MLFLOW_HTTP_REQUEST_TIMEOUT": "5",
             "MLFLOW_DISABLE_TELEMETRY": "true", "DO_NOT_TRACK": "true",
+            "MLFLOW_SERVER_ENABLE_JOB_EXECUTION": "false",
             "MLFLOW_HTTP_REQUEST_MAX_RETRIES": "0", "KAFKA_HEAP_OPTS": "-Xms256m -Xmx512m",
             "SPARK_KAFKA_JARS": str(tools / "spark-jars"),
         })
