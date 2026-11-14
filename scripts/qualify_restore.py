@@ -140,6 +140,92 @@ def preserves(previous: dict, current: dict) -> bool:
                for table, values in previous.items() for key, body in values.items())
 
 
+def verify_progress_ranges(progress: list, topic: str, start_offsets: dict, publication: dict) -> dict:
+    """Reconcile one bounded Kafka publication with contiguous Spark offset ranges.
+
+    foreachBatch can read its input more than once. Spark's numInputRows is kept
+    as an execution metric, never divided or treated as a unique source count.
+    This qualification requires complete progress for one fixed topic/partition set.
+    """
+    result = {"valid": False, "expected_start": start_offsets, "batches": [],
+              "observed_offset_count": 0, "reported_input_rows": 0}
+
+    def require(condition, reason):
+        if not condition:
+            raise ValueError(reason)
+
+    def integer(value):
+        return type(value) is int and value >= 0
+
+    try:
+        count = publication["partitions"]
+        require(integer(count) and count > 0, "invalid publication partition count")
+        partitions = {str(i) for i in range(count)}
+        require(isinstance(start_offsets, dict) and set(start_offsets) == partitions,
+                "initial partition set differs from publication")
+        require(all(integer(v) for v in start_offsets.values()), "invalid initial offset")
+        require(publication["topic"] == topic, "publication topic differs")
+        published = publication["offsets"]
+        require(isinstance(published, dict) and set(published) <= partitions,
+                "publication contains unexpected partitions")
+        expected_end = dict(start_offsets)
+        acknowledged = publication["acknowledged"]
+        require(integer(acknowledged), "invalid acknowledged count")
+        published_count = 0
+        for partition, offsets in published.items():
+            first, last, rows = offsets["first"], offsets["last"], offsets["count"]
+            require(all(integer(v) for v in (first, last, rows)) and rows > 0,
+                    "invalid published offset range")
+            require(first == start_offsets[partition] and last - first + 1 == rows,
+                    "published range does not continue the checkpoint")
+            expected_end[partition] = last + 1
+            published_count += rows
+        require(published_count == acknowledged, "publication counts do not reconcile")
+        result["expected_end"] = expected_end
+        require(isinstance(progress, list) and bool(progress), "progress is missing or empty")
+        cursor, previous_batch = dict(start_offsets), None
+        for batch in progress:
+            batch_id = batch["batchId"]
+            require(integer(batch_id), "invalid Spark batch ID")
+            require(previous_batch is None or batch_id == previous_batch + 1,
+                    "Spark batch IDs are missing, repeated or reordered")
+            sources = batch["sources"]
+            require(isinstance(sources, list) and len(sources) == 1,
+                    "expected exactly one Kafka source")
+            source = sources[0]
+            require(isinstance(source, dict), "source progress is not an object")
+            require(source.get("description") == f"KafkaV2[Subscribe[{topic}]]",
+                    "source is not the expected Spark Kafka subscription")
+            start, end = source["startOffset"], source["endOffset"]
+            require(isinstance(start, dict) and isinstance(end, dict)
+                    and set(start) == {topic} and set(end) == {topic},
+                    "source offsets are missing or bound to another topic")
+            start, end = start[topic], end[topic]
+            require(isinstance(start, dict) and isinstance(end, dict)
+                    and set(start) == partitions and set(end) == partitions,
+                    "source partition set differs")
+            require(all(integer(v) for v in (*start.values(), *end.values())),
+                    "invalid source offset")
+            require(start == cursor, "source offset ranges overlap or contain a gap")
+            require(all(start[p] <= end[p] <= expected_end[p] for p in partitions),
+                    "source range regresses or exceeds the publication")
+            reported = batch["numInputRows"]
+            require(integer(reported), "invalid reported input-row metric")
+            rows = sum(end[p] - start[p] for p in partitions)
+            result["batches"].append({"batch_id": batch_id, "start": start,
+                                      "end": end, "offset_count": rows,
+                                      "reported_input_rows": reported})
+            result["observed_offset_count"] += rows
+            result["reported_input_rows"] += reported
+            cursor, previous_batch = dict(end), batch_id
+        require(cursor == expected_end and result["observed_offset_count"] == acknowledged,
+                "progress does not cover the complete acknowledged publication")
+        result["valid"] = True
+    except (KeyError, TypeError, ValueError) as exc:
+        result["reason"] = str(exc)
+    return result
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--work-dir", required=True)
@@ -178,7 +264,7 @@ def main() -> None:
                      "broker_listen_timeout_seconds": 90,
                      "mlflow_background_job_execution": False,
                      "cleanup_reserve_seconds": 180, "config": config.to_dict()},
-        "checks": {}, "publications": [], "streams": {}, "resources": {},
+        "checks": {}, "publications": [], "streams": {}, "resources": {}, "source_ranges": {},
         "business_protocol_complete": False,
         "provider": "not_executed", "cross_host_restore": "not_executed",
     }
@@ -349,9 +435,13 @@ def main() -> None:
         backlog_stream = consume(restored_services, "restored-backlog", restored_db, restored_cp)
         report["checks"]["copied_spark_query_identity_preserved"] = (
             backlog_stream["query_id"] == initial_stream["query_id"])
+        backlog_ranges = verify_progress_ranges(
+            backlog_stream["progress"], topic,
+            {str(p["partition"]): p["sink_next"] for p in report["pre_backup_lag"]["partitions"]},
+            backlog["receipt"])
+        report["source_ranges"]["restored-backlog"] = backlog_ranges
         report["checks"]["restored_query_reads_only_unconsumed_backlog"] = (
-            sum(p.get("numInputRows", 0) for p in backlog_stream["progress"])
-            == backlog["receipt"]["acknowledged"])
+            backlog_ranges["valid"])
         with Store(restored_db, config, readonly=True) as store:
             backlog_counts, backlog_rows = store.counts(), immutable_rows(store)
             lag = source_lag(store, bootstrap, topic)
@@ -367,10 +457,13 @@ def main() -> None:
         fresh = publish("post-restore", 46, 2, "2026-07-05T00:00:00Z")
         emit("restore_consuming_new_post_restore_input")
         fresh_stream = consume(restored_services, "post-restore", restored_db, restored_cp)
+        fresh_ranges = verify_progress_ranges(
+            fresh_stream["progress"], topic,
+            {str(p["partition"]): p["sink_next"] for p in lag["partitions"]}, fresh["receipt"])
+        report["source_ranges"]["post-restore"] = fresh_ranges
         report["checks"]["same_query_reads_only_fresh_post_restore_input"] = (
             fresh_stream["query_id"] == initial_stream["query_id"]
-            and sum(p.get("numInputRows", 0) for p in fresh_stream["progress"])
-            == fresh["receipt"]["acknowledged"])
+            and fresh_ranges["valid"])
         with Store(restored_db, config, readonly=True) as store:
             final_counts, final_rows = store.counts(), immutable_rows(store)
             report["final_verification"] = store.verify()
@@ -396,6 +489,11 @@ def main() -> None:
             report["final_fingerprints"] = fingerprints(final_rows)
             write_json(work / "evidence" / "dashboard-snapshot.json", store.snapshot())
         replay = consume(restored_services, "empty-resume", restored_db, restored_cp)
+        empty_ranges = verify_progress_ranges(
+            replay["progress"], topic,
+            {str(p["partition"]): p["sink_next"] for p in fresh_stream["source_lag"]["partitions"]},
+            {"topic": topic, "partitions": 3, "offsets": {}, "acknowledged": 0})
+        report["source_ranges"]["empty-resume"] = empty_ranges
         report["checks"]["one_query_identity_across_distinct_worker_runs"] = (
             len({r["query_id"] for r in report["streams"].values()}) == 1
             and len({r["run_id"] for r in report["streams"].values()}) == len(report["streams"]))
@@ -404,7 +502,7 @@ def main() -> None:
             report["final_source_lag"] = final_lag
             report["checks"]["repeated_checkpoint_resume_has_no_duplicate_business_effects"] = (
                 immutable_rows(store) == final_rows and store.counts() == final_counts
-                and sum(p.get("numInputRows", 0) for p in replay["progress"]) == 0)
+                and empty_ranges["valid"])
             report["checks"]["final_source_lag_zero"] = (
                 final_lag.get("status") == "observed" and final_lag.get("offsets_behind") == 0)
         with Store(db, config, readonly=True) as store:
