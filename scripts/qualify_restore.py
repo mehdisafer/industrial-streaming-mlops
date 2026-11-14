@@ -24,6 +24,7 @@ from industrial_mlops.config import PipelineConfig
 from industrial_mlops.features import causal_feature_rows
 from industrial_mlops.operations import backup_state, file_hash, restore_state, source_manifest, write_json
 from industrial_mlops.store import Store, canonical
+from benchmark_streaming import ResourceSampler
 from qualify_native import Services, emit
 
 
@@ -160,6 +161,7 @@ def main() -> None:
         "schema_version": "1", "scope": "real synthetic single-host stopped-state restore",
         "started_at": time.time(), "source": source, "runner_sha256": file_hash(Path(__file__)),
         "services_helper_sha256": file_hash(Path(__file__).with_name("qualify_native.py")),
+        "resource_sampler_sha256": file_hash(Path(__file__).with_name("benchmark_streaming.py")),
         "python": platform.python_version(), "platform": platform.platform(),
         "runtime": {name: importlib.metadata.version(name) for name in (
             "pyspark", "mlflow", "kafka-python", "scikit-learn", "numpy", "pandas", "psutil")},
@@ -168,7 +170,7 @@ def main() -> None:
                      "seeds": [42, 45, 46], "partitions": 3, "local_threads": 2,
                      "max_offsets_per_trigger": 200, "total_budget_seconds": args.budget_seconds,
                      "cleanup_reserve_seconds": 180, "config": config.to_dict()},
-        "checks": {}, "publications": [], "streams": {},
+        "checks": {}, "publications": [], "streams": {}, "resources": {},
         "provider": "not_executed", "cross_host_restore": "not_executed",
     }
     write_json(work / "evidence" / "protocol.json", report)
@@ -211,12 +213,20 @@ def main() -> None:
     def consume(owner: Services, name: str, path: Path, cp: Path) -> dict:
         receipt = work / "evidence" / f"{name}-stream.json"
         duration = min(180, max(1, remaining() - 20))
-        owner.worker(name, [
-            "--bootstrap", bootstrap, "--topic", topic, "--db", str(path),
-            "--checkpoint", str(cp), "--tracking-uri", uri, "--query-id", query,
-            "--available-now", "--duration-seconds", str(duration),
-            "--max-offsets", "200", "--workers", "2", "--report", str(receipt),
-        ], timeout=min(duration + 20, remaining()))
+        sampler = ResourceSampler(owner, name, work / "evidence" / f"{name}-resources.jsonl")
+        sampler.start()
+        try:
+            owner.worker(name, [
+                "--bootstrap", bootstrap, "--topic", topic, "--db", str(path),
+                "--checkpoint", str(cp), "--tracking-uri", uri, "--query-id", query,
+                "--available-now", "--duration-seconds", str(duration),
+                "--max-offsets", "200", "--workers", "2", "--report", str(receipt),
+            ], timeout=min(duration + 20, remaining()))
+        finally:
+            observation = sampler.stop()
+            observation["scope"]["window"] = "worker launch through completion/failure; training is a prior process"
+            report["resources"][name] = observation
+            write_json(work / "evidence" / f"{name}-resource-summary.json", observation)
         result = json.loads(receipt.read_text())
         report["streams"][name] = result
         if not result["drained"] or not result["verification"]["valid"]:
@@ -224,14 +234,20 @@ def main() -> None:
         return result
 
     try:
-        from industrial_mlops.modeling import train_and_register
         from industrial_mlops.registry import RegistryClient
         from industrial_mlops.streaming import source_lag
         emit("restore_starting_owned_mlflow")
         services.mlflow()
         emit("restore_training_fixed_protocol")
-        training = train_and_register(uri, work / "training", config, source["identity"],
-                                      machines=args.machines, hours=72)
+        # Numerical training owns a separate process so its allocated memory is
+        # released before the concurrent broker/Spark/registry streaming phase.
+        services.start("training", [sys.executable, "-m", "industrial_mlops", "train",
+                                    "--tracking-uri", uri, "--output", str(work / "training"),
+                                    "--machines", str(args.machines), "--hours", "72"])
+        training_returncode = services.children["training"].wait(timeout=min(180, remaining()))
+        if training_returncode:
+            raise RuntimeError(f"training process exited {training_returncode}; see training.log")
+        training = json.loads((work / "training" / "training-report.json").read_text())
         model = RegistryClient(uri).load(str(training["models"]["candidate"]["model_version"]))
         report["model"] = {"model_name": model.model_name, "model_version": model.model_version,
                            "run_id": model.run_id, "qualified": model.qualified,
