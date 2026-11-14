@@ -171,6 +171,7 @@ def main() -> None:
                      "max_offsets_per_trigger": 200, "total_budget_seconds": args.budget_seconds,
                      "cleanup_reserve_seconds": 180, "config": config.to_dict()},
         "checks": {}, "publications": [], "streams": {}, "resources": {},
+        "business_protocol_complete": False,
         "provider": "not_executed", "cross_host_restore": "not_executed",
     }
     write_json(work / "evidence" / "protocol.json", report)
@@ -385,8 +386,9 @@ def main() -> None:
         write_json(work / "evidence" / "dashboard-snapshot.json", snapshot)
         report["checks"]["dashboard_reads_restored_live_sink"] = snapshot["counts"] == final_counts
         report["checks"]["source_unchanged_during_run"] = source_manifest()["files"] == source["files"]
+        report["business_protocol_complete"] = True
         emit("restore_business_checks_complete", checks=report["checks"])
-    except Exception as exc:
+    except BaseException as exc:
         report["failure"] = {"type": type(exc).__name__, "message": str(exc)[-5000:]}
         raise
     finally:
@@ -409,7 +411,9 @@ def main() -> None:
             and all(o["no_live_owned_processes"] for o in observations)
             and all(value is True for value in report["cleanup"]["ports_closed"].values()))
         report["checks"]["within_declared_total_budget"] = report["elapsed_seconds"] <= args.budget_seconds
-        report["passed"] = bool(report["checks"]) and all(report["checks"].values()) and "failure" not in report
+        report["passed"] = (
+            report["business_protocol_complete"] and bool(report["checks"])
+            and all(report["checks"].values()) and "failure" not in report)
         write_json(work / "evidence" / "restore-qualification.json", report)
     if not report["passed"]:
         raise RuntimeError("restoration qualification failed; original evidence retained")
