@@ -68,3 +68,9 @@ resources:
                 package: pandas==2.2.3
             - pypi:
                 package: skops==0.16.0
+            - pypi:
+                package: scipy==1.17.1
+            - pypi:
+                package: pyarrow==25.0.1
+            - pypi:
+                package: databricks-sdk==0.166.0

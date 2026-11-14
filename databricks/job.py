@@ -12,14 +12,17 @@ import argparse
 from collections import Counter
 from datetime import datetime, timezone
 import hashlib
+import importlib
 import importlib.metadata
 import json
 import math
 import os
 from pathlib import Path
 import re
+from statistics import median
 import sys
 import time
+from urllib.parse import urlsplit
 
 # Bundle source sync keeps shared code beside this file without installing a
 # wheel whose local dependencies include pyspark over the vendor runtime.
@@ -33,6 +36,141 @@ from industrial_mlops.features import FEATURE_NAMES, feature_signature, machine_
 SQL_NAME = re.compile(r"^[a-zA-Z][a-zA-Z0-9_]{0,62}$")
 TABLES = ("bronze", "dispositions", "accepted", "labels", "features", "predictions", "alerts", "batches", "deployment")
 MAX_REPLAY_BYTES = 64 * 1024 * 1024
+CHECKPOINT_BINDING = "_industrial_deployment.json"
+MAX_CHECKPOINT_ENTRIES = 10000
+MAX_CHECKPOINT_BINDING_BYTES = 65536
+PROVIDER_PACKAGE_PINS = {
+    "mlflow": "3.17.2", "numpy": "2.3.5", "pandas": "2.2.3",
+    "scikit-learn": "1.8.0", "skops": "0.16.0", "scipy": "1.17.1",
+    "pyarrow": "25.0.1", "databricks-sdk": "0.166.0",
+}
+
+
+def native_dbutils_preflight(dbutils) -> dict:
+    """Reject the SDK remote fallback before filesystem or table operations.
+
+    The caller imports this object exclusively from databricks.sdk.runtime. In
+    the pinned SDK that module selects either the native runtime namespace or
+    RemoteDbUtils; the latter has a different FileInfo/path contract.
+    """
+    from databricks.sdk.dbutils import RemoteDbUtils
+
+    if dbutils is None or isinstance(dbutils, RemoteDbUtils):
+        raise RuntimeError("Native Databricks dbutils on compatible classic compute is required; the SDK RemoteDbUtils fallback is unsupported")
+    fs = getattr(dbutils, "fs", None)
+    if not all(callable(getattr(fs, name, None)) for name in ("ls", "head", "mkdirs", "put")):
+        raise RuntimeError("The native Databricks filesystem interface is incomplete")
+    return {"status": "native_interface_selected",
+            "implementation": f"{type(dbutils).__module__}.{type(dbutils).__name__}",
+            "scope": "SDK remote fallback excluded; filesystem operations and provider permissions still require the checkpoint guard and provider acceptance"}
+
+
+def bind_checkpoint(fs, checkpoint_root: str, manifest: dict, *, namespace_exists: bool) -> dict:
+    """Bind one empty checkpoint or verify its owner using documented dbutils.fs operations.
+
+    Parent/root listings and marker reads must succeed. An error is never treated
+    as proof of absence. This is a single-writer qualification precondition, not
+    an object-store lock or a qualification of provider consistency semantics.
+    """
+    root = checkpoint_root.rstrip("/")
+    parsed = urlsplit(root)
+    parts = parsed.path.split("/")
+    if (parsed.query or parsed.fragment or ".." in parts or "." in parts
+            or (parsed.scheme and (parsed.scheme not in {"abfss", "s3", "gs"} or not parsed.netloc or not parsed.path.strip("/")))
+            or (not parsed.scheme and (not root.startswith("/Volumes/") or len([part for part in parts if part]) < 5))):
+        raise ValueError("Checkpoint must be a dedicated child directory in the authorized volume/cloud location, without query or traversal components")
+    if manifest.get("checkpoint_root", "").rstrip("/") != root:
+        raise ValueError("Checkpoint location and deployment manifest disagree")
+    expected = canonical_json({"schema_version": "1", "deployment": manifest})
+    if len(expected.encode("utf-8")) > MAX_CHECKPOINT_BINDING_BYTES:
+        raise ValueError("Checkpoint deployment manifest exceeds its byte bound")
+    parent, _, leaf = root.rpartition("/")
+
+    def listing(path):
+        # The parent must already exist and be listable. This avoids inferring
+        # "missing" from an arbitrary permission/transport exception.
+        entries = list(fs.ls(path))
+        if len(entries) > MAX_CHECKPOINT_ENTRIES:
+            raise RuntimeError("Checkpoint listing exceeds the qualification bound")
+        return entries
+
+    candidates = [entry for entry in listing(parent) if entry.name.rstrip("/") == leaf]
+    if len(candidates) > 1 or (candidates and not candidates[0].name.endswith("/")):
+        raise ValueError("Checkpoint path is ambiguous or is not a directory")
+    exists = bool(candidates)
+    if not exists and namespace_exists:
+        raise ValueError("An existing Delta deployment cannot adopt a missing checkpoint")
+    entries = listing(root) if exists else []
+    markers = [entry for entry in entries if entry.name == CHECKPOINT_BINDING]
+    other_entries = [entry for entry in entries if entry.name != CHECKPOINT_BINDING]
+    marker_path = root + "/" + CHECKPOINT_BINDING
+
+    def read_marker(entry):
+        if type(entry.size) is not int or not 0 < entry.size <= MAX_CHECKPOINT_BINDING_BYTES:
+            raise ValueError("Checkpoint ownership marker has an invalid size")
+        value = fs.head(marker_path, MAX_CHECKPOINT_BINDING_BYTES)
+        if not isinstance(value, str) or len(value.encode("utf-8")) != entry.size or value != expected:
+            raise ValueError("Checkpoint belongs to a different or unreadable deployment")
+
+    if markers:
+        if len(markers) != 1:
+            raise ValueError("Checkpoint ownership marker is ambiguous")
+        read_marker(markers[0])
+        if not namespace_exists and other_entries:
+            raise ValueError("A populated checkpoint cannot initialize a new Delta namespace")
+        return {"status": "matched", "marker": marker_path, "manifest_sha256": hashlib.sha256(expected.encode()).hexdigest()}
+    if entries or namespace_exists:
+        raise ValueError("Existing checkpoint/namespace has no matching ownership marker; preserve it and use a new isolated deployment")
+    if not exists:
+        if fs.mkdirs(root) is not True:
+            raise RuntimeError("Could not create the dedicated checkpoint directory")
+        if listing(root):
+            raise RuntimeError("Checkpoint became nonempty during initialization; stop and reconcile ownership")
+    if fs.put(marker_path, expected, False) is not True:
+        raise RuntimeError("Checkpoint ownership marker was not created")
+    verified = listing(root)
+    if len(verified) != 1 or verified[0].name != CHECKPOINT_BINDING:
+        raise RuntimeError("Checkpoint changed during ownership initialization; no Delta writes are allowed")
+    read_marker(verified[0])
+    return {"status": "created", "marker": marker_path, "manifest_sha256": hashlib.sha256(expected.encode()).hexdigest()}
+
+
+def runtime_import_preflight() -> dict:
+    """Check the task overlay before model access or writes; this is not provider acceptance."""
+    versions = {}
+    for name, expected in PROVIDER_PACKAGE_PINS.items():
+        try:
+            observed = importlib.metadata.version(name)
+        except importlib.metadata.PackageNotFoundError as error:
+            raise RuntimeError(f"Required provider dependency is absent: {name}") from error
+        if observed != expected:
+            raise RuntimeError(f"Provider dependency mismatch: {name} expected {expected}, observed {observed}")
+        versions[name] = observed
+    version_modules = {"numpy": "numpy", "pandas": "pandas", "scipy": "scipy", "pyarrow": "pyarrow",
+                       "scikit-learn": "sklearn", "mlflow": "mlflow", "skops": "skops",
+                       "databricks-sdk": "databricks.sdk.version"}
+    modules = {}
+    loaded_versions = {}
+    for package, name in version_modules.items():
+        modules[name] = importlib.import_module(name)
+        loaded_versions[package] = getattr(modules[name], "__version__", None)
+        expected = PROVIDER_PACKAGE_PINS[package]
+        if loaded_versions[package] != expected:
+            raise RuntimeError(f"Loaded provider module mismatch: {package} expected {expected}, observed {loaded_versions[package]}; restart the dedicated task Python process after its library overlay")
+    for name in ("scipy.linalg", "sklearn.preprocessing", "skops.io", "databricks.sdk"):
+        modules[name] = importlib.import_module(name)
+    np = modules["numpy"]
+    values = np.asarray([1.0, 2.0])
+    checks = {
+        "numpy_scipy_numeric": math.isclose(float(modules["scipy.linalg"].norm(values)), math.sqrt(5.0)),
+        "pyarrow_numpy_roundtrip": bool(np.array_equal(modules["pyarrow"].array(values).to_numpy(), values)),
+        "pandas_numpy_roundtrip": bool(np.array_equal(modules["pandas"].DataFrame({"value": values})["value"].to_numpy(), values)),
+        "sklearn_numeric": bool(np.allclose(modules["sklearn.preprocessing"].StandardScaler().fit_transform([[1.0], [3.0]]), [[-1.0], [1.0]])),
+    }
+    if not all(checks.values()):
+        raise RuntimeError("Provider numerical import/ABI smoke failed")
+    return {"status": "imports_checked", "packages": versions, "loaded_versions": loaded_versions, "checks": checks,
+            "scope": "Used numerical imports and simple ABI operations only; no Spark, Kafka, Delta, registry or workspace acceptance"}
 
 
 def classify_records(records: list[dict], config: PipelineConfig) -> tuple[list[dict], list[dict], list[str]]:
@@ -40,6 +178,8 @@ def classify_records(records: list[dict], config: PipelineConfig) -> tuple[list[
     seen: dict[str, str] = {}
     maxima: dict[tuple, float] = {}
     assignments: dict[tuple, tuple] = {}
+    accepted_sensors: dict[str, dict] = {}
+    labeled_anchors: set[str] = set()
     accepted: list[dict] = []
     dispositions: list[dict] = []
     payloads: list[str] = []
@@ -64,23 +204,159 @@ def classify_records(records: list[dict], config: PipelineConfig) -> tuple[list[
             else:
                 seen[event["event_id"]] = digest
                 key = machine_key(event)
-                assignment = (record["topic"], record["partition"])
-                if key in assignments and assignments[key] != assignment:
-                    raise RuntimeError("A machine changed Kafka partitions; use a new topic/checkpoint for repartitioning")
-                assignments[key] = assignment
                 event_time = parse_time(event["event_time"])
                 watermark = maxima.get(key, -math.inf) - config.lateness_seconds
                 if event["kind"] == "sensor" and event_time <= watermark:
                     disposition["reason"] = "late_after_watermark"
                 else:
-                    disposition.update(status="accepted", reason=None)
-                    accepted.append(event)
-                    if event["kind"] != "label":
-                        maxima[key] = max(event_time, maxima.get(key, -math.inf))
+                    if event["kind"] == "label":
+                        target = accepted_sensors.get(event["prediction_event_id"])
+                        if target is None:
+                            disposition["reason"] = "label_target_not_accepted"
+                        elif any(event[field] != target[field] for field in (
+                            "dataset_id", "site_id", "machine_id", "event_time",
+                        )):
+                            disposition["reason"] = "label_target_identity_conflict"
+                        elif event["prediction_event_id"] in labeled_anchors:
+                            disposition["reason"] = "label_target_already_exists"
+                    if disposition["reason"] is None:
+                        assignment = (record["topic"], record["partition"])
+                        if key in assignments and assignments[key] != assignment:
+                            raise RuntimeError("A machine changed Kafka partitions; use a new topic/checkpoint for repartitioning")
+                        assignments[key] = assignment
+                        disposition.update(status="accepted", reason=None)
+                        accepted.append(event)
+                        if event["kind"] == "label":
+                            labeled_anchors.add(event["prediction_event_id"])
+                        else:
+                            maxima[key] = max(event_time, maxima.get(key, -math.inf))
+                            if event["kind"] == "sensor":
+                                accepted_sensors[event["event_id"]] = event
         except ContractError as error:
             disposition["reason"] = "invalid_utf8" if payload == "\x00" else error.reason
         dispositions.append(disposition)
     return accepted, dispositions, payloads
+
+
+def prepare_prediction_outputs(features: list[dict], scores: dict[str, float],
+                               previous: list[dict], model_info: dict,
+                               config: PipelineConfig, code_sha: str) -> tuple[list[dict], list[dict]]:
+    """Keep each committed score/cooldown decision immutable and replay missing alert writes."""
+    by_feature = {feature["feature_id"]: feature for feature in features}
+    if len(by_feature) != len(features):
+        raise ValueError("Feature identities are not unique")
+    existing = {}
+    last_alarm: dict[tuple, float] = {}
+    for prediction in previous:
+        fid = prediction["feature_id"]
+        if fid in existing or fid not in by_feature:
+            raise ValueError("Persisted prediction has duplicate or unknown feature identity")
+        if (prediction.get("code_sha") != code_sha
+                or any(prediction.get(key) != value for key, value in model_info.items())
+                or any(prediction.get(key) != value for key, value in by_feature[fid].items())):
+            raise ValueError("Persisted prediction differs from its immutable deployment/feature")
+        expected_id = content_hash({"feature_id": fid, "model_uri": model_info["model_uri"]})
+        score = prediction.get("score")
+        if (prediction.get("prediction_id") != expected_id
+                or isinstance(score, bool) or not isinstance(score, (int, float))
+                or not math.isfinite(score) or not 0 <= score <= 1
+                or type(prediction.get("alert_emitted")) is not bool
+                or prediction.get("alert_policy") != "cooldown-v1"
+                or prediction.get("risk_detected") != (score >= model_info["threshold"])
+                or (prediction["alert_emitted"] and not prediction["risk_detected"])):
+            raise ValueError("Persisted prediction lacks a valid immutable alert decision")
+        existing[fid] = prediction
+        if prediction["alert_emitted"]:
+            key = machine_key(prediction)
+            last_alarm[key] = max(parse_time(prediction["available_at"]), last_alarm.get(key, -math.inf))
+    new_features = [feature for feature in features if feature["feature_id"] not in existing]
+    if set(scores) != {feature["feature_id"] for feature in new_features}:
+        raise ValueError("Scores must cover exactly the uncommitted features")
+    new_predictions = []
+    for feature in sorted(new_features, key=lambda row: (
+        parse_time(row["available_at"]), parse_time(row["event_time"]), row["feature_id"],
+    )):
+        score = scores[feature["feature_id"]]
+        if isinstance(score, bool) or not isinstance(score, (int, float)) or not math.isfinite(score) or not 0 <= score <= 1:
+            raise ValueError("Model returned a non-finite or out-of-range score")
+        key = machine_key(feature)
+        available = parse_time(feature["available_at"])
+        detected = score >= model_info["threshold"]
+        emit = detected and available - last_alarm.get(key, -math.inf) >= config.alert_cooldown_seconds
+        prediction = {"prediction_id": content_hash({"feature_id": feature["feature_id"], "model_uri": model_info["model_uri"]}),
+                      **feature, **model_info, "score": float(score), "risk_detected": detected,
+                      "alert_emitted": emit, "alert_policy": "cooldown-v1", "code_sha": code_sha}
+        new_predictions.append(prediction)
+        if emit:
+            last_alarm[key] = available
+    # Decisions are persisted with predictions first. If a later alert/table
+    # write fails, the retry recreates the same alert from that decision.
+    alerts = [{"alert_id": content_hash({"prediction_id": prediction["prediction_id"], "policy": "cooldown-v1"}),
+               "prediction_id": prediction["prediction_id"], "site_id": prediction["site_id"],
+               "machine_id": prediction["machine_id"], "score": prediction["score"],
+               "payload": canonical_json(prediction)}
+              for prediction in [*previous, *new_predictions] if prediction["alert_emitted"]]
+    return new_predictions, alerts
+
+
+def evaluate_emitted_alerts(features: list[dict], events: list[dict], scores: dict[str, float],
+                           emitted: list[dict], threshold: float, config: PipelineConfig,
+                           *, as_of: float) -> dict:
+    """Evaluate actual emitted rows; unavailable outcomes never reconstruct cooldown."""
+    from industrial_mlops.modeling import evaluate_scores, labeled_rows
+
+    visible = [feature for feature in features if feature["feature_id"] in scores
+               and parse_time(feature["available_at"]) <= as_of]
+    rows, coverage = labeled_rows(visible, events, as_of=as_of)
+    metrics = evaluate_scores(rows, [scores[row["feature"]["feature_id"]] for row in rows], threshold, config) if rows else {}
+    by_feature = {row["feature"]["feature_id"]: row for row in rows}
+    visible_ids = {feature["feature_id"] for feature in visible}
+    active_alerts = [alert for alert in emitted if alert["feature_id"] in visible_ids]
+    if len({alert["feature_id"] for alert in active_alerts}) != len(active_alerts):
+        raise ValueError("Multiple emitted alerts reference one feature")
+    alerts = []
+    first_leads = {}
+    for alert in active_alerts:
+        row = by_feature.get(alert["feature_id"])
+        if row is None:
+            continue
+        feature, label = row["feature"], row["label"]
+        if (alert.get("alert_emitted") is not True or alert["score"] != scores[feature["feature_id"]]
+                or alert["available_at"] != feature["available_at"]):
+            raise ValueError("Emitted alert does not match its persisted prediction")
+        lead = parse_time(label["failure_at"]) - parse_time(alert["available_at"]) if label.get("failure_at") else None
+        true_alarm = label["target"] == 1 and lead is not None and lead > 0
+        if true_alarm:
+            key = (*machine_key(feature), label["failure_at"])
+            first_leads[key] = max(lead, first_leads.get(key, -math.inf))
+        alerts.append({"alert_id": alert["alert_id"], "prediction_id": alert["prediction_id"],
+                       "feature_id": feature["feature_id"], "event_id": feature["event_id"],
+                       "site_id": feature["site_id"], "machine_id": feature["machine_id"],
+                       "event_time": feature["event_time"], "available_at": feature["available_at"],
+                       "score": alert["score"], "target": label["target"], "true_alarm": true_alarm,
+                       "lead_seconds": lead, "failure_at": label.get("failure_at")})
+    failures = {(*machine_key(row["feature"]), row["label"]["failure_at"])
+                for row in rows if row["label"]["target"] == 1}
+    true_alerts = sum(alert["true_alarm"] for alert in alerts)
+    false_alerts = len(alerts) - true_alerts
+    exposure = metrics.get("machine_days", 0.0)
+    metrics.update({
+        "status": "available" if rows else "awaiting_labels", "as_of": as_of,
+        "semantics": "actual persisted alerts; cooldown is not reconstructed from labeled rows",
+        "coverage": coverage, "scored_features": len(visible), "mature_labels": len(rows),
+        "pending_labels": len(visible) - len(rows), "emitted_alert_count": len(active_alerts),
+        "pending_alert_labels": len(active_alerts) - len(alerts),
+        "labeled_features": len(rows), "threshold": threshold, "alert_count": len(alerts),
+        "true_alerts": true_alerts, "false_alerts": false_alerts,
+        "alert_precision": true_alerts / len(alerts) if alerts else None,
+        "machine_days": exposure, "false_alerts_per_machine_day": false_alerts / exposure if exposure else None,
+        "observed_failures": len(failures), "detected_failures": len(first_leads),
+        "failure_recall": len(first_leads) / len(failures) if failures else None,
+        "useful_failure_recall": sum(lead >= config.min_lead_seconds for lead in first_leads.values()) / len(failures) if failures else None,
+        "lead_seconds_median": median(first_leads.values()) if first_leads else None,
+        "lead_seconds_min": min(first_leads.values()) if first_leads else None, "alerts": alerts,
+    })
+    return metrics
 
 
 def load_model(arguments: argparse.Namespace, config: PipelineConfig):
@@ -187,12 +463,14 @@ def main() -> None:
     os.environ.setdefault("MLFLOW_HTTP_REQUEST_TIMEOUT", "5")
     os.environ.setdefault("MLFLOW_HTTP_REQUEST_MAX_RETRIES", "0")
     os.environ.setdefault("MLFLOW_DISABLE_AGENT_HINT", "1")
+    runtime_imports = runtime_import_preflight()
 
     from delta.tables import DeltaTable
     from pyspark.sql import SparkSession, functions as F
     from databricks.sdk.runtime import dbutils
-    from industrial_mlops.modeling import evaluate_scores, feature_frame, labeled_rows
+    from industrial_mlops.modeling import feature_frame
 
+    dbutils_preflight = native_dbutils_preflight(dbutils)
     spark = SparkSession.builder.getOrCreate()
     spark.conf.set("spark.sql.session.timeZone", "UTC")
     # The reference uses ordinary rows on the driver, not Arrow/pandas UDFs.
@@ -226,7 +504,15 @@ def main() -> None:
     manifest = {"code_sha": arguments.code_sha, "config": config.to_dict(), "model": model_info,
                 "source_manifest": source_manifest,
                 "topic": arguments.topic, "bootstrap_digest": hashlib.sha256(arguments.bootstrap.encode()).hexdigest(),
-                "checkpoint_root": arguments.checkpoint_root, "table_prefix": arguments.table_prefix}
+                "checkpoint_root": arguments.checkpoint_root, "catalog": arguments.catalog,
+                "schema": arguments.schema, "table_prefix": arguments.table_prefix}
+    deployment_exists = spark.catalog.tableExists(table_names["deployment"])
+    prior = spark.table(table_names["deployment"]).where("id = 'deployment'").limit(2).collect() if deployment_exists else []
+    if len(prior) > 1 or (prior and prior[0]["payload"] != canonical_json(manifest)):
+        raise ValueError("This namespace belongs to a different code/config/model/source deployment; use a new isolated namespace")
+    if not prior and any(spark.catalog.tableExists(table_names[name]) for name in TABLES if name != "deployment"):
+        raise ValueError("Existing output tables have no deployment manifest; preserve them for reconciliation")
+    checkpoint_binding = bind_checkpoint(dbutils.fs, arguments.checkpoint_root, manifest, namespace_exists=bool(prior))
     merge_rows("deployment", [{"id": "deployment", "payload": canonical_json(manifest)}], document_schema, ("id",))
     prior = spark.table(table_names["deployment"]).where("id = 'deployment'").collect()
     if len(prior) != 1 or prior[0]["payload"] != canonical_json(manifest):
@@ -264,37 +550,37 @@ def main() -> None:
         feature_schema = "feature_id STRING, event_id STRING, dataset_id STRING, site_id STRING, machine_id STRING, event_time STRING, available_at STRING, feature_version STRING, feature_signature STRING, payload STRING"
         feature_rows = [{key: feature[key] for key in ("feature_id", "event_id", "dataset_id", "site_id", "machine_id", "event_time", "available_at", "feature_version", "feature_signature")} | {"payload": canonical_json(feature)} for feature in features]
         merge_rows("features", feature_rows, feature_schema, ("feature_id",))
-        predictions = []
-        alerts = []
-        scores: dict[str, float] = {}
-        if features:
-            probabilities = model.predict_proba(feature_frame(features))[:, 1]
-            scores = {feature["feature_id"]: float(score) for feature, score in zip(features, probabilities, strict=True)}
-            if any(not math.isfinite(score) or not 0 <= score <= 1 for score in scores.values()):
-                raise ValueError("Model returned a non-finite or out-of-range score")
-            last_alarm: dict[tuple, float] = {}
-            for feature in sorted(features, key=lambda row: (parse_time(row["available_at"]), row["feature_id"])):
-                score = scores[feature["feature_id"]]
-                identity = {"feature_id": feature["feature_id"], "model_uri": model_info["model_uri"]}
-                prediction = {"prediction_id": content_hash(identity), **feature, **model_info,
-                              "score": score, "risk_detected": score >= model_info["threshold"], "code_sha": arguments.code_sha}
-                predictions.append({"prediction_id": prediction["prediction_id"], "feature_id": feature["feature_id"],
-                                    "dataset_id": feature["dataset_id"], "site_id": feature["site_id"], "machine_id": feature["machine_id"],
-                                    "score": score, "model_version": model_info["model_version"], "payload": canonical_json(prediction)})
-                key = machine_key(feature)
-                available = parse_time(feature["available_at"])
-                if prediction["risk_detected"] and available - last_alarm.get(key, -math.inf) >= config.alert_cooldown_seconds:
-                    last_alarm[key] = available
-                    alerts.append({"alert_id": content_hash({"prediction_id": prediction["prediction_id"], "policy": "cooldown-v1"}),
-                                   "prediction_id": prediction["prediction_id"], "site_id": feature["site_id"], "machine_id": feature["machine_id"],
-                                   "score": score, "payload": canonical_json(prediction)})
-        merge_rows("predictions", predictions, "prediction_id STRING, feature_id STRING, dataset_id STRING, site_id STRING, machine_id STRING, score DOUBLE, model_version STRING, payload STRING", ("prediction_id",))
+        prior_rows = spark.table(table_names["predictions"]).limit(arguments.max_records + 1).collect() if spark.catalog.tableExists(table_names["predictions"]) else []
+        if len(prior_rows) > arguments.max_records:
+            raise RuntimeError("Persisted prediction count exceeds the bounded source")
+        previous = [json.loads(row["payload"]) for row in prior_rows]
+        previous_ids = {prediction["feature_id"] for prediction in previous}
+        new_features = [feature for feature in features if feature["feature_id"] not in previous_ids]
+        new_scores = {}
+        if new_features:
+            probabilities = model.predict_proba(feature_frame(new_features))[:, 1]
+            new_scores = {feature["feature_id"]: float(score) for feature, score in zip(new_features, probabilities, strict=True)}
+        new_predictions, alerts = prepare_prediction_outputs(features, new_scores, previous, model_info, config, arguments.code_sha)
+        prediction_rows = [{key: prediction[key] for key in (
+            "prediction_id", "feature_id", "dataset_id", "site_id", "machine_id", "score", "model_version",
+        )} | {"payload": canonical_json(prediction)} for prediction in new_predictions]
+        merge_rows("predictions", prediction_rows, "prediction_id STRING, feature_id STRING, dataset_id STRING, site_id STRING, machine_id STRING, score DOUBLE, model_version STRING, payload STRING", ("prediction_id",))
         merge_rows("alerts", alerts, "alert_id STRING, prediction_id STRING, site_id STRING, machine_id STRING, score DOUBLE, payload STRING", ("alert_id",))
+        persisted_alert_rows = spark.table(table_names["alerts"]).limit(arguments.max_records + 1).collect()
+        if len(persisted_alert_rows) > arguments.max_records:
+            raise RuntimeError("Persisted alert count exceeds the bounded source")
+        intended_alerts = {alert["alert_id"]: alert for alert in alerts}
+        if (len(persisted_alert_rows) != len(intended_alerts)
+                or any(row.asDict() != intended_alerts.get(row["alert_id"]) for row in persisted_alert_rows)):
+            raise RuntimeError("Persisted alerts differ from immutable prediction decisions")
+        emitted = [{**json.loads(row["payload"]), "alert_id": row["alert_id"]} for row in persisted_alert_rows]
+        all_predictions = [*previous, *new_predictions]
+        scores = {prediction["feature_id"]: prediction["score"] for prediction in all_predictions}
         as_of = max((parse_time(event["ingested_at"]) for event in accepted), default=0)
-        joined, coverage = labeled_rows(features, accepted, as_of=as_of)
-        evaluation = evaluate_scores(joined, [scores[row["feature"]["feature_id"]] for row in joined], model_info["threshold"], config) if joined else None
-        report = {"batch_id": int(batch_id), "run_id": arguments.run_id, "input_rows_this_attempt": input_rows, "raw_bytes": footprint["bytes"] or 0, "replay": replay_report, "label_coverage": coverage,
-                  "model": model_info, "predictions": len(predictions), "alerts": len(alerts), "evaluation": evaluation,
+        evaluation = evaluate_emitted_alerts(features, accepted, scores, emitted, model_info["threshold"], config, as_of=as_of)
+        report = {"batch_id": int(batch_id), "run_id": arguments.run_id, "input_rows_this_attempt": input_rows, "raw_bytes": footprint["bytes"] or 0, "replay": replay_report, "label_coverage": evaluation["coverage"],
+                  "model": model_info, "predictions": len(all_predictions), "new_predictions": len(new_predictions),
+                  "alerts": len(emitted), "evaluation": evaluation,
                   "wall_seconds": time.perf_counter() - started, "completed_at": datetime.now(timezone.utc).isoformat()}
         # This is the final write. Partial tables from a failed batch remain
         # visible to operators but are not declared a completed batch.
@@ -331,6 +617,9 @@ def main() -> None:
                 "input_rows_this_attempt": sum(report["input_rows_this_attempt"] for report in batch_reports),
                 "code_sha": arguments.code_sha, "runtime": os.environ["DATABRICKS_RUNTIME_VERSION"], "spark": spark.version,
                 "python": sys.version.split()[0], "packages": {name: importlib.metadata.version(name) for name in ("mlflow", "numpy", "pandas", "scikit-learn", "skops")},
+                "runtime_import_preflight": runtime_imports,
+                "checkpoint_binding": checkpoint_binding,
+                "native_dbutils_preflight": dbutils_preflight,
                 "query_id": str(query.id), "query_run_id": str(query.runId), "progress": query.recentProgress,
                 "tables": counts, "table_history": histories, "latest_batch": latest, "batch_reports": batch_reports,
                 "model": model_info, "consumption": None, "consumption_status": "not_observed_requires_authorized_billing_source",

@@ -28,7 +28,7 @@ variables:
   output_root:
     description: Existing authorized /Volumes/catalog/schema/volume/project directory for evidence.
   checkpoint_root:
-    description: Durable checkpoint location on an existing authorized volume or cloud location.
+    description: Dedicated checkpoint child under an existing listable authorized volume/cloud parent; initially empty, then bound to this deployment.
   kafka_bootstrap_servers:
     description: Kafka endpoint reachable from the existing Databricks compute.
   kafka_topic:
