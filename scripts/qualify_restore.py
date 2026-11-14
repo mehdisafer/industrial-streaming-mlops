@@ -39,6 +39,12 @@ class ObservedServices(Services):
         super().start(name, command)
         self.owned.append((name, self.children[name]))
 
+    def wait_port(self, name, port, timeout=60):
+        # A recorded broker startup reached RUNNING just after the original
+        # 60-second listen deadline. Keep a declared 90-second broker allowance
+        # inside the unchanged overall work/cleanup budget.
+        super().wait_port(name, port, timeout=90 if name == "kafka" else timeout)
+
     def observe_groups(self) -> dict:
         import psutil
         groups = {process.pid for _, process in self.owned}
@@ -169,6 +175,7 @@ def main() -> None:
                      "initial_hours": 24, "retained_backlog_hours": 2, "fresh_input_hours": 2,
                      "seeds": [42, 45, 46], "partitions": 3, "local_threads": 2,
                      "max_offsets_per_trigger": 200, "total_budget_seconds": args.budget_seconds,
+                     "broker_listen_timeout_seconds": 90,
                      "cleanup_reserve_seconds": 180, "config": config.to_dict()},
         "checks": {}, "publications": [], "streams": {}, "resources": {},
         "business_protocol_complete": False,
@@ -225,14 +232,32 @@ def main() -> None:
             ], timeout=min(duration + 20, remaining()))
         finally:
             observation = sampler.stop()
+            observation["thread_stopped"] = not sampler.thread.is_alive()
             observation["scope"]["window"] = "worker launch through completion/failure; training is a prior process"
             report["resources"][name] = observation
             write_json(work / "evidence" / f"{name}-resource-summary.json", observation)
+            if not observation["thread_stopped"] or observation["sampler_errors"]:
+                raise RuntimeError(f"Resource capture did not stop cleanly for {name}")
         result = json.loads(receipt.read_text())
         report["streams"][name] = result
         if not result["drained"] or not result["verification"]["valid"]:
             raise RuntimeError(f"{name} did not drain with valid sink invariants")
         return result
+
+    def start_kafka(owner: Services, name: str, *, initialize=False) -> None:
+        sampler = ResourceSampler(owner, "__startup_only__", work / "evidence" / f"{name}-resources.jsonl")
+        sampler.start()
+        try:
+            owner.kafka(initialize=initialize)
+        finally:
+            observation = sampler.stop()
+            observation["thread_stopped"] = not sampler.thread.is_alive()
+            observation["scope"]["window"] = "broker format/startup through metadata readiness or failure"
+            observation["scope"]["processes"] = "runner and registered owned service trees; the short-lived format subprocess is not sampled"
+            report["resources"][name] = observation
+            write_json(work / "evidence" / f"{name}-resource-summary.json", observation)
+            if not observation["thread_stopped"] or observation["sampler_errors"]:
+                raise RuntimeError(f"Resource capture did not stop cleanly for {name}")
 
     try:
         from industrial_mlops.registry import RegistryClient
@@ -259,7 +284,7 @@ def main() -> None:
         # Kafka is not used during training. Start it only for the streaming
         # phase instead of keeping an idle broker live through numerical work.
         emit("restore_starting_owned_kafka_after_training")
-        services.kafka(initialize=True)
+        start_kafka(services, "initial-broker-startup", initialize=True)
         publish("initial", 42, 24, "2026-07-01T00:00:00Z")
         initial_stream = consume(services, "initial", db, checkpoint)
         with Store(db, config, readonly=True) as store:
@@ -300,7 +325,7 @@ def main() -> None:
         report["binding_relocation"] = {"before": original_binding, "after": relocated,
                                         "original_sha256": original_binding_hash}
         restored_services = ObservedServices(restored, tools)
-        restored_services.kafka()
+        start_kafka(restored_services, "restored-broker-startup")
         restored_services.mlflow()
         restored_model = RegistryClient(uri).load(str(model.model_version))
         report["checks"]["restored_numeric_model_identity"] = all(
