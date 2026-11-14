@@ -13,10 +13,6 @@ env:
   MLFLOW_DISABLE_TELEMETRY: "true"
   DO_NOT_TRACK: "true"
 
-concurrency:
-  group: verify-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   checks:
     runs-on: ubuntu-24.04
@@ -81,6 +77,9 @@ jobs:
   real-integration:
     needs: checks
     if: needs.checks.outputs.integration == 'true'
+    concurrency:
+      group: integration-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+      cancel-in-progress: false
     runs-on: ubuntu-24.04
     timeout-minutes: 35
     env:
