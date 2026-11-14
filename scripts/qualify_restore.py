@@ -58,7 +58,12 @@ class ObservedServices(Services):
                 "live_members": [m for m in members if m["status"] not in ("zombie", "dead")]}
 
     def stop_and_observe(self) -> dict:
-        self.close()
+        close_errors = []
+        try:
+            self.close()
+        except Exception as exc:
+            # A helper failure must not skip cleanup of other owned processes.
+            close_errors.append({"type": type(exc).__name__, "message": str(exc)})
         observation = self.observe_groups()
         # A completed Python wrapper can leave its JVM gateway in the owned group.
         for sig in (signal.SIGTERM, signal.SIGKILL):
@@ -77,8 +82,9 @@ class ObservedServices(Services):
                     break
                 time.sleep(.1)
         observation = self.observe_groups()
+        observation["close_errors"] = close_errors
         observation["no_live_owned_processes"] = (
-            not observation["live_members"] and not observation["observation_errors"]
+            not close_errors and not observation["live_members"] and not observation["observation_errors"]
             and all(r["returncode"] is not None for r in observation["roots"]))
         observation["scope"] = "owned process groups and reaped roots; zombie entries are terminated, not live services"
         return observation
@@ -221,8 +227,7 @@ def main() -> None:
         from industrial_mlops.modeling import train_and_register
         from industrial_mlops.registry import RegistryClient
         from industrial_mlops.streaming import source_lag
-        emit("restore_starting_owned_services")
-        services.kafka(initialize=True)
+        emit("restore_starting_owned_mlflow")
         services.mlflow()
         emit("restore_training_fixed_protocol")
         training = train_and_register(uri, work / "training", config, source["identity"],
@@ -234,6 +239,10 @@ def main() -> None:
                            "training_report_sha256": file_hash(work / "training" / "training-report.json")}
         with Store(db, config) as store:
             store.activate(model, shadow=not model.qualified)
+        # Kafka is not used during training. Start it only for the streaming
+        # phase instead of keeping an idle broker live through numerical work.
+        emit("restore_starting_owned_kafka_after_training")
+        services.kafka(initialize=True)
         publish("initial", 42, 24, "2026-07-01T00:00:00Z")
         initial_stream = consume(services, "initial", db, checkpoint)
         with Store(db, config, readonly=True) as store:
