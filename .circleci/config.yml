@@ -1,0 +1,38 @@
+version: 2.1
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/python:3.11
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - industrial-uv-v1-{{ checksum "uv.lock" }}
+      - run:
+          name: Install locked Python environment
+          command: |
+            python -m pip install --disable-pip-version-check uv==0.13.6
+            uv sync --frozen --all-extras --python 3.11
+      - save_cache:
+          key: industrial-uv-v1-{{ checksum "uv.lock" }}
+          paths:
+            - .venv
+            - ~/.cache/uv
+      - run:
+          name: Compile Python sources
+          command: uv run --frozen python -m compileall -q src databricks scripts
+      - run:
+          name: Lint
+          command: uv run --frozen ruff check src tests scripts
+      - run:
+          name: Diagnose test suite
+          command: circleci testsuite doctor "python-unit"
+      - run:
+          name: Run test suite
+          command: circleci testsuite run "python-unit"
+      - store_test_results:
+          path: test-results
+workflows:
+  build-and-test:
+    jobs:
+      - build-and-test
