@@ -1,9 +1,10 @@
 # Recorded execution evidence
 
 **The local reference passed the recorded native protocol. Full P03 acceptance
-remains open for GitHub Actions runner allocation and Databricks.**
-CircleCI's Python unit lane and a distinct Docker reference job succeeded on
-specified source commits, but Docker artifact byte verification remains open. All fleet data is
+remains open for Databricks and other explicitly listed release gates, not for
+GitHub Actions runner allocation.** CircleCI is the designated hosted CI.
+Its Python unit lane and separate Docker reference job succeeded on specified
+source commits, but Docker artifact byte verification remains open. All fleet data is
 synthetic. No industrial production reliability or distributed capacity is claimed.
 
 ## Current follow-up — 15 November 2026
@@ -12,7 +13,7 @@ synthetic. No industrial production reliability or distributed capacity is claim
 **21 real native checks**, **28 real restored-backlog checks** and **13 actual
 JavaScript assertions with explicit DOM/fetch doubles**. It includes original
 receipts, current advisory checks, the twelve-commit incremental history review,
-and fresh browser/hosted-CI blockers. Six hundred seconds were declared for the
+plus the browser startup limitation and historical GitHub Actions runner failures. Six hundred seconds were declared for the
 restoration exercise; it completed in 95.825 s. The fresh native fault/rollback
 execution completed in 200.955 s.
 
@@ -35,7 +36,7 @@ delivery. They are not relabelled with the new execution commit or timing.
 | Earlier failures | Original failed/intermediate attempts and corrective scope retained | [Attempt history](attempts/README.md) |
 | CircleCI Python unit CI | `build-and-test` succeeded on `579cbc5` and `ce7674c`; CI JUnit assertion counts not independently read | [CircleCI #5](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/5?useNewPipelines=false), [#7](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/7?useNewPipelines=false), [PR #4](https://github.com/mehdisafer/industrial-streaming-mlops/pull/4) |
 | Docker container qualification | [CircleCI `reference-containers`](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7) **success** at exact `4bcc55e`; older [#8](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/8?useNewPipelines=false) failed with exit 64 | Job status verified through GitHub commit-status API; original artifact contents and SHA-256 reports remain externally retained, not independently rechecked here |
-| Hosted GitHub Actions | Runner ID 0, no steps; unresolved independently of CircleCI | [Hosted execution boundary](checks/README.md#ci-helpers-and-hosted-execution) |
+| Historical GitHub Actions (non-gating) | Runner ID 0, no steps; maintainer reports quota exhausted. CircleCI replaces it for P03 acceptance; provider annotation was not independently retrieved | [Original runner evidence](checks/README.md#ci-helpers-and-hosted-execution) |
 | Databricks | Bundle and adapter prepared; no authorized provider run | [Provider prerequisites](../databricks.md) |
 
 ## Native source and output reconciliation

@@ -41,7 +41,7 @@ separates the completed local checks from the remaining platform and release gat
 | Streaming comparison | Four measured variants; exact business-output parity across the three 24-hour variants; [benchmark evidence](docs/evidence/benchmark/README.md) |
 | Hosted Docker reference | [CircleCI `reference-containers`](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7) **succeeded at `4bcc55e`** after fixing the evidence directory and ingress; original job artifacts are referenced externally, not independently mirrored here |
 | CircleCI Python unit CI | **Succeeded** at `579cbc5` ([#5](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/5?useNewPipelines=false)) and `ce7674c` ([#7](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/7?useNewPipelines=false)); merged [PR #4](https://github.com/mehdisafer/industrial-streaming-mlops/pull/4) |
-| Hosted GitHub Actions | Jobs failed before runner allocation (runner ID 0, no steps); cause unresolved, no Actions pass |
+| CI policy | **CircleCI is the authoritative acceptance CI** (Python unit/build checks and separate Docker reference). GitHub Actions quota is exhausted according to the maintainer; its execution is **not a P03 acceptance prerequisite** |
 | Databricks | **Open**: implementation prepared; no authorized workspace run |
 | Public release | Private repository; owner license and public-visibility decisions remain open |
 
@@ -49,7 +49,7 @@ See [scope issue #1](https://github.com/mehdisafer/industrial-streaming-mlops/is
 [original delivery #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2),
 [follow-up review #3](https://github.com/mehdisafer/industrial-streaming-mlops/pull/3),
 [CircleCI unit merge #4](https://github.com/mehdisafer/industrial-streaming-mlops/pull/4) and
-[container qualification draft #5](https://github.com/mehdisafer/industrial-streaming-mlops/pull/5)
+[merged container qualification #5](https://github.com/mehdisafer/industrial-streaming-mlops/pull/5)
 for the respective review and qualification states. The prepared release candidate is `v0.1.0-rc.1`; a tag and
 GitHub release have not been published.
 
@@ -290,17 +290,20 @@ bound. It compares feature/score identities, backlog drainage, measured latencie
 CPU and RSS within a ten-minute total budget. Model training is reused only when its
 source manifest matches; the benchmark performs no promotion.
 
-The GitHub Actions workflow is configured to run lightweight checks on every relevant event and
-select heavy integration for changes in executable/configuration paths or manual
-dispatch, with a conservative full run when no comparison base is available.
-Documentation-only pushes in an existing code PR are checked against that push's
-previous head. Only the selected heavy job joins a per-PR/ref concurrency group;
-it preserves a running job and allows one pending job. Local Git fixtures and static
-workflow checks exercised this selection, but hosted GitHub Actions scheduling
-remains unexecuted. The separate CircleCI Python lane succeeded at `579cbc5`
-and `ce7674c`. Docker qualification failed on old `ce7674c` but later
-succeeded on `4bcc55e` in the separate `reference-containers` job; GitHub
-Actions runner allocation is still unresolved.
+CircleCI is the CI acceptance authority for this repository. The fast
+`.circleci/config.yml` lane compiles, lints and tests the locked Python project;
+`.circleci/reference.yml` is the separate real Docker reference lane. The unit
+lane succeeded on `579cbc5`, `ce7674c`, and merged `main` at `c58b923`.
+The Docker lane failed on old `ce7674c` before integration and later succeeded
+on `4bcc55e`, which matches the integrated Docker/Compose configuration.
+
+A pre-existing GitHub Actions workflow remains available for future reuse. Its
+job selection and concurrency were tested locally, but its hosted jobs have not
+run because runner allocation failed. **The maintainer reports an exhausted
+GitHub Actions quota and has designated CircleCI as the replacement.** The
+quota explanation is maintainer-provided rather than independently established
+from the inaccessible GitHub annotation. No GitHub Actions execution or quota
+restoration is required to accept P03.
 The [current check evidence](docs/evidence/followup/README.md) records 122 audited
 third-party Python packages with zero known advisories at scan time. The 123-entry
 report explicitly skips this local project, which is not indexed on PyPI. These
@@ -345,9 +348,11 @@ No Databricks execution is claimed from these local tests.
 - [Release preparation and publication decisions](docs/release-notes.md)
 - [Python dependency lock](uv.lock) and [JVM connector lock](config/spark-jars.lock.json)
 
-The next milestones are durable retrieval/review of the hosted Docker artifacts,
-GitHub Actions runner allocation, authorized Databricks qualification,
-browser rendering review and owner decisions needed for a public release. Longer unattended operation also needs retention limits and supervision;
+The next milestones are durable retrieval/review of the hosted CircleCI Docker
+artifacts, authorized Databricks qualification, browser rendering review and
+owner decisions needed for a public release. GitHub Actions quota renewal and
+runner allocation are explicitly **non-blocking**. Longer unattended operation
+also needs retention limits and supervision;
 multi-node serving/state, authenticated service exposure and external model validation
 are future work. The [acceptance register](docs/acceptance.md) records these boundaries.
 
