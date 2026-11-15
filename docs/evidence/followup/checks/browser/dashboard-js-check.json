@@ -1,0 +1,446 @@
+{
+  "schema_version": "1",
+  "started_at": "2026-11-15T20:00:50.094Z",
+  "scope": "actual inline dashboard JavaScript under explicit minimal DOM/fetch doubles using saved real HTTP responses",
+  "exclusions": [
+    "browser engine",
+    "CSS/layout",
+    "accessibility",
+    "real network failure",
+    "Databricks execution"
+  ],
+  "runtime": {
+    "node": "v24.22.1",
+    "platform": "linux",
+    "architecture": "x64"
+  },
+  "inputs": {
+    "html": {
+      "path": "state/restore-20261115-01/evidence/dashboard-response.html",
+      "bytes": 4982,
+      "sha256": "b4d0ef29b755b2212152fdad92d2ce99614f39fb40c02963aef177774c405b71"
+    },
+    "inline_script": {
+      "bytes": 2236,
+      "sha256": "8f24dd464ba4dd5bcdfa411de74950f1814107c779fab4d58beb289bbb5a602d"
+    },
+    "snapshot": {
+      "path": "state/restore-20261115-01/evidence/dashboard-snapshot.json",
+      "bytes": 405742,
+      "sha256": "ad812c3b3d22123585f3190f71219da516b549da412442f70d108c463707f757"
+    },
+    "checker": {
+      "path": "state/browser-20261115/checker.js",
+      "sha256": "02e91118dbe4ceacf319f8169e22d6fd481902176eaf1bad69d18882aa04471a"
+    }
+  },
+  "snapshot_counts": {
+    "accepted": 2019,
+    "alerts": 6,
+    "batches": 22,
+    "control": 18,
+    "duplicate": 3,
+    "events": 2019,
+    "features": 1965,
+    "label": 2019,
+    "labels": 2019,
+    "pending_events": 0,
+    "pending_predictions": 0,
+    "predictions": 1965,
+    "raw": 4077,
+    "rejected": 18
+  },
+  "checks": {
+    "five_metric_cards_match_snapshot": true,
+    "alert_rows_match_documented_twenty_row_limit": true,
+    "prediction_rows_match_documented_forty_row_limit": true,
+    "health_uses_original_counts_rejections_runtime": true,
+    "active_model_version_and_pending_count_rendered": true,
+    "initial_refresh_succeeds_without_error_styling": true,
+    "periodic_refresh_registered_at_five_seconds": true,
+    "forced_http_failure_sets_visible_error": true,
+    "failed_refresh_preserves_last_rendered_data": true,
+    "successful_refresh_clears_stale_error_class": true,
+    "successful_refresh_restores_original_render_without_duplicate_rows": true,
+    "all_fetches_use_snapshot_endpoint_and_no_store": true,
+    "no_unhandled_js_rejections_or_console_errors": true
+  },
+  "passed": true,
+  "initial_render": {
+    "cards": [
+      {
+        "label": "Raw messages",
+        "value": "4077"
+      },
+      {
+        "label": "Accepted sensors",
+        "value": "2019"
+      },
+      {
+        "label": "Rejected / duplicates",
+        "value": "18 / 3"
+      },
+      {
+        "label": "Predictions",
+        "value": "1965"
+      },
+      {
+        "label": "Maintenance alerts",
+        "value": "6"
+      }
+    ],
+    "alert_rows": 6,
+    "prediction_rows": 40,
+    "status_text": "ready · 12s since batch",
+    "status_class": "",
+    "model_text": "Active model: industrial-risk / v2 · approved · 0 pending predictions",
+    "health": {
+      "counts": {
+        "accepted": 2019,
+        "alerts": 6,
+        "batches": 22,
+        "control": 18,
+        "duplicate": 3,
+        "events": 2019,
+        "features": 1965,
+        "label": 2019,
+        "labels": 2019,
+        "pending_events": 0,
+        "pending_predictions": 0,
+        "predictions": 1965,
+        "raw": 4077,
+        "rejected": 18
+      },
+      "rejections": [
+        {
+          "count": 3,
+          "reason": "event_id_content_conflict"
+        },
+        {
+          "count": 3,
+          "reason": "contract:missing_field: vibration_mm_s"
+        },
+        {
+          "count": 3,
+          "reason": "contract:invalid_json: Expecting property name enclosed in double quotes: line 1 column 20 (char 19)"
+        },
+        {
+          "count": 3,
+          "reason": "contract:incompatible_units"
+        },
+        {
+          "count": 3,
+          "reason": "contract:incompatible_schema: 99"
+        },
+        {
+          "count": 3,
+          "reason": "beyond_lateness"
+        }
+      ],
+      "runtime": {
+        "last_batch": {
+          "updated_at": 1794772547.752655,
+          "value": {
+            "batch_id": 21,
+            "dispositions": {
+              "accepted": 2019,
+              "alerts": 6,
+              "batches": 21,
+              "control": 18,
+              "duplicate": 3,
+              "events": 2019,
+              "features": 1965,
+              "label": 2019,
+              "labels": 2019,
+              "pending_events": 0,
+              "pending_predictions": 0,
+              "predictions": 1965,
+              "raw": 4077,
+              "rejected": 18
+            },
+            "new_coordinates": 104,
+            "predictions_written": 0,
+            "query_id": "restore-backlog",
+            "received": 104,
+            "replayed_coordinates": 0
+          }
+        },
+        "model": {
+          "updated_at": 1794772557.739021,
+          "value": {
+            "failures": 0,
+            "mode": "approved",
+            "model_version": "2",
+            "status": "ready"
+          }
+        },
+        "monitoring": {
+          "updated_at": 1794772557.8306324,
+          "value": {
+            "data_drift": {
+              "features": {
+                "pressure_mean": {
+                  "current_mean": 6.239267896145238,
+                  "drifted": true,
+                  "psi": 0.9229446951524184,
+                  "reference_mean": 6.02633284900955
+                },
+                "sample_count": {
+                  "current_mean": 5.978,
+                  "drifted": false,
+                  "psi": 0.12438739000430357,
+                  "reference_mean": 5.996515679442509
+                },
+                "temperature_max": {
+                  "current_mean": 60.86384289,
+                  "drifted": true,
+                  "psi": 0.5465339468780358,
+                  "reference_mean": 63.173295289585745
+                },
+                "temperature_mean": {
+                  "current_mean": 57.84215003607857,
+                  "drifted": true,
+                  "psi": 0.46418154041470727,
+                  "reference_mean": 60.513048514672874
+                },
+                "temperature_slope": {
+                  "current_mean": -0.0025865679236286073,
+                  "drifted": false,
+                  "psi": 0.027672364625969056,
+                  "reference_mean": 0.00030104957911619755
+                },
+                "vibration_max": {
+                  "current_mean": 2.059836706,
+                  "drifted": true,
+                  "psi": 0.2825825612644953,
+                  "reference_mean": 2.091763940572977
+                },
+                "vibration_mean": {
+                  "current_mean": 1.658293458407143,
+                  "drifted": true,
+                  "psi": 0.6148804300471977,
+                  "reference_mean": 1.7386767921473736
+                },
+                "vibration_slope": {
+                  "current_mean": -0.0005412852412982151,
+                  "drifted": false,
+                  "psi": 0.03417073477749674,
+                  "reference_mean": -0.00000947635916155073
+                }
+              },
+              "min_samples": 100,
+              "promotion_performed": false,
+              "psi_threshold": 0.2,
+              "samples": 1000,
+              "status": "drift_detected"
+            },
+            "model_version": "2",
+            "performance": {
+              "alert_precision": null,
+              "as_of": 1794772557.7437592,
+              "detected_failures_in_window": 0,
+              "exposure_estimator": "observed span plus median sampling interval for each dataset/site/machine",
+              "false_alerts": 0,
+              "false_alerts_per_machine_day": 0,
+              "machine_days": 3.4652777777777777,
+              "mature_labels": 1000,
+              "observed_alerts": 0,
+              "observed_failures": 0,
+              "pending_labels": 0,
+              "scope": "latest scored features for the active numeric model; failures outside this window are excluded",
+              "scored_features": 1000,
+              "semantics": "actual persisted alerts; cooldown is never reconstructed at the window boundary",
+              "status": "available",
+              "true_alerts": 0,
+              "useful_failure_recall_in_window": null
+            },
+            "prediction_shift": {
+              "current_count": 500,
+              "current_positive_rate": 0,
+              "mean_score_shift": 0.0033679399337105628,
+              "promotion_performed": false,
+              "reference_count": 500,
+              "reference_positive_rate": 0
+            },
+            "promotion_performed": false
+          }
+        },
+        "source_lag": {
+          "updated_at": 1794772558.08211,
+          "value": {
+            "offsets_behind": 0,
+            "partitions": [
+              {
+                "behind": 0,
+                "broker_end": 1211,
+                "partition": 0,
+                "retained_start": 0,
+                "sink_next": 1211
+              },
+              {
+                "behind": 0,
+                "broker_end": 1353,
+                "partition": 1,
+                "retained_start": 0,
+                "sink_next": 1353
+              },
+              {
+                "behind": 0,
+                "broker_end": 1513,
+                "partition": 2,
+                "retained_start": 0,
+                "sink_next": 1513
+              }
+            ],
+            "status": "observed",
+            "topic": "restore-backlog"
+          }
+        },
+        "spark": {
+          "updated_at": 1794772558.0829823,
+          "value": {
+            "drained": true,
+            "elapsed_seconds": 1.7655055809999567,
+            "engine": "Spark Structured Streaming",
+            "jvm_available_processors": 2,
+            "max_offsets_per_trigger": 200,
+            "mode": "availableNow",
+            "progress": [
+              {
+                "batchId": 22,
+                "durationMs": {
+                  "latestOffset": 322,
+                  "triggerExecution": 376
+                },
+                "id": "358a23bf-a5f8-4008-8c93-06235ad322c7",
+                "inputRowsPerSecond": 0,
+                "name": "restore-backlog",
+                "numInputRows": 0,
+                "processedRowsPerSecond": 0,
+                "runId": "362250a7-bc1e-4efa-a130-f49b92b36959",
+                "sink": {
+                  "description": "ForeachBatchSink",
+                  "numOutputRows": -1
+                },
+                "sources": [
+                  {
+                    "description": "KafkaV2[Subscribe[restore-backlog]]",
+                    "endOffset": {
+                      "restore-backlog": {
+                        "0": 1211,
+                        "1": 1353,
+                        "2": 1513
+                      }
+                    },
+                    "inputRowsPerSecond": 0,
+                    "latestOffset": {
+                      "restore-backlog": {
+                        "0": 1211,
+                        "1": 1353,
+                        "2": 1513
+                      }
+                    },
+                    "metrics": {
+                      "avgOffsetsBehindLatest": "0.0",
+                      "maxOffsetsBehindLatest": "0",
+                      "minOffsetsBehindLatest": "0"
+                    },
+                    "numInputRows": 0,
+                    "processedRowsPerSecond": 0,
+                    "startOffset": {
+                      "restore-backlog": {
+                        "0": 1211,
+                        "1": 1353,
+                        "2": 1513
+                      }
+                    }
+                  }
+                ],
+                "stateOperators": [],
+                "timestamp": "2026-11-15T19:55:55.060Z"
+              }
+            ],
+            "query_id": "358a23bf-a5f8-4008-8c93-06235ad322c7",
+            "run_id": "362250a7-bc1e-4efa-a130-f49b92b36959",
+            "source_lag": {
+              "offsets_behind": 0,
+              "partitions": [
+                {
+                  "behind": 0,
+                  "broker_end": 1211,
+                  "partition": 0,
+                  "retained_start": 0,
+                  "sink_next": 1211
+                },
+                {
+                  "behind": 0,
+                  "broker_end": 1353,
+                  "partition": 1,
+                  "retained_start": 0,
+                  "sink_next": 1353
+                },
+                {
+                  "behind": 0,
+                  "broker_end": 1513,
+                  "partition": 2,
+                  "retained_start": 0,
+                  "sink_next": 1513
+                }
+              ],
+              "status": "observed",
+              "topic": "restore-backlog"
+            },
+            "spark_version": "3.5.9",
+            "workers": 2
+          }
+        },
+        "spark_envelopes": {
+          "updated_at": 1794772547.7550855,
+          "value": {
+            "parsed_business_times": 104,
+            "parsed_ids": 104,
+            "payload_bytes": 48376,
+            "rows": 104
+          }
+        }
+      }
+    }
+  },
+  "forced_http503": {
+    "status_text": "Pipeline unavailable",
+    "status_class": "error",
+    "response_status": 503
+  },
+  "recovered_render": {
+    "status_text": "ready · 12s since batch",
+    "status_class": "",
+    "alert_rows": 6,
+    "prediction_rows": 40
+  },
+  "fetch_calls": [
+    {
+      "url": "/api/snapshot",
+      "options": {
+        "cache": "no-store"
+      },
+      "response": 200
+    },
+    {
+      "url": "/api/snapshot",
+      "options": {
+        "cache": "no-store"
+      },
+      "response": 503
+    },
+    {
+      "url": "/api/snapshot",
+      "options": {
+        "cache": "no-store"
+      },
+      "response": 200
+    }
+  ],
+  "unhandled_js_rejections": [],
+  "console_errors": [],
+  "finished_at": "2026-11-15T20:00:50.102Z"
+}

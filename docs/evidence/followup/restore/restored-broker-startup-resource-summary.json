@@ -1,0 +1,51 @@
+{
+  "observed_spark_masters": [],
+  "processes": [
+    {
+      "initial_cpu_seconds": 4.35,
+      "last_cpu_seconds": 4.41,
+      "name": "python",
+      "peak_rss_bytes": 329183232,
+      "pid": 5,
+      "role": "runner_python"
+    },
+    {
+      "initial_cpu_seconds": 0.01,
+      "last_cpu_seconds": 3.83,
+      "name": "kafka-run-class",
+      "peak_rss_bytes": 322277376,
+      "pid": 2102,
+      "role": "kafka_tree"
+    },
+    {
+      "initial_cpu_seconds": 0.0,
+      "last_cpu_seconds": 0.0,
+      "name": "kafka-run-class",
+      "peak_rss_bytes": 868352,
+      "pid": 2243,
+      "role": "kafka_tree"
+    }
+  ],
+  "raw_samples": "/workspace/scratch/ab3ef819fe8f/industrial-streaming-mlops/state/restore-20261115-01/evidence/restored-broker-startup-resources.jsonl",
+  "sampled_cpu_seconds_by_scope": {
+    "kafka_tree": 3.8200000000000003,
+    "runner_python": 0.0600000000000005
+  },
+  "sampled_peak_rss_bytes_by_scope": {
+    "all_children": 322277376,
+    "kafka_tree": 322277376,
+    "runner_python": 329183232
+  },
+  "sampler_errors": 0,
+  "samples": 23,
+  "scope": {
+    "children_rusage": "OS CPU delta for reaped children, separately reported; do not add to sampled child CPU",
+    "cpu": "sampled per-process user+system CPU deltas; short-lived processes and final sampling tails may be missed",
+    "processes": "runner and registered owned service trees; the short-lived format subprocess is not sampled",
+    "rss": "sampled resident bytes; simultaneous sums double-count shared pages and are not total host memory",
+    "runner_cpu": "exact process_time delta for benchmark Python, including producer and sampler threads",
+    "sample_interval_seconds": 0.1,
+    "window": "broker format/startup through metadata readiness or failure"
+  },
+  "thread_stopped": true
+}

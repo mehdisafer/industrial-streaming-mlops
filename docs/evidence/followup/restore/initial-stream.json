@@ -1,0 +1,1107 @@
+{
+  "drained": true,
+  "elapsed_seconds": 17.494362860000024,
+  "engine": "Spark Structured Streaming",
+  "jvm_available_processors": 2,
+  "max_offsets_per_trigger": 200,
+  "mode": "availableNow",
+  "progress": [
+    {
+      "batchId": 0,
+      "durationMs": {
+        "addBatch": 3943,
+        "commitOffsets": 37,
+        "getBatch": 13,
+        "latestOffset": 523,
+        "queryPlanning": 268,
+        "triggerExecution": 4842,
+        "walCommit": 39
+      },
+      "id": "358a23bf-a5f8-4008-8c93-06235ad322c7",
+      "inputRowsPerSecond": 0.0,
+      "name": "restore-backlog",
+      "numInputRows": 396,
+      "processedRowsPerSecond": 81.78438661710038,
+      "runId": "6517462f-e634-434b-8867-61d33fd5d60a",
+      "sink": {
+        "description": "ForeachBatchSink",
+        "numOutputRows": -1
+      },
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[restore-backlog]]",
+          "endOffset": {
+            "restore-backlog": {
+              "0": 66,
+              "1": 66,
+              "2": 66
+            }
+          },
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": {
+            "restore-backlog": {
+              "0": 1162,
+              "1": 1155,
+              "2": 1154
+            }
+          },
+          "metrics": {
+            "avgOffsetsBehindLatest": "1091.0",
+            "maxOffsetsBehindLatest": "1096",
+            "minOffsetsBehindLatest": "1088"
+          },
+          "numInputRows": 396,
+          "processedRowsPerSecond": 81.78438661710038,
+          "startOffset": null
+        }
+      ],
+      "stateOperators": [],
+      "timestamp": "2026-11-15T19:54:54.675Z"
+    },
+    {
+      "batchId": 1,
+      "durationMs": {
+        "addBatch": 501,
+        "commitOffsets": 33,
+        "getBatch": 0,
+        "latestOffset": 1,
+        "queryPlanning": 46,
+        "triggerExecution": 622,
+        "walCommit": 35
+      },
+      "id": "358a23bf-a5f8-4008-8c93-06235ad322c7",
+      "inputRowsPerSecond": 81.3141683778234,
+      "name": "restore-backlog",
+      "numInputRows": 396,
+      "processedRowsPerSecond": 636.6559485530547,
+      "runId": "6517462f-e634-434b-8867-61d33fd5d60a",
+      "sink": {
+        "description": "ForeachBatchSink",
+        "numOutputRows": -1
+      },
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[restore-backlog]]",
+          "endOffset": {
+            "restore-backlog": {
+              "0": 132,
+              "1": 132,
+              "2": 132
+            }
+          },
+          "inputRowsPerSecond": 81.3141683778234,
+          "latestOffset": {
+            "restore-backlog": {
+              "0": 1162,
+              "1": 1155,
+              "2": 1154
+            }
+          },
+          "metrics": {
+            "avgOffsetsBehindLatest": "1025.0",
+            "maxOffsetsBehindLatest": "1030",
+            "minOffsetsBehindLatest": "1022"
+          },
+          "numInputRows": 396,
+          "processedRowsPerSecond": 636.6559485530547,
+          "startOffset": {
+            "restore-backlog": {
+              "0": 66,
+              "1": 66,
+              "2": 66
+            }
+          }
+        }
+      ],
+      "stateOperators": [],
+      "timestamp": "2026-11-15T19:54:59.545Z"
+    },
+    {
+      "batchId": 2,
+      "durationMs": {
+        "addBatch": 412,
+        "commitOffsets": 26,
+        "getBatch": 0,
+        "latestOffset": 1,
+        "queryPlanning": 26,
+        "triggerExecution": 497,
+        "walCommit": 29
+      },
+      "id": "358a23bf-a5f8-4008-8c93-06235ad322c7",
+      "inputRowsPerSecond": 635.6340288924558,
+      "name": "restore-backlog",
+      "numInputRows": 396,
+      "processedRowsPerSecond": 796.7806841046278,
+      "runId": "6517462f-e634-434b-8867-61d33fd5d60a",
+      "sink": {
+        "description": "ForeachBatchSink",
+        "numOutputRows": -1
+      },
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[restore-backlog]]",
+          "endOffset": {
+            "restore-backlog": {
+              "0": 198,
+              "1": 198,
+              "2": 198
+            }
+          },
+          "inputRowsPerSecond": 635.6340288924558,
+          "latestOffset": {
+            "restore-backlog": {
+              "0": 1162,
+              "1": 1155,
+              "2": 1154
+            }
+          },
+          "metrics": {
+            "avgOffsetsBehindLatest": "959.0",
+            "maxOffsetsBehindLatest": "964",
+            "minOffsetsBehindLatest": "956"
+          },
+          "numInputRows": 396,
+          "processedRowsPerSecond": 796.7806841046278,
+          "startOffset": {
+            "restore-backlog": {
+              "0": 132,
+              "1": 132,
+              "2": 132
+            }
+          }
+        }
+      ],
+      "stateOperators": [],
+      "timestamp": "2026-11-15T19:55:00.168Z"
+    },
+    {
+      "batchId": 3,
+      "durationMs": {
+        "addBatch": 373,
+        "commitOffsets": 26,
+        "getBatch": 0,
+        "latestOffset": 1,
+        "queryPlanning": 28,
+        "triggerExecution": 462,
+        "walCommit": 29
+      },
+      "id": "358a23bf-a5f8-4008-8c93-06235ad322c7",
+      "inputRowsPerSecond": 799.1967871485944,
+      "name": "restore-backlog",
+      "numInputRows": 398,
+      "processedRowsPerSecond": 861.4718614718614,
+      "runId": "6517462f-e634-434b-8867-61d33fd5d60a",
+      "sink": {
+        "description": "ForeachBatchSink",
+        "numOutputRows": -1
+      },
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[restore-backlog]]",
+          "endOffset": {
+            "restore-backlog": {
+              "0": 265,
+              "1": 264,
+              "2": 264
+            }
+          },
+          "inputRowsPerSecond": 799.1967871485944,
+          "latestOffset": {
+            "restore-backlog": {
+              "0": 1162,
+              "1": 1155,
+              "2": 1154
+            }
+          },
+          "metrics": {
+            "avgOffsetsBehindLatest": "892.6666666666666",
+            "maxOffsetsBehindLatest": "897",
+            "minOffsetsBehindLatest": "890"
+          },
+          "numInputRows": 398,
+          "processedRowsPerSecond": 861.4718614718614,
+          "startOffset": {
+            "restore-backlog": {
+              "0": 198,
+              "1": 198,
+              "2": 198
+            }
+          }
+        }
+      ],
+      "stateOperators": [],
+      "timestamp": "2026-11-15T19:55:00.666Z"
+    },
+    {
+      "batchId": 4,
+      "durationMs": {
+        "addBatch": 445,
+        "commitOffsets": 25,
+        "getBatch": 0,
+        "latestOffset": 1,
+        "queryPlanning": 24,
+        "triggerExecution": 523,
+        "walCommit": 25
+      },
+      "id": "358a23bf-a5f8-4008-8c93-06235ad322c7",
+      "inputRowsPerSecond": 857.1428571428571,
+      "name": "restore-backlog",
+      "numInputRows": 396,
+      "processedRowsPerSecond": 757.17017208413,
+      "runId": "6517462f-e634-434b-8867-61d33fd5d60a",
+      "sink": {
+        "description": "ForeachBatchSink",
+        "numOutputRows": -1
+      },
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[restore-backlog]]",
+          "endOffset": {
+            "restore-backlog": {
+              "0": 331,
+              "1": 330,
+              "2": 330
+            }
+          },
+          "inputRowsPerSecond": 857.1428571428571,
+          "latestOffset": {
+            "restore-backlog": {
+              "0": 1162,
+              "1": 1155,
+              "2": 1154
+            }
+          },
+          "metrics": {
+            "avgOffsetsBehindLatest": "826.6666666666666",
+            "maxOffsetsBehindLatest": "831",
+            "minOffsetsBehindLatest": "824"
+          },
+          "numInputRows": 396,
+          "processedRowsPerSecond": 757.17017208413,
+          "startOffset": {
+            "restore-backlog": {
+              "0": 265,
+              "1": 264,
+              "2": 264
+            }
+          }
+        }
+      ],
+      "stateOperators": [],
+      "timestamp": "2026-11-15T19:55:01.128Z"
+    },
+    {
+      "batchId": 5,
+      "durationMs": {
+        "addBatch": 434,
+        "commitOffsets": 22,
+        "getBatch": 0,
+        "latestOffset": 1,
+        "queryPlanning": 23,
+        "triggerExecution": 508,
+        "walCommit": 24
+      },
+      "id": "358a23bf-a5f8-4008-8c93-06235ad322c7",
+      "inputRowsPerSecond": 759.5419847328244,
+      "name": "restore-backlog",
+      "numInputRows": 398,
+      "processedRowsPerSecond": 783.4645669291339,
+      "runId": "6517462f-e634-434b-8867-61d33fd5d60a",
+      "sink": {
+        "description": "ForeachBatchSink",
+        "numOutputRows": -1
+      },
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[restore-backlog]]",
+          "endOffset": {
+            "restore-backlog": {
+              "0": 398,
+              "1": 396,
+              "2": 396
+            }
+          },
+          "inputRowsPerSecond": 759.5419847328244,
+          "latestOffset": {
+            "restore-backlog": {
+              "0": 1162,
+              "1": 1155,
+              "2": 1154
+            }
+          },
+          "metrics": {
+            "avgOffsetsBehindLatest": "760.3333333333334",
+            "maxOffsetsBehindLatest": "764",
+            "minOffsetsBehindLatest": "758"
+          },
+          "numInputRows": 398,
+          "processedRowsPerSecond": 783.4645669291339,
+          "startOffset": {
+            "restore-backlog": {
+              "0": 331,
+              "1": 330,
+              "2": 330
+            }
+          }
+        }
+      ],
+      "stateOperators": [],
+      "timestamp": "2026-11-15T19:55:01.652Z"
+    },
+    {
+      "batchId": 6,
+      "durationMs": {
+        "addBatch": 434,
+        "commitOffsets": 22,
+        "getBatch": 1,
+        "latestOffset": 0,
+        "queryPlanning": 21,
+        "triggerExecution": 506,
+        "walCommit": 25
+      },
+      "id": "358a23bf-a5f8-4008-8c93-06235ad322c7",
+      "inputRowsPerSecond": 777.9960707269155,
+      "name": "restore-backlog",
+      "numInputRows": 396,
+      "processedRowsPerSecond": 782.6086956521739,
+      "runId": "6517462f-e634-434b-8867-61d33fd5d60a",
+      "sink": {
+        "description": "ForeachBatchSink",
+        "numOutputRows": -1
+      },
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[restore-backlog]]",
+          "endOffset": {
+            "restore-backlog": {
+              "0": 464,
+              "1": 462,
+              "2": 462
+            }
+          },
+          "inputRowsPerSecond": 777.9960707269155,
+          "latestOffset": {
+            "restore-backlog": {
+              "0": 1162,
+              "1": 1155,
+              "2": 1154
+            }
+          },
+          "metrics": {
+            "avgOffsetsBehindLatest": "694.3333333333334",
+            "maxOffsetsBehindLatest": "698",
+            "minOffsetsBehindLatest": "692"
+          },
+          "numInputRows": 396,
+          "processedRowsPerSecond": 782.6086956521739,
+          "startOffset": {
+            "restore-backlog": {
+              "0": 398,
+              "1": 396,
+              "2": 396
+            }
+          }
+        }
+      ],
+      "stateOperators": [],
+      "timestamp": "2026-11-15T19:55:02.161Z"
+    },
+    {
+      "batchId": 7,
+      "durationMs": {
+        "addBatch": 547,
+        "commitOffsets": 24,
+        "getBatch": 1,
+        "latestOffset": 1,
+        "queryPlanning": 19,
+        "triggerExecution": 615,
+        "walCommit": 21
+      },
+      "id": "358a23bf-a5f8-4008-8c93-06235ad322c7",
+      "inputRowsPerSecond": 785.0098619329389,
+      "name": "restore-backlog",
+      "numInputRows": 398,
+      "processedRowsPerSecond": 647.1544715447154,
+      "runId": "6517462f-e634-434b-8867-61d33fd5d60a",
+      "sink": {
+        "description": "ForeachBatchSink",
+        "numOutputRows": -1
+      },
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[restore-backlog]]",
+          "endOffset": {
+            "restore-backlog": {
+              "0": 531,
+              "1": 528,
+              "2": 528
+            }
+          },
+          "inputRowsPerSecond": 785.0098619329389,
+          "latestOffset": {
+            "restore-backlog": {
+              "0": 1162,
+              "1": 1155,
+              "2": 1154
+            }
+          },
+          "metrics": {
+            "avgOffsetsBehindLatest": "628.0",
+            "maxOffsetsBehindLatest": "631",
+            "minOffsetsBehindLatest": "626"
+          },
+          "numInputRows": 398,
+          "processedRowsPerSecond": 647.1544715447154,
+          "startOffset": {
+            "restore-backlog": {
+              "0": 464,
+              "1": 462,
+              "2": 462
+            }
+          }
+        }
+      ],
+      "stateOperators": [],
+      "timestamp": "2026-11-15T19:55:02.668Z"
+    },
+    {
+      "batchId": 8,
+      "durationMs": {
+        "addBatch": 438,
+        "commitOffsets": 30,
+        "getBatch": 0,
+        "latestOffset": 1,
+        "queryPlanning": 24,
+        "triggerExecution": 518,
+        "walCommit": 23
+      },
+      "id": "358a23bf-a5f8-4008-8c93-06235ad322c7",
+      "inputRowsPerSecond": 642.8571428571429,
+      "name": "restore-backlog",
+      "numInputRows": 396,
+      "processedRowsPerSecond": 764.4787644787644,
+      "runId": "6517462f-e634-434b-8867-61d33fd5d60a",
+      "sink": {
+        "description": "ForeachBatchSink",
+        "numOutputRows": -1
+      },
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[restore-backlog]]",
+          "endOffset": {
+            "restore-backlog": {
+              "0": 597,
+              "1": 594,
+              "2": 594
+            }
+          },
+          "inputRowsPerSecond": 642.8571428571429,
+          "latestOffset": {
+            "restore-backlog": {
+              "0": 1162,
+              "1": 1155,
+              "2": 1154
+            }
+          },
+          "metrics": {
+            "avgOffsetsBehindLatest": "562.0",
+            "maxOffsetsBehindLatest": "565",
+            "minOffsetsBehindLatest": "560"
+          },
+          "numInputRows": 396,
+          "processedRowsPerSecond": 764.4787644787644,
+          "startOffset": {
+            "restore-backlog": {
+              "0": 531,
+              "1": 528,
+              "2": 528
+            }
+          }
+        }
+      ],
+      "stateOperators": [],
+      "timestamp": "2026-11-15T19:55:03.284Z"
+    },
+    {
+      "batchId": 9,
+      "durationMs": {
+        "addBatch": 435,
+        "commitOffsets": 25,
+        "getBatch": 0,
+        "latestOffset": 1,
+        "queryPlanning": 22,
+        "triggerExecution": 508,
+        "walCommit": 24
+      },
+      "id": "358a23bf-a5f8-4008-8c93-06235ad322c7",
+      "inputRowsPerSecond": 766.859344894027,
+      "name": "restore-backlog",
+      "numInputRows": 398,
+      "processedRowsPerSecond": 783.4645669291339,
+      "runId": "6517462f-e634-434b-8867-61d33fd5d60a",
+      "sink": {
+        "description": "ForeachBatchSink",
+        "numOutputRows": -1
+      },
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[restore-backlog]]",
+          "endOffset": {
+            "restore-backlog": {
+              "0": 664,
+              "1": 660,
+              "2": 660
+            }
+          },
+          "inputRowsPerSecond": 766.859344894027,
+          "latestOffset": {
+            "restore-backlog": {
+              "0": 1162,
+              "1": 1155,
+              "2": 1154
+            }
+          },
+          "metrics": {
+            "avgOffsetsBehindLatest": "495.6666666666667",
+            "maxOffsetsBehindLatest": "498",
+            "minOffsetsBehindLatest": "494"
+          },
+          "numInputRows": 398,
+          "processedRowsPerSecond": 783.4645669291339,
+          "startOffset": {
+            "restore-backlog": {
+              "0": 597,
+              "1": 594,
+              "2": 594
+            }
+          }
+        }
+      ],
+      "stateOperators": [],
+      "timestamp": "2026-11-15T19:55:03.803Z"
+    },
+    {
+      "batchId": 10,
+      "durationMs": {
+        "addBatch": 360,
+        "commitOffsets": 23,
+        "getBatch": 0,
+        "latestOffset": 1,
+        "queryPlanning": 20,
+        "triggerExecution": 433,
+        "walCommit": 28
+      },
+      "id": "358a23bf-a5f8-4008-8c93-06235ad322c7",
+      "inputRowsPerSecond": 779.5275590551181,
+      "name": "restore-backlog",
+      "numInputRows": 396,
+      "processedRowsPerSecond": 914.5496535796767,
+      "runId": "6517462f-e634-434b-8867-61d33fd5d60a",
+      "sink": {
+        "description": "ForeachBatchSink",
+        "numOutputRows": -1
+      },
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[restore-backlog]]",
+          "endOffset": {
+            "restore-backlog": {
+              "0": 730,
+              "1": 726,
+              "2": 726
+            }
+          },
+          "inputRowsPerSecond": 779.5275590551181,
+          "latestOffset": {
+            "restore-backlog": {
+              "0": 1162,
+              "1": 1155,
+              "2": 1154
+            }
+          },
+          "metrics": {
+            "avgOffsetsBehindLatest": "429.6666666666667",
+            "maxOffsetsBehindLatest": "432",
+            "minOffsetsBehindLatest": "428"
+          },
+          "numInputRows": 396,
+          "processedRowsPerSecond": 914.5496535796767,
+          "startOffset": {
+            "restore-backlog": {
+              "0": 664,
+              "1": 660,
+              "2": 660
+            }
+          }
+        }
+      ],
+      "stateOperators": [],
+      "timestamp": "2026-11-15T19:55:04.311Z"
+    },
+    {
+      "batchId": 11,
+      "durationMs": {
+        "addBatch": 465,
+        "commitOffsets": 23,
+        "getBatch": 0,
+        "latestOffset": 0,
+        "queryPlanning": 17,
+        "triggerExecution": 536,
+        "walCommit": 28
+      },
+      "id": "358a23bf-a5f8-4008-8c93-06235ad322c7",
+      "inputRowsPerSecond": 917.0506912442396,
+      "name": "restore-backlog",
+      "numInputRows": 398,
+      "processedRowsPerSecond": 742.5373134328357,
+      "runId": "6517462f-e634-434b-8867-61d33fd5d60a",
+      "sink": {
+        "description": "ForeachBatchSink",
+        "numOutputRows": -1
+      },
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[restore-backlog]]",
+          "endOffset": {
+            "restore-backlog": {
+              "0": 797,
+              "1": 792,
+              "2": 792
+            }
+          },
+          "inputRowsPerSecond": 917.0506912442396,
+          "latestOffset": {
+            "restore-backlog": {
+              "0": 1162,
+              "1": 1155,
+              "2": 1154
+            }
+          },
+          "metrics": {
+            "avgOffsetsBehindLatest": "363.3333333333333",
+            "maxOffsetsBehindLatest": "365",
+            "minOffsetsBehindLatest": "362"
+          },
+          "numInputRows": 398,
+          "processedRowsPerSecond": 742.5373134328357,
+          "startOffset": {
+            "restore-backlog": {
+              "0": 730,
+              "1": 726,
+              "2": 726
+            }
+          }
+        }
+      ],
+      "stateOperators": [],
+      "timestamp": "2026-11-15T19:55:04.745Z"
+    },
+    {
+      "batchId": 12,
+      "durationMs": {
+        "addBatch": 436,
+        "commitOffsets": 24,
+        "getBatch": 1,
+        "latestOffset": 1,
+        "queryPlanning": 33,
+        "triggerExecution": 520,
+        "walCommit": 24
+      },
+      "id": "358a23bf-a5f8-4008-8c93-06235ad322c7",
+      "inputRowsPerSecond": 737.4301675977653,
+      "name": "restore-backlog",
+      "numInputRows": 396,
+      "processedRowsPerSecond": 761.5384615384615,
+      "runId": "6517462f-e634-434b-8867-61d33fd5d60a",
+      "sink": {
+        "description": "ForeachBatchSink",
+        "numOutputRows": -1
+      },
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[restore-backlog]]",
+          "endOffset": {
+            "restore-backlog": {
+              "0": 863,
+              "1": 858,
+              "2": 858
+            }
+          },
+          "inputRowsPerSecond": 737.4301675977653,
+          "latestOffset": {
+            "restore-backlog": {
+              "0": 1162,
+              "1": 1155,
+              "2": 1154
+            }
+          },
+          "metrics": {
+            "avgOffsetsBehindLatest": "297.3333333333333",
+            "maxOffsetsBehindLatest": "299",
+            "minOffsetsBehindLatest": "296"
+          },
+          "numInputRows": 396,
+          "processedRowsPerSecond": 761.5384615384615,
+          "startOffset": {
+            "restore-backlog": {
+              "0": 797,
+              "1": 792,
+              "2": 792
+            }
+          }
+        }
+      ],
+      "stateOperators": [],
+      "timestamp": "2026-11-15T19:55:05.282Z"
+    },
+    {
+      "batchId": 13,
+      "durationMs": {
+        "addBatch": 405,
+        "commitOffsets": 23,
+        "getBatch": 0,
+        "latestOffset": 1,
+        "queryPlanning": 16,
+        "triggerExecution": 468,
+        "walCommit": 22
+      },
+      "id": "358a23bf-a5f8-4008-8c93-06235ad322c7",
+      "inputRowsPerSecond": 763.9155470249519,
+      "name": "restore-backlog",
+      "numInputRows": 398,
+      "processedRowsPerSecond": 850.4273504273503,
+      "runId": "6517462f-e634-434b-8867-61d33fd5d60a",
+      "sink": {
+        "description": "ForeachBatchSink",
+        "numOutputRows": -1
+      },
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[restore-backlog]]",
+          "endOffset": {
+            "restore-backlog": {
+              "0": 930,
+              "1": 924,
+              "2": 924
+            }
+          },
+          "inputRowsPerSecond": 763.9155470249519,
+          "latestOffset": {
+            "restore-backlog": {
+              "0": 1162,
+              "1": 1155,
+              "2": 1154
+            }
+          },
+          "metrics": {
+            "avgOffsetsBehindLatest": "231.0",
+            "maxOffsetsBehindLatest": "232",
+            "minOffsetsBehindLatest": "230"
+          },
+          "numInputRows": 398,
+          "processedRowsPerSecond": 850.4273504273503,
+          "startOffset": {
+            "restore-backlog": {
+              "0": 863,
+              "1": 858,
+              "2": 858
+            }
+          }
+        }
+      ],
+      "stateOperators": [],
+      "timestamp": "2026-11-15T19:55:05.803Z"
+    },
+    {
+      "batchId": 14,
+      "durationMs": {
+        "addBatch": 410,
+        "commitOffsets": 20,
+        "getBatch": 0,
+        "latestOffset": 1,
+        "queryPlanning": 18,
+        "triggerExecution": 476,
+        "walCommit": 24
+      },
+      "id": "358a23bf-a5f8-4008-8c93-06235ad322c7",
+      "inputRowsPerSecond": 844.3496801705758,
+      "name": "restore-backlog",
+      "numInputRows": 396,
+      "processedRowsPerSecond": 831.9327731092437,
+      "runId": "6517462f-e634-434b-8867-61d33fd5d60a",
+      "sink": {
+        "description": "ForeachBatchSink",
+        "numOutputRows": -1
+      },
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[restore-backlog]]",
+          "endOffset": {
+            "restore-backlog": {
+              "0": 996,
+              "1": 990,
+              "2": 990
+            }
+          },
+          "inputRowsPerSecond": 844.3496801705758,
+          "latestOffset": {
+            "restore-backlog": {
+              "0": 1162,
+              "1": 1155,
+              "2": 1154
+            }
+          },
+          "metrics": {
+            "avgOffsetsBehindLatest": "165.0",
+            "maxOffsetsBehindLatest": "166",
+            "minOffsetsBehindLatest": "164"
+          },
+          "numInputRows": 396,
+          "processedRowsPerSecond": 831.9327731092437,
+          "startOffset": {
+            "restore-backlog": {
+              "0": 930,
+              "1": 924,
+              "2": 924
+            }
+          }
+        }
+      ],
+      "stateOperators": [],
+      "timestamp": "2026-11-15T19:55:06.272Z"
+    },
+    {
+      "batchId": 15,
+      "durationMs": {
+        "addBatch": 3005,
+        "commitOffsets": 30,
+        "getBatch": 0,
+        "latestOffset": 1,
+        "queryPlanning": 16,
+        "triggerExecution": 3076,
+        "walCommit": 23
+      },
+      "id": "358a23bf-a5f8-4008-8c93-06235ad322c7",
+      "inputRowsPerSecond": 834.3815513626835,
+      "name": "restore-backlog",
+      "numInputRows": 398,
+      "processedRowsPerSecond": 129.38881664499348,
+      "runId": "6517462f-e634-434b-8867-61d33fd5d60a",
+      "sink": {
+        "description": "ForeachBatchSink",
+        "numOutputRows": -1
+      },
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[restore-backlog]]",
+          "endOffset": {
+            "restore-backlog": {
+              "0": 1063,
+              "1": 1056,
+              "2": 1056
+            }
+          },
+          "inputRowsPerSecond": 834.3815513626835,
+          "latestOffset": {
+            "restore-backlog": {
+              "0": 1162,
+              "1": 1155,
+              "2": 1154
+            }
+          },
+          "metrics": {
+            "avgOffsetsBehindLatest": "98.66666666666667",
+            "maxOffsetsBehindLatest": "99",
+            "minOffsetsBehindLatest": "98"
+          },
+          "numInputRows": 398,
+          "processedRowsPerSecond": 129.38881664499348,
+          "startOffset": {
+            "restore-backlog": {
+              "0": 996,
+              "1": 990,
+              "2": 990
+            }
+          }
+        }
+      ],
+      "stateOperators": [],
+      "timestamp": "2026-11-15T19:55:06.749Z"
+    },
+    {
+      "batchId": 16,
+      "durationMs": {
+        "addBatch": 477,
+        "commitOffsets": 24,
+        "getBatch": 0,
+        "latestOffset": 1,
+        "queryPlanning": 16,
+        "triggerExecution": 544,
+        "walCommit": 24
+      },
+      "id": "358a23bf-a5f8-4008-8c93-06235ad322c7",
+      "inputRowsPerSecond": 128.6967825804355,
+      "name": "restore-backlog",
+      "numInputRows": 396,
+      "processedRowsPerSecond": 727.9411764705882,
+      "runId": "6517462f-e634-434b-8867-61d33fd5d60a",
+      "sink": {
+        "description": "ForeachBatchSink",
+        "numOutputRows": -1
+      },
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[restore-backlog]]",
+          "endOffset": {
+            "restore-backlog": {
+              "0": 1129,
+              "1": 1122,
+              "2": 1122
+            }
+          },
+          "inputRowsPerSecond": 128.6967825804355,
+          "latestOffset": {
+            "restore-backlog": {
+              "0": 1162,
+              "1": 1155,
+              "2": 1154
+            }
+          },
+          "metrics": {
+            "avgOffsetsBehindLatest": "32.666666666666664",
+            "maxOffsetsBehindLatest": "33",
+            "minOffsetsBehindLatest": "32"
+          },
+          "numInputRows": 396,
+          "processedRowsPerSecond": 727.9411764705882,
+          "startOffset": {
+            "restore-backlog": {
+              "0": 1063,
+              "1": 1056,
+              "2": 1056
+            }
+          }
+        }
+      ],
+      "stateOperators": [],
+      "timestamp": "2026-11-15T19:55:09.826Z"
+    },
+    {
+      "batchId": 17,
+      "durationMs": {
+        "addBatch": 317,
+        "commitOffsets": 21,
+        "getBatch": 0,
+        "latestOffset": 0,
+        "queryPlanning": 18,
+        "triggerExecution": 377,
+        "walCommit": 20
+      },
+      "id": "358a23bf-a5f8-4008-8c93-06235ad322c7",
+      "inputRowsPerSecond": 359.6330275229358,
+      "name": "restore-backlog",
+      "numInputRows": 196,
+      "processedRowsPerSecond": 519.893899204244,
+      "runId": "6517462f-e634-434b-8867-61d33fd5d60a",
+      "sink": {
+        "description": "ForeachBatchSink",
+        "numOutputRows": -1
+      },
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[restore-backlog]]",
+          "endOffset": {
+            "restore-backlog": {
+              "0": 1162,
+              "1": 1155,
+              "2": 1154
+            }
+          },
+          "inputRowsPerSecond": 359.6330275229358,
+          "latestOffset": {
+            "restore-backlog": {
+              "0": 1162,
+              "1": 1155,
+              "2": 1154
+            }
+          },
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 196,
+          "processedRowsPerSecond": 519.893899204244,
+          "startOffset": {
+            "restore-backlog": {
+              "0": 1129,
+              "1": 1122,
+              "2": 1122
+            }
+          }
+        }
+      ],
+      "stateOperators": [],
+      "timestamp": "2026-11-15T19:55:10.371Z"
+    }
+  ],
+  "query_id": "358a23bf-a5f8-4008-8c93-06235ad322c7",
+  "run_id": "6517462f-e634-434b-8867-61d33fd5d60a",
+  "source_lag": {
+    "offsets_behind": 0,
+    "partitions": [
+      {
+        "behind": 0,
+        "broker_end": 1162,
+        "partition": 0,
+        "retained_start": 0,
+        "sink_next": 1162
+      },
+      {
+        "behind": 0,
+        "broker_end": 1155,
+        "partition": 1,
+        "retained_start": 0,
+        "sink_next": 1155
+      },
+      {
+        "behind": 0,
+        "broker_end": 1154,
+        "partition": 2,
+        "retained_start": 0,
+        "sink_next": 1154
+      }
+    ],
+    "status": "observed",
+    "topic": "restore-backlog"
+  },
+  "spark_version": "3.5.9",
+  "verification": {
+    "checks": {
+      "accepted_events_balance": true,
+      "alerts_have_predictions": true,
+      "labels_balance": true,
+      "predictions_have_features": true,
+      "source_dispositions_balance": true,
+      "sqlite_integrity": true
+    },
+    "counts": {
+      "accepted": 1729,
+      "alerts": 6,
+      "batches": 18,
+      "control": 6,
+      "duplicate": 1,
+      "events": 1729,
+      "features": 1711,
+      "label": 1729,
+      "labels": 1729,
+      "pending_events": 0,
+      "pending_predictions": 0,
+      "predictions": 1711,
+      "raw": 3471,
+      "rejected": 6
+    },
+    "valid": true
+  },
+  "workers": 2
+}

@@ -1,0 +1,93 @@
+{
+  "input_sha256": "104f007aca131e3bac0a8e252651e44e8e81aaf3459e77db75124911e111bb18",
+  "manifest": {
+    "data_origin": "Generated synthetic measurements; no external or client data",
+    "dataset_id": "synthetic-5c36097ef537092d5e0bcde4",
+    "expected_dispositions": {
+      "accepted": 296,
+      "accepted_heartbeat": 6,
+      "accepted_label": 145,
+      "accepted_sensor": 145,
+      "duplicates": 1,
+      "rejected": 6,
+      "source": 303
+    },
+    "failure_schedule": {
+      "machine-000": [],
+      "machine-001": [],
+      "machine-002": [],
+      "machine-003": [],
+      "machine-004": [],
+      "machine-005": []
+    },
+    "injected_anomalies": {
+      "accepted_extra_labels": 1,
+      "accepted_out_of_order_sensors": 1,
+      "exact_duplicates": 1,
+      "rejects": {
+        "conflicting_event_id": 1,
+        "incompatible_schema": 1,
+        "incompatible_units": 1,
+        "invalid_json": 1,
+        "late_after_watermark": 1,
+        "missing_field": 1
+      }
+    },
+    "last_arrival_at": "2026-07-05T03:30:00.000Z",
+    "observation_end": "2026-07-05T02:00:00.000Z",
+    "parameters": {
+      "anomalies": true,
+      "drift": 0.0,
+      "horizon_seconds": 1800,
+      "hours": 2,
+      "label_delay_seconds": 3600,
+      "lateness_seconds": 120,
+      "machines": 6,
+      "seed": 46,
+      "simulator_version": "1.0.0",
+      "sites": 2,
+      "start": "2026-07-05T00:00:00.000Z",
+      "step_seconds": 300
+    },
+    "positive_labels": 0,
+    "records_sha256": "4490683ec8362ab72d07d26c9d71d66c6b90668a50f3fce988f6ff9dfefa2b6e",
+    "sensor_count": 145,
+    "sensor_end": "2026-07-05T01:55:00.000Z",
+    "sensor_start": "2026-07-05T00:00:00.000Z"
+  },
+  "name": "post-restore",
+  "receipt": {
+    "acknowledged": 303,
+    "elapsed_seconds": 0.27016423800000666,
+    "events_per_second": 1121.540001900594,
+    "offsets": {
+      "1": {
+        "count": 148,
+        "first": 1205,
+        "last": 1352
+      },
+      "2": {
+        "count": 155,
+        "first": 1358,
+        "last": 1512
+      }
+    },
+    "partitions": 3,
+    "topic": "restore-backlog",
+    "topic_readiness": {
+      "attempts": 1,
+      "elapsed_seconds": 0.0017109719999552908,
+      "leaders": {
+        "0": 1,
+        "1": 1,
+        "2": 1
+      },
+      "partition_ids": [
+        0,
+        1,
+        2
+      ],
+      "retry_reasons": {}
+    }
+  }
+}

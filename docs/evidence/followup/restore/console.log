@@ -1,0 +1,8 @@
+{"stage": "restore_starting_owned_mlflow"}
+{"stage": "restore_training_fixed_protocol"}
+{"stage": "restore_starting_owned_kafka_after_training"}
+{"stage": "restore_copying_stopped_state_with_backlog"}
+{"stage": "restore_consuming_retained_backlog"}
+{"stage": "restore_consuming_new_post_restore_input"}
+{"stage": "restore_business_checks_complete", "checks": {"unused_mlflow_background_jobs_disabled": true, "initial_nonzero_predictions_and_alerts": true, "nonempty_unconsumed_backlog_before_backup": true, "original_services_observed_stopped_before_backup": true, "copied_sink_matches_original": true, "restored_numeric_model_identity": true, "retained_backlog_survives_broker_restore": true, "copied_spark_query_identity_preserved": true, "restored_query_reads_only_unconsumed_backlog": true, "restored_backlog_consumed_and_scored": true, "old_business_rows_preserved_after_backlog": true, "backlog_drained_to_observed_zero_lag": true, "same_query_reads_only_fresh_post_restore_input": true, "fresh_post_restore_input_consumed_and_scored": true, "old_business_rows_preserved_after_fresh_input": true, "all_source_receipts_balance": true, "restored_batch_stream_feature_parity": true, "restored_batch_stream_prediction_parity": true, "all_predictions_use_restored_version": true, "one_query_identity_across_distinct_worker_runs": true, "all_spark_jvms_observe_declared_processor_count": true, "repeated_checkpoint_resume_has_no_duplicate_business_effects": true, "final_source_lag_zero": true, "original_sink_and_checkpoint_preserved": true, "dashboard_reads_restored_live_sink": true, "source_unchanged_during_run": true}}
+{"stage": "restore_qualification_complete", "passed": true, "checks": 28}

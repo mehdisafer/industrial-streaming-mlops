@@ -1,0 +1,98 @@
+{
+  "observed_spark_masters": [
+    "local[2]"
+  ],
+  "processes": [
+    {
+      "initial_cpu_seconds": 7.319999999999999,
+      "last_cpu_seconds": 7.46,
+      "name": "python",
+      "peak_rss_bytes": 381411328,
+      "pid": 5,
+      "role": "runner_python"
+    },
+    {
+      "initial_cpu_seconds": 5.88,
+      "last_cpu_seconds": 6.16,
+      "name": "java",
+      "peak_rss_bytes": 336658432,
+      "pid": 2102,
+      "role": "kafka_tree"
+    },
+    {
+      "initial_cpu_seconds": 2.33,
+      "last_cpu_seconds": 2.33,
+      "name": "python",
+      "peak_rss_bytes": 266469376,
+      "pid": 2584,
+      "role": "mlflow_tree"
+    },
+    {
+      "initial_cpu_seconds": 3.0,
+      "last_cpu_seconds": 3.1,
+      "name": "python",
+      "peak_rss_bytes": 275558400,
+      "pid": 2587,
+      "role": "mlflow_tree"
+    },
+    {
+      "initial_cpu_seconds": 0.09,
+      "last_cpu_seconds": 3.19,
+      "name": "python",
+      "peak_rss_bytes": 294567936,
+      "pid": 3102,
+      "role": "worker_python"
+    },
+    {
+      "initial_cpu_seconds": 0.0,
+      "last_cpu_seconds": 8.030000000000001,
+      "name": "bash",
+      "peak_rss_bytes": 332394496,
+      "pid": 3103,
+      "role": "worker_descendants"
+    },
+    {
+      "initial_cpu_seconds": 0.0,
+      "last_cpu_seconds": 0.0,
+      "name": "bash",
+      "peak_rss_bytes": 913408,
+      "pid": 3111,
+      "role": "worker_descendants"
+    },
+    {
+      "initial_cpu_seconds": 0.06999999999999999,
+      "last_cpu_seconds": 0.06999999999999999,
+      "name": "java",
+      "peak_rss_bytes": 41775104,
+      "pid": 3112,
+      "role": "worker_descendants"
+    }
+  ],
+  "raw_samples": "/workspace/scratch/ab3ef819fe8f/industrial-streaming-mlops/state/restore-20261115-01/evidence/empty-resume-resources.jsonl",
+  "sampled_cpu_seconds_by_scope": {
+    "kafka_tree": 0.28000000000000025,
+    "mlflow_tree": 0.10000000000000009,
+    "runner_python": 0.14000000000000057,
+    "worker_descendants": 8.030000000000001,
+    "worker_python": 3.1
+  },
+  "sampled_peak_rss_bytes_by_scope": {
+    "all_children": 1500061696,
+    "kafka_tree": 336658432,
+    "mlflow_tree": 542027776,
+    "runner_python": 381411328,
+    "worker_descendants": 332394496,
+    "worker_python": 294567936
+  },
+  "sampler_errors": 0,
+  "samples": 79,
+  "scope": {
+    "children_rusage": "OS CPU delta for reaped children, separately reported; do not add to sampled child CPU",
+    "cpu": "sampled per-process user+system CPU deltas; short-lived processes and final sampling tails may be missed",
+    "rss": "sampled resident bytes; simultaneous sums double-count shared pages and are not total host memory",
+    "runner_cpu": "exact process_time delta for benchmark Python, including producer and sampler threads",
+    "sample_interval_seconds": 0.1,
+    "window": "worker launch through completion/failure; training is a prior process"
+  },
+  "thread_stopped": true
+}

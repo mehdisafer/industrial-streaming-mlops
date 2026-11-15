@@ -1,0 +1,13 @@
+{
+  "observed_at": "2026-11-15T19:55:54.197229+00:00",
+  "python_qualification": "3.11.18",
+  "python_tools": "3.12.14",
+  "docker_cli": null,
+  "podman_cli": null,
+  "docker_socket_exists": false,
+  "provider_workspace_supplied": false,
+  "hosted_runner_qualification": "not_executed",
+  "logical_cpus": 9,
+  "disk_free_bytes": 59159093248,
+  "scope": "isolated Linux environment; no personal workstation access"
+}

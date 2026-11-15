@@ -1,0 +1,122 @@
+{
+  "drained": true,
+  "elapsed_seconds": 1.9242851369999698,
+  "engine": "Spark Structured Streaming",
+  "jvm_available_processors": 2,
+  "max_offsets_per_trigger": 1000,
+  "mode": "availableNow",
+  "progress": [
+    {
+      "batchId": 5,
+      "durationMs": {
+        "latestOffset": 326,
+        "triggerExecution": 376
+      },
+      "id": "97a8eba5-4441-4975-9534-506090291bf6",
+      "inputRowsPerSecond": 0.0,
+      "name": "qualification",
+      "numInputRows": 0,
+      "processedRowsPerSecond": 0.0,
+      "runId": "14986f36-18ab-4d63-b093-2011ef337005",
+      "sink": {
+        "description": "ForeachBatchSink",
+        "numOutputRows": -1
+      },
+      "sources": [
+        {
+          "description": "KafkaV2[Subscribe[qualification]]",
+          "endOffset": {
+            "qualification": {
+              "0": 691,
+              "1": 2408,
+              "2": 675
+            }
+          },
+          "inputRowsPerSecond": 0.0,
+          "latestOffset": {
+            "qualification": {
+              "0": 691,
+              "1": 2408,
+              "2": 675
+            }
+          },
+          "metrics": {
+            "avgOffsetsBehindLatest": "0.0",
+            "maxOffsetsBehindLatest": "0",
+            "minOffsetsBehindLatest": "0"
+          },
+          "numInputRows": 0,
+          "processedRowsPerSecond": 0.0,
+          "startOffset": {
+            "qualification": {
+              "0": 691,
+              "1": 2408,
+              "2": 675
+            }
+          }
+        }
+      ],
+      "stateOperators": [],
+      "timestamp": "2026-11-15T20:01:36.009Z"
+    }
+  ],
+  "query_id": "97a8eba5-4441-4975-9534-506090291bf6",
+  "run_id": "14986f36-18ab-4d63-b093-2011ef337005",
+  "source_lag": {
+    "offsets_behind": 0,
+    "partitions": [
+      {
+        "behind": 0,
+        "broker_end": 691,
+        "partition": 0,
+        "retained_start": 0,
+        "sink_next": 691
+      },
+      {
+        "behind": 0,
+        "broker_end": 2408,
+        "partition": 1,
+        "retained_start": 0,
+        "sink_next": 2408
+      },
+      {
+        "behind": 0,
+        "broker_end": 675,
+        "partition": 2,
+        "retained_start": 0,
+        "sink_next": 675
+      }
+    ],
+    "status": "observed",
+    "topic": "qualification"
+  },
+  "spark_version": "3.5.9",
+  "verification": {
+    "checks": {
+      "accepted_events_balance": true,
+      "alerts_have_predictions": true,
+      "labels_balance": true,
+      "predictions_have_features": true,
+      "source_dispositions_balance": true,
+      "sqlite_integrity": true
+    },
+    "counts": {
+      "accepted": 1874,
+      "alerts": 12,
+      "batches": 5,
+      "control": 12,
+      "duplicate": 2,
+      "events": 1874,
+      "features": 1838,
+      "label": 1874,
+      "labels": 1874,
+      "pending_events": 0,
+      "pending_predictions": 0,
+      "predictions": 1838,
+      "raw": 3774,
+      "rejected": 12
+    },
+    "valid": true
+  },
+  "workers": 2
+}

@@ -4,16 +4,32 @@
 remains open for container execution, hosted CI and Databricks.** All fleet data is
 synthetic. No industrial production reliability or distributed capacity is claimed.
 
+## Current follow-up — 15 November 2026
+
+[The follow-up evidence](followup/README.md) binds to source `daaa5b8`: **294 tests**,
+**21 real native checks**, **28 real restored-backlog checks** and **13 actual
+JavaScript assertions with explicit DOM/fetch doubles**. It includes original
+receipts, current advisory checks, the twelve-commit incremental history review,
+and fresh browser/hosted-CI blockers. Six hundred seconds were declared for the
+restoration exercise; it completed in 95.825 s. The fresh native fault/rollback
+execution completed in 200.955 s.
+
+The older detailed results below remain historical evidence from the original
+delivery. They are not relabelled with the new execution commit or timing.
+
 ## Read the evidence by scope
 
 | Scope | Observed result | Original evidence |
 | --- | --- | --- |
-| Application correctness | 110 tests passed; Ruff passed | [Checks and JUnit](checks/README.md) |
+| Current application correctness | 294 tests passed; Ruff passed | [Current checks and JUnit](followup/README.md) |
+| Current native recovery and rollback | 21 checks passed on reviewed source `daaa5b8` | [Fresh native receipts](followup/native/qualification.json) |
+| Restored retained backlog and fresh input | 28 checks passed; 303 retained + 303 fresh records, 1,965 final predictions | [Restoration receipts](followup/restore/restore-qualification.json) |
+| Original application checks | 110 tests passed; Ruff passed | [Historical checks and JUnit](checks/README.md) |
 | Model evaluation and registry | Real HTTP MLflow registration; frozen validation-selected thresholds; both models met recorded gates | [Model report and all holdout rows](model/README.md) |
 | Real Kafka → Spark → MLflow → dashboard | 21 native checks passed, including actual source lag | [Native run](native/README.md) |
 | Faults and restoration | Before/after-commit recovery; active broker outage; new-input model rollback; restored Kafka/MLflow/checkpoint | [Native receipts](native/qualification.json) |
 | Partitions, worker threads and alert invariants | Four real variants passed; identical fixed-input business results | [Streaming benchmark](benchmark/README.md) |
-| Dependency review | 123 installed Python dependencies; no known vulnerability reported at scan time | [Final advisory result](checks/dependency-audit.json) |
+| Current dependency review | 122 third-party packages audited; zero known findings; local project explicitly skipped | [15 November 123-entry report](followup/checks/dependency-audit.json) |
 | Earlier failures | Original failed/intermediate attempts and corrective scope retained | [Attempt history](attempts/README.md) |
 | Container / hosted Actions | Docker unavailable locally; hosted job had no runner and no executed steps | [Hosted execution boundary](checks/README.md#ci-helpers-and-hosted-execution) |
 | Databricks | Bundle and adapter prepared; no authorized provider run | [Provider prerequisites](../databricks.md) |
@@ -113,14 +129,19 @@ exercise nonzero alerts and cooldown suppression without changing the model.
 | Native08 complete protocol | [`56bf437`](https://github.com/mehdisafer/industrial-streaming-mlops/commit/56bf4370bf0b1835b59da815006216976e19e5a7) |
 | Final 2/24-hour streaming benchmark | [`349ec4c`](https://github.com/mehdisafer/industrial-streaming-mlops/commit/349ec4c892c15b0deeeb34c81a2cc8baeecbf656) |
 | Reviewed executable source, including final CI controls | [`199b53a`](https://github.com/mehdisafer/industrial-streaming-mlops/commit/199b53a5025bd309b6fe8de81d5c1888ac5b09b1) |
+| 15 November native and restored-backlog executions | [`daaa5b8`](https://github.com/mehdisafer/industrial-streaming-mlops/commit/daaa5b8cc165b112c6cdce431fa1a8666c05892c) |
 
-Application runtime, contracts, configuration and dependency bytes have not changed
-since native08. Later executable changes extended the benchmark wrapper and corrected
-CI selection/concurrency. The final [source binding](checks/release-source-binding.json)
+For the original merged delivery at `6c9f33f`, application runtime, contracts,
+configuration and dependency bytes matched native08. Later changes within that
+original delivery extended the benchmark wrapper and corrected CI selection/concurrency.
+Its [source binding](checks/release-source-binding.json)
 matches all 54 executable/test/deployment/dependency files to fetched GitHub blob
 identities. Evidence and documentation are committed afterward without modifying that
 runtime. Original training identity remains unchanged in its report; a later commit
-has not been substituted into an earlier observation.
+has not been substituted into an earlier observation. The follow-up PR changes the
+producer, native runtime profile, dashboard recovery and provider adapter. The
+[new binding](followup/checks/source-binding.json) and fresh service receipts qualify
+their current local execution scope; they do not inherit a provider or browser pass.
 
 Each evidence directory contains copy/compression manifests. Input archives decompress
 to the original bytes, which were checked before compression. Hashes prove content
