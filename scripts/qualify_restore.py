@@ -115,15 +115,27 @@ def ports_closed(ports: tuple[int, ...]) -> dict:
 
 
 def immutable_rows(store: Store) -> dict:
-    """Capture committed source/business rows; runtime health is allowed to change."""
+    """Capture committed source/business data; processing state may advance.
+
+    Event finalization, machine watermarks and runtime health are mutable. Event
+    payloads, delayed labels, deduplication fingerprints, configuration and prior
+    deployments must survive restoration and later processing unchanged.
+    """
     keys = {
+        "metadata": ("key",), "seen_events": ("event_id",),
         "raw_records": ("topic", "partition_id", "offset_id"),
+        "events": ("event_id",), "labels": ("event_id",),
         "features": ("feature_id",), "predictions": ("feature_id",),
         "alerts": ("alert_id",), "batches": ("query_id", "batch_id"),
+        "deployments": ("id",),
     }
+    mutable_columns = {"events": {"finalized"}}
     return {
         table: {
-            canonical([row[key] for key in columns]): canonical(dict(row))
+            canonical([row[key] for key in columns]): canonical({
+                column: value for column, value in dict(row).items()
+                if column not in mutable_columns.get(table, set())
+            })
             for row in store.db.execute(f"SELECT * FROM {table}")
         }
         for table, columns in keys.items()

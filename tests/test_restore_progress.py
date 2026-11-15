@@ -1,4 +1,4 @@
-"""Pure offset reconciliation; no runner imports, services or provider execution.
+"""Offset and SQLite restoration checks; no runner imports or service execution.
 
 The compact backlog/fresh fixtures preserve restore06's batches 18..21 and its
 producer offset receipts. That run reported 606 input rows for 303 source offsets.
@@ -10,9 +10,15 @@ restore06 as a successful run.
 
 import ast
 import copy
+import json
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
+
+from industrial_mlops.features import feature_signature
+from industrial_mlops.simulator import generate_dataset
+from industrial_mlops.store import Store, canonical
 
 
 RUNNER = Path(__file__).resolve().parents[1] / "scripts" / "qualify_restore.py"
@@ -24,6 +30,16 @@ exec(compile(ast.Module(body=DEFINITIONS, type_ignores=[]), str(RUNNER), "exec")
 VERIFY = NAMESPACE["verify_progress_ranges"]
 TOPIC = "restore-backlog"
 MISSING = object()
+
+SNAPSHOT_DEFINITIONS = [node for node in ast.parse(RUNNER.read_text()).body
+                        if isinstance(node, ast.FunctionDef)
+                        and node.name in {"immutable_rows", "preserves"}]
+assert len(SNAPSHOT_DEFINITIONS) == 2
+SNAPSHOT_NAMESPACE = {"Store": Store, "canonical": canonical}
+exec(compile(ast.Module(body=SNAPSHOT_DEFINITIONS, type_ignores=[]), str(RUNNER), "exec"),
+     SNAPSHOT_NAMESPACE)
+SNAPSHOT = SNAPSHOT_NAMESPACE["immutable_rows"]
+PRESERVES = SNAPSHOT_NAMESPACE["preserves"]
 
 
 def batch(batch_id, start, end, reported):
@@ -220,3 +236,76 @@ def test_numeric_evidence_requires_nonnegative_integer_values_without_boolean_co
 def test_malformed_receipts_return_an_explicit_invalid_result(example, path, value):
     replace(example, path, value)
     rejected(example)
+
+
+@pytest.fixture
+def populated_sink(tmp_path):
+    """Real SQLite state with an explicit unit-only deployment identity."""
+    fixture = generate_dataset(machines=2, sites=2, hours=1, anomalies=True)
+    records = [
+        {"topic": "unit-restore-snapshot", "partition": 0, "offset": offset,
+         "value": canonical(event) if isinstance(event, dict) else event}
+        for offset, event in enumerate(fixture["events"])
+    ]
+    with Store(tmp_path / "snapshot.db") as store:
+        store.activate(SimpleNamespace(
+            model_name="unit-only", model_version="1", run_id="unit-only",
+            feature_version="v1", feature_signature=feature_signature(), threshold=.5,
+        ), shadow=True)
+        store.process_batch(records, "unit-restore-snapshot", 0)
+        assert store.counts()["labels"] > 0 and store.verify()["valid"]
+        yield store
+
+
+@pytest.mark.parametrize("table", ["labels", "events", "seen_events", "metadata", "deployments"])
+def test_restore_snapshot_detects_same_count_changes_to_committed_business_data(populated_sink, table):
+    store = populated_sink
+    before, counts = SNAPSHOT(store), store.counts()
+    row = store.db.execute(f"SELECT rowid AS review_rowid,* FROM {table} LIMIT 1").fetchone()
+    if table in {"labels", "events"}:
+        value = json.loads(row["body"])
+        if table == "labels":
+            value["target"] = 1 - value["target"]
+        else:
+            value["temperature_c"] += 10
+        column, value = "body", canonical(value)
+    elif table == "seen_events":
+        column, value = "payload_sha256", "0" * 64
+    elif table == "metadata":
+        column, value = "value", "corrupted-configuration"
+    else:
+        column, value = "threshold", .9
+    store.db.execute(f"UPDATE {table} SET {column}=? WHERE rowid=?", (value, row["review_rowid"]))
+    assert store.counts() == counts
+    # The generic structural verifier does not assert immutable row content.
+    assert store.verify()["valid"]
+    assert not PRESERVES(before, SNAPSHOT(store))
+
+
+def test_restore_snapshot_allows_processing_state_to_advance(populated_sink):
+    store = populated_sink
+    before = SNAPSHOT(store)
+    store.db.execute("UPDATE events SET finalized=1-finalized")
+    store.db.execute("UPDATE watermarks SET max_event_time=max_event_time+60")
+    store.set_runtime("unit-progress", {"status": "advanced"})
+    assert SNAPSHOT(store) == before
+    assert PRESERVES(before, SNAPSHOT(store))
+
+
+def test_restore_snapshot_preserves_existing_rows_when_new_dataset_is_processed(populated_sink):
+    store = populated_sink
+    before = SNAPSHOT(store)
+    offset = store.counts()["raw"]
+    fixture = generate_dataset(seed=46, machines=2, sites=2, hours=1,
+                               start="2026-01-03T00:00:00Z", anomalies=True)
+    records = [
+        {"topic": "unit-restore-snapshot", "partition": 0, "offset": offset + index,
+         "value": canonical(event) if isinstance(event, dict) else event}
+        for index, event in enumerate(fixture["events"])
+    ]
+    store.process_batch(records, "unit-restore-snapshot", 1)
+    after = SNAPSHOT(store)
+    assert store.verify()["valid"]
+    assert len(after["labels"]) > len(before["labels"])
+    assert after != before
+    assert PRESERVES(before, after)

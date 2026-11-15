@@ -4,6 +4,7 @@ These regression tests do not execute Spark, Delta, Kafka, a registry or Databri
 """
 
 import copy
+import builtins
 import importlib.util
 import json
 from pathlib import Path
@@ -212,6 +213,57 @@ def test_no_available_labels_remains_explicitly_pending():
     assert report["status"] == "awaiting_labels"
     assert report["pending_labels"] == report["pending_alert_labels"] == 1
     assert report["alert_precision"] is report["false_alerts_per_machine_day"] is report["failure_recall"] is None
+
+
+@pytest.mark.parametrize("rate_target,observed", [(1, 3), (1000, 1001)])
+def test_kafka_partition_rounding_can_exceed_rate_target_below_hard_sink_cap(rate_target, observed):
+    # Spark 3.5.9's proportional allocator gives each nonempty partition at
+    # least one record: [10, 10, 10] with target 1 -> 3; [1_000_000, 1, 1]
+    # with target 1000 -> 1001. These are source-contract counterexamples,
+    # not a Kafka/Spark integration execution.
+    receipt = ADAPTER.source_batch_limits(observed, rate_target, CONFIG.max_batch_rows)
+    assert receipt == {"input_rows": observed, "max_offsets_per_trigger": rate_target,
+                       "max_batch_rows": CONFIG.max_batch_rows, "rate_target_exceeded": True}
+
+
+def test_partition_rounding_never_bypasses_the_hard_sink_cap():
+    with pytest.raises(RuntimeError, match="hard sink row cap"):
+        ADAPTER.source_batch_limits(CONFIG.max_batch_rows + 1, 1000, CONFIG.max_batch_rows)
+    receipt = ADAPTER.source_batch_limits(0, 1000, CONFIG.max_batch_rows)
+    assert receipt["input_rows"] == 0
+    assert receipt["rate_target_exceeded"] is False
+
+
+def test_rate_target_cannot_exceed_configured_sink_cap():
+    with pytest.raises(ValueError, match="no greater than the hard sink row cap"):
+        ADAPTER.source_batch_limits(0, 1000, 500)
+
+
+@pytest.mark.parametrize("tracking_uri,registry_uri", [
+    ("databricks", "databricks"),
+    ("https://tracking.example.invalid", "databricks-uc"),
+])
+def test_unsupported_provider_layout_is_rejected_before_any_mlflow_import(monkeypatch, tracking_uri, registry_uri):
+    original_import = builtins.__import__
+
+    def import_guard(name, *args, **kwargs):
+        if name == "mlflow" or name.startswith("mlflow."):
+            raise AssertionError("Rejected provider layouts must not import or initialize MLflow")
+        return original_import(name, *args, **kwargs)
+
+    monkeypatch.setattr(builtins, "__import__", import_guard)
+    arguments = SimpleNamespace(tracking_uri=tracking_uri, registry_uri=registry_uri,
+                                model_name="unit.unit.model")
+    with pytest.raises(ValueError, match="workspace registries and external tracking"):
+        ADAPTER.load_model(arguments, CONFIG)
+
+
+def test_native_uc_registry_layout_and_model_name_are_explicit():
+    receipt = ADAPTER.registry_preflight("databricks", "databricks-uc", "unit.unit.model")
+    assert receipt["model_name"] == "unit.unit.model"
+    assert receipt["registry_uri"] == "databricks-uc"
+    with pytest.raises(ValueError, match="catalog.schema.model"):
+        ADAPTER.registry_preflight("databricks", "databricks-uc", "workspace_model")
 
 
 def test_overlay_pins_are_the_reviewed_lock_and_job_configuration():

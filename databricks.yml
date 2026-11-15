@@ -38,14 +38,14 @@ variables:
   kafka_secret_key:
     description: Existing secret containing the SASL JAAS configuration.
   model_name:
-    description: Trusted registered sklearn model with this project's qualification and feature tags.
+    description: Trusted Unity Catalog model named catalog.schema.model with this project's qualification and feature tags.
   model_version:
     description: Explicit positive numerical model version; aliases are not accepted.
   registry_uri:
-    description: Authorized registry URI; UC requires a catalog.schema.model name.
+    description: Reviewed provider registry; must be databricks-uc.
     default: databricks-uc
   tracking_uri:
-    description: Authorized tracking server accessible from the compute.
+    description: Reviewed provider tracking backend; must be databricks.
     default: databricks
   code_sha:
     description: Forty-character Git commit of the uploaded source.
@@ -53,7 +53,7 @@ variables:
     description: Hard bound on the complete replay dataset; overflow fails without dropping raw records.
     default: '50000'
   max_offsets:
-    description: Maximum Kafka records per micro-batch.
+    description: Spark Kafka rate target; partition rounding may exceed it. The configured max_batch_rows is the separate hard driver limit.
     default: '1000'
   expected_records:
     description: Expected total records for the selected topic and checkpoint; zero means no count acceptance assertion.

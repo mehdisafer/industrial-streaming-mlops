@@ -46,6 +46,38 @@ PROVIDER_PACKAGE_PINS = {
 }
 
 
+def registry_preflight(tracking_uri: str, registry_uri: str, model_name: str) -> dict:
+    """Keep the provider loader on the reviewed native UC logged-model layout."""
+    if tracking_uri != "databricks" or registry_uri != "databricks-uc":
+        raise ValueError(
+            "Provider qualification requires tracking_uri=databricks and "
+            "registry_uri=databricks-uc; workspace registries and external tracking "
+            "use unsupported artifact source layouts"
+        )
+    parts = model_name.split(".")
+    if len(parts) != 3 or not all(SQL_NAME.fullmatch(part) for part in parts):
+        raise ValueError("The UC model name must contain three simple identifiers: catalog.schema.model")
+    return {"tracking_uri": tracking_uri, "registry_uri": registry_uri,
+            "model_name": model_name, "artifact_layout": "MLflow 3 native Databricks logged model"}
+
+
+def source_batch_limits(input_rows: int, max_offsets: int, max_batch_rows: int) -> dict:
+    """Separate Spark's proportional Kafka rate target from the hard sink row cap.
+
+    Spark rounds a nonempty partition's fractional share up to one record. Its
+    observed batch can therefore exceed maxOffsetsPerTrigger without violating
+    the source contract. The independent row cap is enforced before collection;
+    the separate total-record and byte limits bound the complete replay.
+    """
+    if (type(input_rows) is not int or input_rows < 0 or type(max_offsets) is not int
+            or type(max_batch_rows) is not int or not 1 <= max_offsets <= max_batch_rows):
+        raise ValueError("Kafka rate target must be positive and no greater than the hard sink row cap")
+    if input_rows > max_batch_rows:
+        raise RuntimeError("Source batch exceeded the hard sink row cap; raw records are retained and the batch is not completed")
+    return {"input_rows": input_rows, "max_offsets_per_trigger": max_offsets,
+            "max_batch_rows": max_batch_rows, "rate_target_exceeded": input_rows > max_offsets}
+
+
 def native_dbutils_preflight(dbutils) -> dict:
     """Reject the SDK remote fallback before filesystem or table operations.
 
@@ -360,6 +392,7 @@ def evaluate_emitted_alerts(features: list[dict], events: list[dict], scores: di
 
 
 def load_model(arguments: argparse.Namespace, config: PipelineConfig):
+    registry_preflight(arguments.tracking_uri, arguments.registry_uri, arguments.model_name)
     import mlflow
     import mlflow.artifacts
     import mlflow.sklearn
@@ -460,6 +493,7 @@ def main() -> None:
         raise ValueError("A durable authorized provider checkpoint location is required")
     if not os.environ.get("DATABRICKS_RUNTIME_VERSION"):
         raise RuntimeError("This job requires a real Databricks Runtime; local Spark is not qualification")
+    registry_scope = registry_preflight(arguments.tracking_uri, arguments.registry_uri, arguments.model_name)
     os.environ.setdefault("MLFLOW_HTTP_REQUEST_TIMEOUT", "5")
     os.environ.setdefault("MLFLOW_HTTP_REQUEST_MAX_RETRIES", "0")
     os.environ.setdefault("MLFLOW_DISABLE_AGENT_HINT", "1")
@@ -476,6 +510,7 @@ def main() -> None:
     # The reference uses ordinary rows on the driver, not Arrow/pandas UDFs.
     spark.conf.set("spark.sql.execution.arrow.pyspark.enabled", "false")
     config = PipelineConfig.load(PROJECT_ROOT / "config" / "pipeline.json")
+    source_batch_limits(0, arguments.max_offsets, config.max_batch_rows)
     model, model_info = load_model(arguments, config)
     table_names = {name: f"`{arguments.catalog}`.`{arguments.schema}`.`{arguments.table_prefix}_{name}`" for name in TABLES}
 
@@ -529,8 +564,7 @@ def main() -> None:
         # driver collection, including a batch containing a large toxic payload.
         merge_frame("bronze", incoming, bronze_schema, ("topic", "partition", "offset"))
         input_rows = incoming.count()
-        if input_rows > arguments.max_offsets:
-            raise RuntimeError("Source batch exceeded the configured bound")
+        batch_limits = source_batch_limits(input_rows, arguments.max_offsets, config.max_batch_rows)
         history_frame = spark.table(table_names["bronze"])
         footprint = history_frame.agg(F.count("*").alias("records"), F.sum(F.coalesce(F.length("value"), F.lit(0)) + F.coalesce(F.length("key"), F.lit(0))).alias("bytes")).first()
         if footprint["records"] > arguments.max_records or (footprint["bytes"] or 0) > MAX_REPLAY_BYTES:
@@ -578,7 +612,7 @@ def main() -> None:
         scores = {prediction["feature_id"]: prediction["score"] for prediction in all_predictions}
         as_of = max((parse_time(event["ingested_at"]) for event in accepted), default=0)
         evaluation = evaluate_emitted_alerts(features, accepted, scores, emitted, model_info["threshold"], config, as_of=as_of)
-        report = {"batch_id": int(batch_id), "run_id": arguments.run_id, "input_rows_this_attempt": input_rows, "raw_bytes": footprint["bytes"] or 0, "replay": replay_report, "label_coverage": evaluation["coverage"],
+        report = {"batch_id": int(batch_id), "run_id": arguments.run_id, "input_rows_this_attempt": input_rows, "source_batch_limits": batch_limits, "raw_bytes": footprint["bytes"] or 0, "replay": replay_report, "label_coverage": evaluation["coverage"],
                   "model": model_info, "predictions": len(all_predictions), "new_predictions": len(new_predictions),
                   "alerts": len(emitted), "evaluation": evaluation,
                   "wall_seconds": time.perf_counter() - started, "completed_at": datetime.now(timezone.utc).isoformat()}
@@ -618,12 +652,13 @@ def main() -> None:
                 "code_sha": arguments.code_sha, "runtime": os.environ["DATABRICKS_RUNTIME_VERSION"], "spark": spark.version,
                 "python": sys.version.split()[0], "packages": {name: importlib.metadata.version(name) for name in ("mlflow", "numpy", "pandas", "scikit-learn", "skops")},
                 "runtime_import_preflight": runtime_imports,
+                "registry_preflight": registry_scope,
                 "checkpoint_binding": checkpoint_binding,
                 "native_dbutils_preflight": dbutils_preflight,
                 "query_id": str(query.id), "query_run_id": str(query.runId), "progress": query.recentProgress,
                 "tables": counts, "table_history": histories, "latest_batch": latest, "batch_reports": batch_reports,
                 "model": model_info, "consumption": None, "consumption_status": "not_observed_requires_authorized_billing_source",
-                "limits": {"max_records": arguments.max_records, "max_raw_bytes": MAX_REPLAY_BYTES, "max_offsets": arguments.max_offsets, "timeout_seconds": arguments.timeout_seconds,
+                "limits": {"max_records": arguments.max_records, "max_raw_bytes": MAX_REPLAY_BYTES, "max_offsets": arguments.max_offsets, "max_batch_rows": config.max_batch_rows, "timeout_seconds": arguments.timeout_seconds,
                            "execution": "bounded driver replay with idempotent per-table Delta merges; not distributed feature scalability"}}
     output = Path(arguments.output_root) / arguments.table_prefix / f"run-{arguments.run_id}.json"
     output.parent.mkdir(parents=True, exist_ok=True)

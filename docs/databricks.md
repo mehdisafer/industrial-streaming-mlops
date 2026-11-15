@@ -55,7 +55,21 @@ precision/rates remain null when the required evidence is absent.
 To preserve feature parity, this first provider adapter replays the bounded raw
 dataset on the driver using `replay_with_report`. The default limit is 50,000 raw
 records, the allowed maximum is 200,000, total replay payload is capped at 64 MiB,
-and the micro-batch default is 1,000.
+and the Kafka micro-batch rate target defaults to 1,000. Spark allocates this
+target proportionally across partitions and rounds small nonempty partition
+shares up to one record. An actual batch can therefore exceed
+`maxOffsetsPerTrigger`: three active partitions with a target of one can yield
+three records; a skewed three-partition backlog can also exceed a target of 1,000.
+The independent `config/pipeline.json` `max_batch_rows` value is the hard sink cap
+(10,000 by default), checked after the distributed raw write and before any
+driver collection. The rate target must not exceed that cap. Completed batches report
+the target, observed rows, cap and `rate_target_exceeded` flag. If rounding takes
+the batch above the hard cap, the run fails explicitly with the raw rows retained;
+the existing checkpoint can already contain that batch's offset range. Lowering
+the target does not shrink a failed batch on replay. Preserve its checkpoint and
+tables, reconcile the incomplete batch, and prepare a new isolated deployment
+with a lower target or an explicitly reviewed migration. Do not delete checkpoint
+files or silently raise the hard cap to bypass the failure.
 Exceeding the bound stops the job after preserving raw input; it never silently
 drops records. This design is deliberately labelled a qualification adapter. A
 distributed Delta state/feature implementation and its partition-invariance/load
@@ -120,10 +134,19 @@ paths and expanded artifact-provided trust lists are rejected. The registered
 version must resolve through an MLflow 3 logged-model identity with the same
 source run. This provider-side artifact API/layout still requires a real test;
 an unsupported imported model layout fails instead of bypassing the policy.
-For Unity Catalog use `catalog.schema.model`; for an existing workspace registry
-select its URI explicitly. A local `http://localhost:5000` model is not accessible
-from Databricks. Moving it requires an authorized model import/registration with
-its original provenance; the bundle does not expose the local tracking server.
+The reviewed provider loader requires `tracking_uri=databricks`,
+`registry_uri=databricks-uc`, and a `catalog.schema.model` name whose three parts
+are simple SQL identifiers. It rejects other registry/tracking combinations
+before MLflow access or provider writes. This is an explicit compatibility limit:
+MLflow 3.17.2 converts a logged-model URI to its artifact location for the workspace
+model registry, which does not match this loader's `models:/m-...` source contract.
+External tracking imported into Unity Catalog can also use another source layout.
+Neither path is qualified by these deployment artifacts. Supporting one requires
+a reviewed resolver and provenance checks rather than weakening the current
+artifact invariant. A local `http://localhost:5000` model is not accessible from
+Databricks. Moving it requires an authorized model import/registration that
+preserves provenance and produces the required native Databricks logged-model
+layout; the bundle does not expose the local tracking server.
 
 ## Checkpoint ownership preflight
 
@@ -222,7 +245,9 @@ source progress, source-file hashes, table counts and latest Delta history versi
 label coverage, prediction/alert counts and evaluation when labels are available.
 The `checkpoint_binding` receipt records marker verification and its manifest
 digest; `runtime_import_preflight` records installed and loaded package versions
-and the numerical smoke results. `native_dbutils_preflight` records the selected
+and the numerical smoke results. `registry_preflight` records the required native
+Databricks tracking and Unity Catalog registry combination; it does not verify
+registry connectivity or permissions. `native_dbutils_preflight` records the selected
 utility implementation; it does not itself execute filesystem operations.
 The per-batch report distinguishes `new_predictions` from total committed predictions
 and retains pending outcome counts instead of treating them as evaluated alerts.
@@ -297,8 +322,10 @@ MLFLOW_DISABLE_TELEMETRY=true DO_NOT_TRACK=true \
   uv run --frozen --python 3.11.18 pytest -q tests/test_databricks_adapter.py
 ```
 
-The focused suite covers 37 cases, including 14 filesystem-double cases and four
-native-interface guard cases. The latter use an explicit double or an SDK fallback
+The focused suite covers partition-rounding counterexamples, the independent
+hard row cap and rejection of unsupported registry layouts before MLflow imports,
+as well as 14 filesystem-double cases and four native-interface guard cases.
+The latter use an explicit double or an SDK fallback
 object created without its authentication/client constructor. No test
 executes Spark, Delta, Kafka, a registry or a Databricks workspace; no provider
 acceptance gate is closed by these results. Actual Delta partial-write recovery,
@@ -315,5 +342,8 @@ runtime library resolution and provider business-output parity remain required.
 - [Documented dbutils filesystem operations](https://docs.databricks.com/aws/en/dev-tools/databricks-utils)
 - [SDK runtime selection source](https://github.com/databricks/databricks-sdk-py/blob/main/databricks/sdk/runtime/__init__.py)
 - [Existing-cluster Jobs API task](https://docs.databricks.com/api/jobs/v2/run)
+- [Spark 3.5.9 Kafka proportional rate allocator](https://github.com/apache/spark/blob/v3.5.9/connector/kafka-0-10-sql/src/main/scala/org/apache/spark/sql/kafka010/KafkaMicroBatchStream.scala)
+- [Spark 3.5.0 rate allocator matching the DBR 15.4 Spark baseline](https://github.com/apache/spark/blob/v3.5.0/connector/kafka-0-10-sql/src/main/scala/org/apache/spark/sql/kafka010/KafkaMicroBatchStream.scala)
+- [MLflow 3.17.2 registry source resolution](https://github.com/mlflow/mlflow/blob/v3.17.2/mlflow/tracking/client.py)
 - [SciPy Python/NumPy support table](https://docs.scipy.org/doc/scipy/dev/toolchain.html)
 - [Arrow 16 NumPy 2 compatibility notes](https://arrow.apache.org/blog/2024/04/20/16.0.0-release/)
