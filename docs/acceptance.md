@@ -1,72 +1,134 @@
-# Acceptance record
+# Acceptance and remaining work
 
-Updated 15 November 2026. This file is the current acceptance decision, not a claim that every historical run passed.
+I distinguish implemented behavior, executed checks and acceptance within a named
+environment. The [evidence index](evidence/README.md) preserves commands, source/model
+identities, inputs, original outputs and earlier failures. Native integration,
+container qualification and Databricks qualification have separate gates.
 
-## Decision
+## Observed local acceptance
 
-**The synthetic local container reference is qualified. Full provider V1 acceptance is still open.** The actual Databricks/Unity Catalog deployment, rendered dashboard qualification, maintainer licence choice and public visibility are separate items. Do not close the overall acceptance issue or label a stable production release based on the fast CircleCI job.
+| Criterion | Observed result | Evidence and limit |
+|---|---|---|
+| Contracts, causal features, delayed labels, sink atomicity, provider guards and monitoring | **294 tests passed in 19.29 s**, zero failures/errors/skips; Ruff passed | [Current receipts](evidence/followup/README.md); named predictor/client doubles are unit evidence |
+| Kafka → Spark → MLflow → persisted outputs | Current reviewed source: **all 21 checks passed** in 200.955 s | [Fresh native result](evidence/followup/native/qualification.json); real single-host services at `daaa5b8` |
+| Source reconciliation | 4,380 raw = 2,164 sensors + 2,164 labels + 24 heartbeats + 24 rejects + 4 duplicates | Native receipt; 2,092 features/predictions, 12 alerts, no pending work, zero observed lag in all three partitions |
+| Worker/broker recovery and unavailable model | Before/after-commit recovery, retained pending predictions and active-query broker recovery observed | Broker stop-to-restart interval 15.103 s; active worker consumed 303 new recovery records |
+| Model deployment and rollback | Candidate and restored baseline scored subsequent real stream input | Native deployment/prediction receipts; numeric activation is separate from the registry alias |
+| Stopped-state restoration with continued work | **28/28 checks** in 95.825 s: 303 retained messages and 303 fresh post-restore messages consumed | [Restoration report](evidence/followup/restore/restore-qualification.json); 4,077 raw records, 1,965 predictions, six preserved alerts, immutable history, four worker runs, zero lag and observed owned-process cleanup; cross-host recovery remains untested |
+| Fixed-input business invariance | Three 24-hour variants produced identical features, scores, alert business fields and cooldown outcomes | [Benchmark03](evidence/benchmark/README.md); each has 2,317 raw records, 1,141 predictions, 4 alerts and 18 cooldown suppressions |
+| Bounded load/resource observation | Four 2-hour/24-hour variants completed in 84.614 s overall | Worker wall times include startup/shutdown; CPU/RSS and latency receipts are scoped observations, without statistical speedup or multi-node capacity claims |
+| Model quality gates | Baseline and candidate eligible on the original synthetic holdout | [Model evidence](evidence/model/README.md); 5,166 rows, 24 failures, 17.9375 machine-days |
+| Dashboard data and script behavior | Real HTTP HTML/JSON; **13 JavaScript assertions** including HTTP-error recovery, six restored alert rows and 40 prediction rows | [Current check scope](evidence/followup/README.md#dashboard-and-unresolved-environment-gates); explicit minimal DOM/fetch doubles, no browser rendering or screenshot acceptance |
+| Python dependency advisories | 122 third-party packages audited; zero known advisories reported on 15 November | [123-entry report](evidence/followup/checks/dependency-audit.json) explicitly skips the local project, which is not indexed on PyPI; limited to the recorded dependency/database state |
 
-## Executed hosted qualification
+The baseline emitted 29 false alerts (1.6167 per machine-day), with 87.5% useful
+failure recall and 42% alert precision. The candidate emitted one false alert
+(0.055749 per machine-day), with 100% useful recall and 96% alert precision. Median
+true-alert lead was 919.36 s and 962.61 s respectively. These are cooldown-aware
+operational metrics on simulated feature-availability time. The validation-selected
+thresholds, per-event metrics, warm model-only latency and qualification policy remain
+in the original report; they are not interchangeable with measured pipeline latency.
 
-Qualified runtime revision: `4bcc55ec470a752bac59dfa45f561dad0261d95e`.
+For the original delivery, training completed during native01, whose aggregate integration attempt
+failed later. Native08 reused that unchanged training result. Native07's lag metric
+was unavailable and is superseded by native08's explicit zero-lag check. The
+[attempt history](evidence/attempts/README.md) retains these distinctions. Source
+manifests and binding receipts identify executed bytes; later CI/documentation changes
+are not represented as having run inside an earlier qualification. The 15 November
+follow-up trained the same fixed protocol in the restored-backlog exercise, then
+reused that stopped model state for the fresh native fault/rollback run after
+checking its training source. Both new service scenarios bind to `daaa5b8`; their
+receipts are separate from native08 and the original model/benchmark evidence.
 
-CircleCI pipeline: `f18568b2-024d-4ca5-a586-57d150a0d5f2`.
-Workflow: [reference-qualification](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c).
-Job: `424ad872-14fc-4952-ba99-970ee84cf7d7`.
+The application suite is reproducible with:
 
-This was a native Linux VM run of `.circleci/reference.yml`, not a simulated Docker test or a replacement of provider acceptance. Original artifacts were downloaded and inspected before this record was written.
+```bash
+uv run --frozen pytest -q -m 'not integration'
+uv run --frozen ruff check src tests scripts databricks
+```
 
-| Observation | Result |
-|---|---|
-| Build and real services | Kafka, Spark Structured Streaming, HTTP MLflow and dashboard executed |
-| Run receipt | `status=passed`, `exit_code=0`, owned stack recorded |
-| Final verification | 20 checks, zero failed checks |
-| Persisted business data | 4,380 raw events; 2,092 feature rows; 2,092 scores; 12 alerts; 38 delayed labels |
-| Output correctness | No duplicate raw-event, feature or score identity; scores reference known models; offsets and checkpoint exist |
-| Recovery | Restart assertions true; no duplicate effect; expected bounded recovery output |
-| Model lifecycle | Rejected candidate, champion retention, accepted candidate and rollback assertions true |
-| Runtime provenance | Image, Java/JAR, OS-package and source evidence retained |
-| Cleanup | Script recorded its owned cleanup; unrelated Docker resources were not pruned |
+## Hosted CircleCI unit verification — 15 November 2026
 
-The source check profile separately executed **294 Python tests**, compilation, lint, security inventory and dependency checking. It is not counted again as part of the final 20 data checks.
+| Lane | Observed result | Boundary |
+|---|---|---|
+| Python build-and-test | **Success** at `579cbc5` in [pipeline #5](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/5?useNewPipelines=false) (1m14s) and `ce7674c` in [pipeline #7](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/7?useNewPipelines=false) (1m15s) | Compile, lint, pytest test-suite and JUnit output; CI assertion counts not independently read. Merged as [PR #4](https://github.com/mehdisafer/industrial-streaming-mlops/pull/4) at `b454451` |
+| Container qualification | **Success reported by CircleCI** on exact `4bcc55e` in [`reference-containers`](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7); the old [pipeline #8](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/8?useNewPipelines=false) failed on `ce7674c` | GitHub's `ci/circleci: reference-containers` status is `success` at `4bcc55e`. The job runs real `scripts/integration.sh`. Detailed original artifacts are held by CircleCI and not independently rechecked in this merge |
 
-## Retained-artifact integrity
+The Python unit job alone never establishes Docker acceptance. The separate
+Docker reference job now reports success on `4bcc55e`; that status does not
+qualify GitHub Actions runner allocation, Databricks, rendered browser behavior
+or a public release.
 
-The following SHA-256 values were computed from the downloaded, unmodified CircleCI artifacts:
+## Hosted container execution — source-bound record
 
-| Artifact | SHA-256 |
+CircleCI's `ci/circleci: reference-containers` status is **success** for
+[`4bcc55e`](https://github.com/mehdisafer/industrial-streaming-mlops/commit/4bcc55ec470a752bac59dfa45f561dad0261d95e/checks); its [hosted job](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7) uses the pinned
+Linux machine image `ubuntu-2404:2026.10.1`, validates Docker Compose and
+executes the bounded `scripts/integration.sh` against real services.
+The previous [#8 failure](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/8?useNewPipelines=false) is explained by an existing
+`evidence/integration` directory and exit 64. Commit `9e6852d` moved host
+metadata into `evidence/ci-host`, and `4bcc55e` added a routable ingress
+bridge while keeping published host ports bound to loopback.
+
+The branch's earlier hosted acceptance note **reports** a passing run receipt,
+20 final checks, 4,380 raw rows, 2,092 features/scores, 12 alerts, model
+lifecycle and recovery assertions, and scoped cleanup. Its four reported SHA-256
+values are preserved below for later comparison with the original CircleCI
+artifacts. These receipt-level details are **not independently byte-verified by
+this reconciliation**; a successful job status is not a substitute for their
+original contents.
+
+| CircleCI artifact (reported) | Recorded SHA-256, not independently rechecked |
 |---|---|
 | `integration/run-receipt.json` | `78b45855d20b1ab5c6784f59eff21dd8e42f2c0dedc345f8383cfc19312d148a9` |
 | `integration/final-verification.json` | `5026ba8908142f6e21ca83a1ff2a03be6be63d9df3bb6f348a02723463d4383dd` |
 | `integration/lifecycle-assertions.json` | `c9d805ba5503796db98a688e9b593de147744d2019455fe11b8d659811eb3c0de` |
 | `integration/recovery-assertions.json` | `66589288bdba4bb79b6068baab056fa822fa1545df851779f407ce62e7ec42512e` |
 
-The manifest and this record are summaries of execution evidence; they are not new execution outputs. CircleCI artifact retention is finite. Existing permanent native evidence remains under [evidence/](evidence/), with its own revision and environment.
+This hosted Docker reference remains single-host synthetic validation, not
+Databricks acceptance, distributed scalability or production readiness.
 
-## Corrections established by this qualification
+## Open qualification and release gates
 
-1. The Actions-compatible runner exposed an externally managed system Python. Bootstrap uv now runs in a disposable virtual environment rather than bypassing system protections.
-2. The native wrapper initially pre-created the immutable integration destination. Host metadata now goes to `evidence/ci-host`; the integration script creates its own fresh destination.
-3. Internal-only Docker networks did not realize the published host endpoints in the observed environment. Kafka, MLflow and dashboard now join a separate ingress bridge. Host bindings remain `127.0.0.1`; worker, CLI and initialization remain internal-only.
+| Gate | Current state | Evidence needed to close it |
+|---|---|---|
+| CircleCI container reference | **Job succeeded on source `4bcc55e`**; original artifact hashes/contents not independently rechecked in this merge | Download and retain source, image identities, Kafka/Spark/MLflow logs, HTTP/recovery and cleanup artifacts from the [successful job](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7); verify SHA-256 against the reported values |
+| Hosted GitHub Actions | [Source run 43754981478](https://github.com/mehdisafer/industrial-streaming-mlops/actions/runs/43754981478): no executed steps, runner ID 0, one unreadable annotation; integration skipped | Read the annotation through supported GitHub access, resolve its actual cause, then obtain hosted checks/integration on the reviewed source; no green status inferred from local tests |
+| Databricks | **Open**; no authorized workspace run | Existing authorized compute/storage, Kafka access, provider run IDs, Delta versions and recovery evidence |
+| Browser presentation | Fresh Chromium launch on 15 November blocked by `socket(): Operation not permitted`; [original receipt](evidence/followup/checks/browser/startup.json) | Real browser layout/interaction review and captured output; minimal-DOM checks do not close this gate |
+| Release publication | `v0.1.0-rc.1` notes prepared; no tag or GitHub release published | [PR #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2) and [follow-up PR #3](https://github.com/mehdisafer/industrial-streaming-mlops/pull/3) record source review; tag/release publication requires its own verified action |
+| License and visibility | Repository private; no owner-approved license | Owner decisions and publication review before any visibility change |
+| Repository settings | Description is null and topics are empty; no supported metadata/release mutation tools. Rulesets read returned a plan/visibility 403; branch-protection read returned an integration-access 403 | Supported authorized administration and, for rulesets, a separate owner decision on the documented plan/visibility requirement |
 
-The ingress-connected services can initiate egress. This is **not** a whole-stack air-gap guarantee. The public bindings were not widened to `0.0.0.0` to obtain a pass.
+The [check receipts](evidence/checks/README.md) preserve the distinct GitHub responses.
+The rulesets restriction does not establish the cause of the Actions job failures.
+No plan upgrade or public-visibility change is assumed, even though the repository
+readback reports the user's administrative permission.
 
-The failed setup, wrapper and connectivity runs remain failures in history. A later corrected run does not retrospectively validate them.
+CI scope selection was tested with real temporary Git history: documentation-only
+updates skip the heavy job, source changes select it, and manual dispatch selects the
+full path. Job-level concurrency preserves an active integration and bounds its group
+to one pending job. These are locally tested selection logic and statically checked
+configuration; hosted scheduling remains open. No paid runner or cloud resource was
+provisioned to close a gate.
 
-## Reproduction and CI separation
+## Prioritized follow-up
 
-The fast configuration is `.circleci/config.yml`; it uses the repository's locked environment and Smarter Testing. The manual full configuration is `.circleci/reference.yml`, on `ubuntu-2404:2026.10.1`, with a bounded execution and an isolated Compose project. The existing GitHub Actions workflow remains available. No cloud deployment is embedded in these profiles.
-
-Run `bash scripts/integration.sh` with a unique `COMPOSE_PROJECT_NAME`, `SOURCE_REVISION=$(git rev-parse HEAD)` and a non-existing `EVIDENCE_DIR`. Consult [operations](operations.md) for normal operation and [compatibility](compatibility.md) for the pinned stack. Cleanup must remain scoped to the run's recorded project.
-
-## Open gates
-
-| Gate | Required evidence to close |
-|---|---|
-| Databricks and Unity Catalog | Actual authorized workspace validation, deployment, execution, permissions, lineage, promotion/rollback and retained provider outputs; local Spark is not a substitute |
-| Rendered dashboard | Actual browser interaction/rendering evidence; successful HTTP and JSON checks alone do not qualify visual behavior |
-| Licence | Explicit maintainer selection and a corresponding licence file; no terms invented here |
-| Publication | Maintainer-confirmed public visibility and applicable branch protections |
-| Operational production acceptance | Named target, limits, credentials, restore/recovery exercise and operator acceptance in that target |
-
-Historical local measurements, larger profiles and earlier diagnostics remain available in [evidence/](evidence/). Their exact previous acceptance text can be inspected in the Git history at runtime revision `4bcc55ec470a752bac59dfa45f561dad0261d95e`; they must not be mistaken for the hosted run above. No stable `v1.0.0` tag is asserted by this record.
+1. Preserve and independently check CircleCI Docker job artifacts from the
+   successful source `4bcc55e`. The earlier exit-64 failure is diagnosed;
+   record the exact correction and retained evidence, not a fabricated rerun.
+   Separately resolve GitHub Actions runner allocation from its own annotation.
+2. Run the [Databricks qualification](databricks.md) on explicitly authorized existing
+   resources, including library/access checks, business-output parity, recovery and
+   available consumption data. Local Spark is not provider qualification.
+3. Complete browser presentation review and the owner license/publication decisions.
+   Apply prepared description/topics/protection only through a supported authorized
+   administration path; verify anonymous access only after a visibility change.
+4. Before unattended local operation, define database/evidence retention, archival,
+   disk limits, service supervision and recovery objectives. The current finite demo
+   profile and Kafka retention setting do not implement complete local retention.
+5. Before larger deployment, implement distributed durable feature state, multi-node
+   recovery tests and authenticated service exposure. SQLite remains a single-writer
+   boundary, and adding local Spark threads does not remove it.
+6. Evaluate representative external telemetry and unseen sites, with calibrated scores,
+   uncertainty estimates and maintenance costs, before claiming field predictive value.

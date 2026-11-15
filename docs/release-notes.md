@@ -34,6 +34,8 @@ eventual delayed label. It includes:
 | Evidence | Observed result |
 |---|---|
 | [Current application checks](evidence/followup/README.md) | 294 tests passed in 19.29 s, zero failures/errors/skips; Ruff passed; 122 third-party packages audited with zero known findings, one local project explicitly skipped |
+| [Hosted CircleCI Python CI](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/5?useNewPipelines=false) | **Success** on `579cbc5`, repeated on descendant `ce7674c` in [pipeline #7](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/7?useNewPipelines=false); merged in [PR #4](https://github.com/mehdisafer/industrial-streaming-mlops/pull/4). Unit lane only; CI JUnit assertion counts not read |
+| [CircleCI Docker job](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7) | **Success** on `4bcc55e`, distinct from the earlier exit-64 failure on `ce7674c`. Docker runtime provenance and business receipts are externally retained in CircleCI; reported contents/hashes not independently rechecked here |
 | [Fresh native execution](evidence/followup/native/qualification.json) | All 21 checks passed in 200.955 s at `daaa5b8`; 4,380 raw records, 2,092 predictions, 12 alerts and zero observed source lag across three partitions |
 | [Recovery and rollback](evidence/followup/native/qualification.json) | Before/after-commit recovery, unavailable-model replay, active broker interruption, candidate activation, rollback and restored caught-up checkpoint with no duplicate effects |
 | [Restored backlog and fresh input](evidence/followup/restore/restore-qualification.json) | 28/28 checks in 95.825 s; 303 retained records then 303 fresh records; immutable history, 1,965 final predictions, four worker runs and observed owned-process cleanup |
@@ -59,9 +61,8 @@ commit for code that was actually executed.
 
 ## Open gates and publication decisions
 
-- **Container qualification is not executed.** Docker was unavailable. Hosted CI
-  jobs failed with no executed steps and runner ID 0; their cause remains unresolved.
-  Local shell/scope checks do not represent hosted or container success.
+- **Hosted Docker reference passed** in CircleCI [`reference-containers`](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7) on source `4bcc55e`; the older [#8](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/8?useNewPipelines=false) failed before integration because its wrapper pre-created `evidence/integration`. Later `9e6852d` corrected the evidence directory, and `4bcc55e` corrected loopback service ingress. The successful job's original artifacts were reported in the working-branch acceptance record, but their bytes are not independently rechecked in this documentation merge.
+- **Hosted GitHub Actions remains open.** Jobs failed before runner allocation (runner ID 0, no steps); the cause is not established. CircleCI unit success does not close that separate gate.
 - **Databricks remains open.** It needs an authorized workspace, existing compute
   and storage, reachable Kafka and trusted artifacts, with a bounded run budget.
 - **Browser presentation remains open.** Chromium startup was blocked by an
