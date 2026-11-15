@@ -39,7 +39,7 @@ separates the completed local checks from the remaining platform and release gat
 | Restored backlog and new input | **28 checks passed**: retained backlog, fresh input, immutable history and owned-process cleanup; [restoration evidence](docs/evidence/followup/README.md#restored-backlog-and-fresh-input-proof) |
 | Model evaluation | Baseline and candidate met the recorded synthetic holdout gates; [original evaluation](docs/evidence/model/README.md) |
 | Streaming comparison | Four measured variants; exact business-output parity across the three 24-hour variants; [benchmark evidence](docs/evidence/benchmark/README.md) |
-| Container profile | **Not qualified**: Docker unavailable locally; [CircleCI #8](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/8?useNewPipelines=false) failed on older `ce7674c`; latest [draft PR #5](https://github.com/mehdisafer/industrial-streaming-mlops/pull/5) is untested |
+| Hosted Docker reference | [CircleCI `reference-containers`](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7) **succeeded at `4bcc55e`** after fixing the evidence directory and ingress; original job artifacts are referenced externally, not independently mirrored here |
 | CircleCI Python unit CI | **Succeeded** at `579cbc5` ([#5](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/5?useNewPipelines=false)) and `ce7674c` ([#7](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/7?useNewPipelines=false)); merged [PR #4](https://github.com/mehdisafer/industrial-streaming-mlops/pull/4) |
 | Hosted GitHub Actions | Jobs failed before runner allocation (runner ID 0, no steps); cause unresolved, no Actions pass |
 | Databricks | **Open**: implementation prepared; no authorized workspace run |
@@ -156,10 +156,18 @@ and [verified dependency baseline](docs/compatibility.md).
 
 Requirements: Docker Engine with Compose v2, and a reference budget of four CPUs,
 8 GiB RAM and 10 GiB free disk. These are requested local limits, not measured minimums.
-The broker, registry and dashboard are published on loopback only.
-This container profile remains unqualified: local Docker was unavailable,
-CircleCI's container attempt failed on older source and its latest fixes have not
-been rerun. Observed integration results above come from the native path. Its smoke script also requires
+The broker, registry and dashboard are published on loopback only. On the
+qualified CircleCI Docker revision `4bcc55e`, Kafka, MLflow and dashboard also
+join an ingress bridge so those loopback endpoints are reachable; the other
+services remain on an internal network. This is not an air-gapped deployment:
+ingress-attached services retain potential outbound connectivity.
+
+CircleCI's `reference-containers` job succeeded on the exact Docker source
+revision `4bcc55e`, after an earlier failed attempt on `ce7674c` (the old wrapper
+pre-created `evidence/integration` and the smoke script correctly refused it).
+The hosted result is linked above. The individual retained CircleCI artifacts
+and their reported hashes have not been independently copied and rechecked by
+this documentation merge. Earlier detailed local service runs remain distinct. Its smoke script also requires
 Bash, curl and Python 3 on the host.
 
 ```bash
@@ -261,8 +269,9 @@ recovery, batch/stream feature and prediction parity, failures before and after
 the sink commit, a broker interruption during an active query, candidate activation,
 rollback on new telemetry, the live dashboard and restoration of stopped state.
 The container script implements a smaller smoke profile with broker/worker interruption
-steps. A successful Docker execution with current-source receipts remains
-necessary. Native and container receipts are separate.
+steps. The CircleCI Docker qualification succeeded at `4bcc55e`; retain its
+original receipts and do not substitute native ones. Native and container
+measurements remain separate.
 
 The container smoke script allocates a fresh Compose project, rejects existing
 project resources or occupied loopback ports, and preserves original evidence before
@@ -289,8 +298,9 @@ previous head. Only the selected heavy job joins a per-PR/ref concurrency group;
 it preserves a running job and allows one pending job. Local Git fixtures and static
 workflow checks exercised this selection, but hosted GitHub Actions scheduling
 remains unexecuted. The separate CircleCI Python lane succeeded at `579cbc5`
-and `ce7674c`; Docker qualification failed on older `ce7674c`, and the latest
-changes in draft PR #5 have no observed container run.
+and `ce7674c`. Docker qualification failed on old `ce7674c` but later
+succeeded on `4bcc55e` in the separate `reference-containers` job; GitHub
+Actions runner allocation is still unresolved.
 The [current check evidence](docs/evidence/followup/README.md) records 122 audited
 third-party Python packages with zero known advisories at scan time. The 123-entry
 report explicitly skips this local project, which is not indexed on PyPI. These
@@ -335,7 +345,7 @@ No Databricks execution is claimed from these local tests.
 - [Release preparation and publication decisions](docs/release-notes.md)
 - [Python dependency lock](uv.lock) and [JVM connector lock](config/spark-jars.lock.json)
 
-The next milestones are a successful current-source Docker qualification,
+The next milestones are durable retrieval/review of the hosted Docker artifacts,
 GitHub Actions runner allocation, authorized Databricks qualification,
 browser rendering review and owner decisions needed for a public release. Longer unattended operation also needs retention limits and supervision;
 multi-node serving/state, authenticated service exposure and external model validation

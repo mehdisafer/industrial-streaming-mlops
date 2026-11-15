@@ -52,16 +52,47 @@ uv run --frozen ruff check src tests scripts databricks
 | Lane | Observed result | Boundary |
 |---|---|---|
 | Python build-and-test | **Success** at `579cbc5` in [pipeline #5](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/5?useNewPipelines=false) (1m14s) and `ce7674c` in [pipeline #7](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/7?useNewPipelines=false) (1m15s) | Compile, lint, pytest test-suite and JUnit output; CI assertion counts not independently read. Merged as [PR #4](https://github.com/mehdisafer/industrial-streaming-mlops/pull/4) at `b454451` |
-| Container qualification | **Failed** on older `ce7674c` in [pipeline #8](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/8?useNewPipelines=false) (9s workflow) | No failing-step log in connected listing. Later evidence-directory fix `9e6852d` and ingress fix `4bcc55e` are in [draft #5](https://github.com/mehdisafer/industrial-streaming-mlops/pull/5) without observed current-head qualification |
+| Container qualification | **Success reported by CircleCI** on exact `4bcc55e` in [`reference-containers`](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7); the old [pipeline #8](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/8?useNewPipelines=false) failed on `ce7674c` | GitHub's `ci/circleci: reference-containers` status is `success` at `4bcc55e`. The job runs real `scripts/integration.sh`. Detailed original artifacts are held by CircleCI and not independently rechecked in this merge |
 
-The successful CircleCI Python unit lane does not establish Docker,
-GitHub Actions runner, Databricks or public release acceptance.
+The Python unit job alone never establishes Docker acceptance. The separate
+Docker reference job now reports success on `4bcc55e`; that status does not
+qualify GitHub Actions runner allocation, Databricks, rendered browser behavior
+or a public release.
+
+## Hosted container execution — source-bound record
+
+CircleCI's `ci/circleci: reference-containers` status is **success** for
+[`4bcc55e`](https://github.com/mehdisafer/industrial-streaming-mlops/commit/4bcc55ec470a752bac59dfa45f561dad0261d95e/checks); its [hosted job](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7) uses the pinned
+Linux machine image `ubuntu-2404:2026.10.1`, validates Docker Compose and
+executes the bounded `scripts/integration.sh` against real services.
+The previous [#8 failure](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/8?useNewPipelines=false) is explained by an existing
+`evidence/integration` directory and exit 64. Commit `9e6852d` moved host
+metadata into `evidence/ci-host`, and `4bcc55e` added a routable ingress
+bridge while keeping published host ports bound to loopback.
+
+The branch's earlier hosted acceptance note **reports** a passing run receipt,
+20 final checks, 4,380 raw rows, 2,092 features/scores, 12 alerts, model
+lifecycle and recovery assertions, and scoped cleanup. Its four reported SHA-256
+values are preserved below for later comparison with the original CircleCI
+artifacts. These receipt-level details are **not independently byte-verified by
+this reconciliation**; a successful job status is not a substitute for their
+original contents.
+
+| CircleCI artifact (reported) | Recorded SHA-256, not independently rechecked |
+|---|---|
+| `integration/run-receipt.json` | `78b45855d20b1ab5c6784f59eff21dd8e42f2c0dedc345f8383cfc19312d148a9` |
+| `integration/final-verification.json` | `5026ba8908142f6e21ca83a1ff2a03be6be63d9df3bb6f348a02723463d4383dd` |
+| `integration/lifecycle-assertions.json` | `c9d805ba5503796db98a688e9b593de147744d2019455fe11b8d659811eb3c0de` |
+| `integration/recovery-assertions.json` | `66589288bdba4bb79b6068baab056fa822fa1545df851779f407ce62e7ec42512e` |
+
+This hosted Docker reference remains single-host synthetic validation, not
+Databricks acceptance, distributed scalability or production readiness.
 
 ## Open qualification and release gates
 
 | Gate | Current state | Evidence needed to close it |
 |---|---|---|
-| Container profile | **Not qualified**; Docker unavailable locally, CircleCI #8 failed on older source and the latest draft #5 head remains untested | Read [job #10](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/8/workflows/1541ad9d-069a-4da4-a313-d8e5e9f5f440/jobs/10), rerun on exact current head and preserve image identities, Kafka/Spark/MLflow logs, HTTP/recovery and cleanup receipts |
+| CircleCI container reference | **Job succeeded on source `4bcc55e`**; original artifact hashes/contents not independently rechecked in this merge | Download and retain source, image identities, Kafka/Spark/MLflow logs, HTTP/recovery and cleanup artifacts from the [successful job](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7); verify SHA-256 against the reported values |
 | Hosted GitHub Actions | [Source run 43754981478](https://github.com/mehdisafer/industrial-streaming-mlops/actions/runs/43754981478): no executed steps, runner ID 0, one unreadable annotation; integration skipped | Read the annotation through supported GitHub access, resolve its actual cause, then obtain hosted checks/integration on the reviewed source; no green status inferred from local tests |
 | Databricks | **Open**; no authorized workspace run | Existing authorized compute/storage, Kafka access, provider run IDs, Delta versions and recovery evidence |
 | Browser presentation | Fresh Chromium launch on 15 November blocked by `socket(): Operation not permitted`; [original receipt](evidence/followup/checks/browser/startup.json) | Real browser layout/interaction review and captured output; minimal-DOM checks do not close this gate |
@@ -83,10 +114,10 @@ provisioned to close a gate.
 
 ## Prioritized follow-up
 
-1. Inspect CircleCI's original failed Docker job, then trigger the manual
-   qualification pipeline on draft PR #5's exact head. Preserve original
-   failures, image/service/HTTP/recovery logs and cleanup receipts. Separately
-   resolve GitHub Actions runner allocation from its own annotation.
+1. Preserve and independently check CircleCI Docker job artifacts from the
+   successful source `4bcc55e`. The earlier exit-64 failure is diagnosed;
+   record the exact correction and retained evidence, not a fabricated rerun.
+   Separately resolve GitHub Actions runner allocation from its own annotation.
 2. Run the [Databricks qualification](databricks.md) on explicitly authorized existing
    resources, including library/access checks, business-output parity, recovery and
    available consumption data. Local Spark is not provider qualification.

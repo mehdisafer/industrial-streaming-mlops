@@ -1,0 +1,56 @@
+# Manual qualification only: connect a separate pipeline definition to this file.
+# The fast build-and-test pipeline remains .circleci/config.yml.
+version: 2.1
+jobs:
+  reference-containers:
+    machine:
+      image: ubuntu-2404:2026.10.1
+    resource_class: large
+    environment:
+      MLFLOW_DISABLE_TELEMETRY: "true"
+      DO_NOT_TRACK: "true"
+    steps:
+      - checkout
+      - run:
+          name: Record the source and isolated Docker host
+          command: |
+            # integration.sh deliberately refuses an existing output directory.
+            mkdir -p evidence/ci-host
+            git rev-parse HEAD > evidence/ci-host/commit.txt
+            docker version > evidence/ci-host/docker-version.txt
+            docker compose version > evidence/ci-host/compose-version.txt
+            uname -a > evidence/ci-host/kernel.txt
+            printf 'export COMPOSE_PROJECT_NAME=industrial-ci-%s\n' "$CIRCLE_WORKFLOW_ID" >> "$BASH_ENV"
+            printf 'export SOURCE_REVISION=%s\n' "$CIRCLE_SHA1" >> "$BASH_ENV"
+            printf 'export EVIDENCE_DIR=evidence/integration\n' >> "$BASH_ENV"
+      - run:
+          name: Validate the reviewed Compose configuration
+          command: docker compose config --quiet
+      - run:
+          name: Real Kafka, Spark, MLflow, recovery and host HTTP checks
+          no_output_timeout: 30m
+          command: timeout --signal=TERM --kill-after=30s 2100s bash scripts/integration.sh
+      - run:
+          name: Retain diagnostics and clean only this run's stack
+          when: always
+          command: |
+            mkdir -p evidence/integration
+            if test -f evidence/integration/.owns-compose-project &&
+               test "$(cat evidence/integration/.owns-compose-project)" = "$COMPOSE_PROJECT_NAME" &&
+               ! test -f evidence/integration/.cleanup-complete; then
+              docker compose --project-name "$COMPOSE_PROJECT_NAME" ps --all --format json > evidence/integration/ci-fallback-containers.json || true
+              docker compose --project-name "$COMPOSE_PROJECT_NAME" logs --no-color > evidence/integration/ci-fallback-container.log 2>&1 || true
+              docker image inspect industrial-streaming-mlops:local apache/kafka:3.9.2 > evidence/integration/ci-fallback-images.json || true
+              docker compose --project-name "$COMPOSE_PROJECT_NAME" --profile streaming --profile tools down --timeout 45 > evidence/integration/ci-fallback-cleanup.log 2>&1
+              printf '%s\n' "$COMPOSE_PROJECT_NAME" > evidence/integration/.cleanup-complete
+            fi
+      - store_artifacts:
+          path: evidence/ci-host
+          destination: ci-host
+      - store_artifacts:
+          path: evidence/integration
+          destination: integration
+workflows:
+  reference-qualification:
+    jobs:
+      - reference-containers

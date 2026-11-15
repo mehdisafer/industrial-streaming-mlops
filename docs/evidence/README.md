@@ -1,8 +1,9 @@
 # Recorded execution evidence
 
 **The local reference passed the recorded native protocol. Full P03 acceptance
-remains open for container qualification, hosted GitHub Actions and Databricks.**
-CircleCI's Python unit lane succeeded separately on two source commits. All fleet data is
+remains open for GitHub Actions runner allocation and Databricks.**
+CircleCI's Python unit lane and a distinct Docker reference job succeeded on
+specified source commits, but Docker artifact byte verification remains open. All fleet data is
 synthetic. No industrial production reliability or distributed capacity is claimed.
 
 ## Current follow-up — 15 November 2026
@@ -33,7 +34,7 @@ delivery. They are not relabelled with the new execution commit or timing.
 | Current dependency review | 122 third-party packages audited; zero known findings; local project explicitly skipped | [15 November 123-entry report](followup/checks/dependency-audit.json) |
 | Earlier failures | Original failed/intermediate attempts and corrective scope retained | [Attempt history](attempts/README.md) |
 | CircleCI Python unit CI | `build-and-test` succeeded on `579cbc5` and `ce7674c`; CI JUnit assertion counts not independently read | [CircleCI #5](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/5?useNewPipelines=false), [#7](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/7?useNewPipelines=false), [PR #4](https://github.com/mehdisafer/industrial-streaming-mlops/pull/4) |
-| Docker container qualification | Local Docker unavailable; [CircleCI #8](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/8?useNewPipelines=false) failed on older source; latest `4bcc55e` untested | [Draft PR #5](https://github.com/mehdisafer/industrial-streaming-mlops/pull/5), original job log unresolved |
+| Docker container qualification | [CircleCI `reference-containers`](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7) **success** at exact `4bcc55e`; older [#8](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/8?useNewPipelines=false) failed with exit 64 | Job status verified through GitHub commit-status API; original artifact contents and SHA-256 reports remain externally retained, not independently rechecked here |
 | Hosted GitHub Actions | Runner ID 0, no steps; unresolved independently of CircleCI | [Hosted execution boundary](checks/README.md#ci-helpers-and-hosted-execution) |
 | Databricks | Bundle and adapter prepared; no authorized provider run | [Provider prerequisites](../databricks.md) |
 
