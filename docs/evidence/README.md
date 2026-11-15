@@ -13,7 +13,7 @@ synthetic. No industrial production reliability or distributed capacity is claim
 **21 real native checks**, **28 real restored-backlog checks** and **13 actual
 JavaScript assertions with explicit DOM/fetch doubles**. It includes original
 receipts, current advisory checks, the twelve-commit incremental history review,
-and fresh browser/hosted-CI blockers. Six hundred seconds were declared for the
+plus the browser startup limitation and historical GitHub Actions runner failures. Six hundred seconds were declared for the
 restoration exercise; it completed in 95.825 s. The fresh native fault/rollback
 execution completed in 200.955 s.
 
