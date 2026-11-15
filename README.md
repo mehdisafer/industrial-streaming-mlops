@@ -49,7 +49,7 @@ See [scope issue #1](https://github.com/mehdisafer/industrial-streaming-mlops/is
 [original delivery #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2),
 [follow-up review #3](https://github.com/mehdisafer/industrial-streaming-mlops/pull/3),
 [CircleCI unit merge #4](https://github.com/mehdisafer/industrial-streaming-mlops/pull/4) and
-[container qualification draft #5](https://github.com/mehdisafer/industrial-streaming-mlops/pull/5)
+[merged container qualification #5](https://github.com/mehdisafer/industrial-streaming-mlops/pull/5)
 for the respective review and qualification states. The prepared release candidate is `v0.1.0-rc.1`; a tag and
 GitHub release have not been published.
 
