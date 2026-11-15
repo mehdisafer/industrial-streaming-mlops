@@ -1,0 +1,5 @@
+name: python-unit
+discover: git ls-files 'tests/test_*.py'
+run: uv run --frozen pytest -q -m 'not integration' --junitxml="<< outputs.junit >>" << test.atoms >>
+outputs:
+  junit: test-results/python-unit.xml
