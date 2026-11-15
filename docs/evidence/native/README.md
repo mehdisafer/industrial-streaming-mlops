@@ -1,5 +1,10 @@
 # Completed native qualification: attempt 08
 
+This folder preserves the original delivery's execution. The
+[15 November follow-up](../followup/README.md) adds a fresh fault/rollback run on
+the updated source and a separate restored-backlog/fresh-input exercise. Original
+receipts below remain unchanged.
+
 [qualification.json](qualification.json) is the original result of native attempt **08**: `passed: true`, with **all 21 checks true**. This run used an actual single-host JVM Kafka broker, local Spark Structured Streaming and an HTTP MLflow server, with Python 3.11.18 and generated sensor data. The initial workload covers six machines over 24 simulated hours, followed by separate recovery, candidate and rollback inputs. It is a local integration qualification, with no distributed scale or Databricks execution claimed.
 
 ## Final observed state

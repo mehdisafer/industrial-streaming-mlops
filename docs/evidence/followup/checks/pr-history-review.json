@@ -1,0 +1,1146 @@
+{
+  "base_commit": "6c9f33f4219385f9fce0cb09fa2122d5d73d0c4f",
+  "blobs": [
+    {
+      "bytes": 22688,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "929237e266f7c4251d3a3f310f8da68a0295c333",
+      "observed_git_blob_sha": "929237e266f7c4251d3a3f310f8da68a0295c333",
+      "occurrences": [
+        {
+          "commit_sha": "04c1822588a98620a83345857a2acbadc69cad66",
+          "path": "scripts/qualify_restore.py",
+          "previous_path": null,
+          "status": "added"
+        }
+      ],
+      "sha256": "b0307fe52ad3dba99b0f50c14c25500856639a81752aafe6ea0814f3a8e95207",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 7319,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "e974a333c48929849a08415f64cb247f37de8c21",
+      "observed_git_blob_sha": "e974a333c48929849a08415f64cb247f37de8c21",
+      "occurrences": [
+        {
+          "commit_sha": "04c1822588a98620a83345857a2acbadc69cad66",
+          "path": "src/industrial_mlops/dashboard.py",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "136fe4ce69a7b7867518d2556d91facb9a260201dc90beb9b3222925511e2868",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 23212,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "1ab03345db03db1ea1ff198431aa1481e6c0dd01",
+      "observed_git_blob_sha": "1ab03345db03db1ea1ff198431aa1481e6c0dd01",
+      "occurrences": [
+        {
+          "commit_sha": "fc30fda58d6c6abf47a3306260825a20609a73a2",
+          "path": "scripts/qualify_restore.py",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "05085b379338fbc0d62f91cf4e5e480594c9b4339c3447871114316e108b5628",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 24364,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "93728c636eeeb76cfda2a96ee537333a15e5429d",
+      "observed_git_blob_sha": "93728c636eeeb76cfda2a96ee537333a15e5429d",
+      "occurrences": [
+        {
+          "commit_sha": "c1f7b5553b91dcb8e901bc6407864932e21ad2af",
+          "path": "scripts/qualify_restore.py",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "560a99d98e1c54b6a01ea0c37f6f0ec5cc1a1a5387d23e78ab574ccb07046d75",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 452,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "8a4017d606ff44c91ef29756ad713292b22e367e",
+      "observed_git_blob_sha": "8a4017d606ff44c91ef29756ad713292b22e367e",
+      "occurrences": [
+        {
+          "commit_sha": "bce709e55bc5d6e0a359d03056fff22dfe839c06",
+          "path": ".dockerignore",
+          "previous_path": null,
+          "status": "added"
+        }
+      ],
+      "sha256": "13e20b5fd201174093bee499b02e191b4718a6461049451b83ea5b3c46233b61",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 5714,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "1644cd0874767b019b6739862fec09e28cbd8959",
+      "observed_git_blob_sha": "1644cd0874767b019b6739862fec09e28cbd8959",
+      "occurrences": [
+        {
+          "commit_sha": "bce709e55bc5d6e0a359d03056fff22dfe839c06",
+          "path": ".github/workflows/ci.yml",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "d8a495f366ffc8ad986c0579efd928a51aed6ddf92fd810bdd9ab03a45853a5e",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 13666,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "0fb274aa1b369a49550214d78516c79e63bb374d",
+      "observed_git_blob_sha": "0fb274aa1b369a49550214d78516c79e63bb374d",
+      "occurrences": [
+        {
+          "commit_sha": "bce709e55bc5d6e0a359d03056fff22dfe839c06",
+          "path": "scripts/integration.sh",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "321d149376b3cba561e7cf344c345e0abe0559f853b6739be00478c2184cb0b3",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 11824,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "be3d065c60f5d36bc257e62fdd39b0eae439fdaa",
+      "observed_git_blob_sha": "be3d065c60f5d36bc257e62fdd39b0eae439fdaa",
+      "occurrences": [
+        {
+          "commit_sha": "bce709e55bc5d6e0a359d03056fff22dfe839c06",
+          "path": "tests/test_container_evidence.py",
+          "previous_path": null,
+          "status": "added"
+        }
+      ],
+      "sha256": "0a76c68b743e9609aa26fef97bdb5e48fe0637c6676b9ab05411ee7699859f36",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 2507,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "cb8959a932982866cb55312607ba1dcc2e399a95",
+      "observed_git_blob_sha": "cb8959a932982866cb55312607ba1dcc2e399a95",
+      "occurrences": [
+        {
+          "commit_sha": "54a442ea2aa0919acc6a7ec9726e2a07a2436239",
+          "path": "databricks.yml",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "8cfd1c30f04a2d726f14677a89379bcf3683411dfd7197cd38669205d622fe33",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 43390,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "6d9f9d017d79de7d6451f7c2c199dd0631cbd946",
+      "observed_git_blob_sha": "6d9f9d017d79de7d6451f7c2c199dd0631cbd946",
+      "occurrences": [
+        {
+          "commit_sha": "54a442ea2aa0919acc6a7ec9726e2a07a2436239",
+          "path": "databricks/job.py",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "a483c5cf70a3dc4bc2cc284469bd3c61a9025f2b10c1869f64f770e09d4fec89",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 4928,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "6e259f7967f2af422d2b41b50a7ef29360aa0c1d",
+      "observed_git_blob_sha": "6e259f7967f2af422d2b41b50a7ef29360aa0c1d",
+      "occurrences": [
+        {
+          "commit_sha": "54a442ea2aa0919acc6a7ec9726e2a07a2436239",
+          "path": "databricks/qualify.py",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "46b6284588191e09d724a92cbff7e74a18155d858dce114504fa8cc21005df10",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 19286,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "c563bc856a57cb0e72b3daf82ec8f050ea3e6aa2",
+      "observed_git_blob_sha": "c563bc856a57cb0e72b3daf82ec8f050ea3e6aa2",
+      "occurrences": [
+        {
+          "commit_sha": "54a442ea2aa0919acc6a7ec9726e2a07a2436239",
+          "path": "docs/databricks.md",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "56762db04879005711c95a091cf9ad9b5313ab82138464e0f64dd4ff7d072d0a",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 2576,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "e9b61e15ac7c99ffe06678bb2e98cb9988502a60",
+      "observed_git_blob_sha": "e9b61e15ac7c99ffe06678bb2e98cb9988502a60",
+      "occurrences": [
+        {
+          "commit_sha": "54a442ea2aa0919acc6a7ec9726e2a07a2436239",
+          "path": "resources/qualification.yml",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "054a2650b967545669b98217c48036f1e2613a3792ebee9178559d3852c7f420",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 21271,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "f580d204c5c7a2e35a6aeda5cd06055929fcb3f1",
+      "observed_git_blob_sha": "f580d204c5c7a2e35a6aeda5cd06055929fcb3f1",
+      "occurrences": [
+        {
+          "commit_sha": "54a442ea2aa0919acc6a7ec9726e2a07a2436239",
+          "path": "tests/test_databricks_adapter.py",
+          "previous_path": null,
+          "status": "added"
+        }
+      ],
+      "sha256": "0ca952488ccd52fcfe5c56eba7b5c1a633610d97f5a93ce68fa90a240e6f9494",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 24533,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "4f9b0631f994b98a08b28f6421065847cc31ebd4",
+      "observed_git_blob_sha": "4f9b0631f994b98a08b28f6421065847cc31ebd4",
+      "occurrences": [
+        {
+          "commit_sha": "5f02670137a330e23557ee8b5cb19f067eecee6f",
+          "path": "scripts/qualify_restore.py",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "a34059378a6c4f89bff640eb5924bedb42d53b20a4280a2e1cc25254ec86c1a2",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 19536,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "f8532401dc32f6bef4003316298b3fdba7dfab4d",
+      "observed_git_blob_sha": "f8532401dc32f6bef4003316298b3fdba7dfab4d",
+      "occurrences": [
+        {
+          "commit_sha": "01de43c5a15030e829cc6b58eca65c081bda8f6d",
+          "path": "src/industrial_mlops/streaming.py",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "23914e253396557aaa61aaa4d64e539ec0e71d725ca0ae9a886b6a81434b19da",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 13383,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "94ce3310df7a7674d1fb9f8ab5e8678222bd6dbd",
+      "observed_git_blob_sha": "94ce3310df7a7674d1fb9f8ab5e8678222bd6dbd",
+      "occurrences": [
+        {
+          "commit_sha": "01de43c5a15030e829cc6b58eca65c081bda8f6d",
+          "path": "tests/test_producer_readiness.py",
+          "previous_path": null,
+          "status": "added"
+        }
+      ],
+      "sha256": "42c04b284de536860b78179f0b5ba72ca3f0cb612835a38a891b3f19851657e5",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 26213,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "9170d9b829d60ce2406de613fbe1dc4af27b8e84",
+      "observed_git_blob_sha": "9170d9b829d60ce2406de613fbe1dc4af27b8e84",
+      "occurrences": [
+        {
+          "commit_sha": "75a55de00be0da76d2502fb4a5ebe446669d21ea",
+          "path": "scripts/qualify_restore.py",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "d6183cd1ca8f100a7bcc5b5f833d9a4cf4847a8a4c83561a454b8baa1943ffd6",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 5246,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "adef1c30d559119b22594bea8e3e19e22797f160",
+      "observed_git_blob_sha": "adef1c30d559119b22594bea8e3e19e22797f160",
+      "occurrences": [
+        {
+          "commit_sha": "e0e8739e3dd207d1e853079b7a7de7ffe66f6381",
+          "path": "compose.yaml",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "726f700dfe68a7a38d57800d98a3b4920adbdd5e3ede630608acf733cd234c35",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 27779,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "78524f6828df27a392f5382dd073a09275913803",
+      "observed_git_blob_sha": "78524f6828df27a392f5382dd073a09275913803",
+      "occurrences": [
+        {
+          "commit_sha": "e0e8739e3dd207d1e853079b7a7de7ffe66f6381",
+          "path": "scripts/qualify_native.py",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "ba6262ce61c5810fa24852890be7cc7a756b502c88c15b94af2b3e61d56d7b34",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 26892,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "48195fc1815d0d3871a335b06b1c3f1e4b7032c4",
+      "observed_git_blob_sha": "48195fc1815d0d3871a335b06b1c3f1e4b7032c4",
+      "occurrences": [
+        {
+          "commit_sha": "e0e8739e3dd207d1e853079b7a7de7ffe66f6381",
+          "path": "scripts/qualify_restore.py",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "54d9664f91fb784fa2aaee9874ecaf9cb0427b8d461b2eca4b2a5a829b76d130",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 3535,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "3a1899cd741cba93942a6d50190b626d6971dfa8",
+      "observed_git_blob_sha": "3a1899cd741cba93942a6d50190b626d6971dfa8",
+      "occurrences": [
+        {
+          "commit_sha": "e0e8739e3dd207d1e853079b7a7de7ffe66f6381",
+          "path": "tests/test_runtime_policy.py",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "00bb5890403be70befd410a131b67cf7e050c4bdeb3a7ced672ad39458d50a2e",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 32512,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "96197145a05f0b1ed249a71fcd033f85166c4d80",
+      "observed_git_blob_sha": "96197145a05f0b1ed249a71fcd033f85166c4d80",
+      "occurrences": [
+        {
+          "commit_sha": "879d4c1084d5478d0cac809abc8bef38afdfe241",
+          "path": "scripts/qualify_restore.py",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "d504109849121b424a0374fe6930663df3f61268595536f567d9befb5032f6ca",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 10361,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "63d48bd4e76a1ef58097b72a6f2c99a0a96ce928",
+      "observed_git_blob_sha": "63d48bd4e76a1ef58097b72a6f2c99a0a96ce928",
+      "occurrences": [
+        {
+          "commit_sha": "879d4c1084d5478d0cac809abc8bef38afdfe241",
+          "path": "tests/test_restore_progress.py",
+          "previous_path": null,
+          "status": "added"
+        }
+      ],
+      "sha256": "13f29e6092874c2ae44a097a57371f860d9f91674dc690b4a03703095e96c5ee",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 28291,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "e549b5d831eae8fd266a0728a312a89892b97140",
+      "observed_git_blob_sha": "e549b5d831eae8fd266a0728a312a89892b97140",
+      "occurrences": [
+        {
+          "commit_sha": "b80ffe4ed3cddad68de18e56c29b1e20f708d5af",
+          "path": "scripts/qualify_native.py",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "fe25e2a924a7db63d6346f8ac9fa940f44e0ae71dfe4e4e4fc6e61e98d2f81ce",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 32980,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "c7ca0cf5883552485bdf301d5dd6ebb49ec65829",
+      "observed_git_blob_sha": "c7ca0cf5883552485bdf301d5dd6ebb49ec65829",
+      "occurrences": [
+        {
+          "commit_sha": "b80ffe4ed3cddad68de18e56c29b1e20f708d5af",
+          "path": "scripts/qualify_restore.py",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "6795714fbbc1ce0628f47aa38173bb9611eb784df3563c30311af877967be578",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 19666,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "b858b74b93eabd0aef39e3528f64c5feb6ae270c",
+      "observed_git_blob_sha": "b858b74b93eabd0aef39e3528f64c5feb6ae270c",
+      "occurrences": [
+        {
+          "commit_sha": "b80ffe4ed3cddad68de18e56c29b1e20f708d5af",
+          "path": "src/industrial_mlops/streaming.py",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "ff65926a8b2d335a18741b1af5baaea3016ceab347dd457d2c51cec0c787dcb0",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 4947,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "b4cb099fcb329a213f1ecadb6be10c238d7e11e9",
+      "observed_git_blob_sha": "b4cb099fcb329a213f1ecadb6be10c238d7e11e9",
+      "occurrences": [
+        {
+          "commit_sha": "b80ffe4ed3cddad68de18e56c29b1e20f708d5af",
+          "path": "tests/test_runtime_policy.py",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "4cc894fecbb91f9a9cb120173d5697837c220291bcbd99c2d6530ed2016c666f",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 2599,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "b167a13c774919c104237f939b79e696cba8a621",
+      "observed_git_blob_sha": "b167a13c774919c104237f939b79e696cba8a621",
+      "occurrences": [
+        {
+          "commit_sha": "daaa5b8cc165b112c6cdce431fa1a8666c05892c",
+          "path": "databricks.yml",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "b40f79f96194769dc620ec8a45e037d35655b0d1b7fd25f623eb04ad73383117",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 45777,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "261414d80ec9b38d8360766ae69ba306e0d43066",
+      "observed_git_blob_sha": "261414d80ec9b38d8360766ae69ba306e0d43066",
+      "occurrences": [
+        {
+          "commit_sha": "daaa5b8cc165b112c6cdce431fa1a8666c05892c",
+          "path": "databricks/job.py",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "2cfa594b882d9a644f76df403fe09c1b1a89ee107ed572e91da6edf5abe9ce1e",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 21916,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "fb186a36a9fc779ea48325715bf98f36e69f655f",
+      "observed_git_blob_sha": "fb186a36a9fc779ea48325715bf98f36e69f655f",
+      "occurrences": [
+        {
+          "commit_sha": "daaa5b8cc165b112c6cdce431fa1a8666c05892c",
+          "path": "docs/databricks.md",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "9f3fb9c4aec687a682af073efd0c7f2e89c940a0e1fe797f0339ba4792ece717",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 33555,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "3dac931f9e5ddeb71750a75fda560ccb8b6718fb",
+      "observed_git_blob_sha": "3dac931f9e5ddeb71750a75fda560ccb8b6718fb",
+      "occurrences": [
+        {
+          "commit_sha": "daaa5b8cc165b112c6cdce431fa1a8666c05892c",
+          "path": "scripts/qualify_restore.py",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "1dc8b9af738a0607f0d8fe7d039f9d85452fd8c9967cce0e2ce998028bae48b2",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 23918,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "876f509a7bc8cca28dabb9d43453d1fecba83b82",
+      "observed_git_blob_sha": "876f509a7bc8cca28dabb9d43453d1fecba83b82",
+      "occurrences": [
+        {
+          "commit_sha": "daaa5b8cc165b112c6cdce431fa1a8666c05892c",
+          "path": "tests/test_databricks_adapter.py",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "ab8c5fa2bc6045f3ade4dd15cca15da89167750a4b77d357e8efc25526ca041c",
+      "text_encoding": "utf-8"
+    },
+    {
+      "bytes": 14360,
+      "content_scanned": true,
+      "git_blob_hash_matches": true,
+      "git_blob_sha": "8ff39ebb595f7cb62a9bb9967164c6f0c0ac5a8d",
+      "observed_git_blob_sha": "8ff39ebb595f7cb62a9bb9967164c6f0c0ac5a8d",
+      "occurrences": [
+        {
+          "commit_sha": "daaa5b8cc165b112c6cdce431fa1a8666c05892c",
+          "path": "tests/test_restore_progress.py",
+          "previous_path": null,
+          "status": "modified"
+        }
+      ],
+      "sha256": "b259c6cbc9d405230d416b047786b3001ba36a68473f242ad48aab8c8f774613",
+      "text_encoding": "utf-8"
+    }
+  ],
+  "commits": [
+    {
+      "author_date": "2026-11-14T12:23:37Z",
+      "commit_message": "fix: qualify restored backlog and dashboard recovery\n\nAdd a bounded real Kafka/Spark/MLflow restore scenario with retained backlog, fresh post-restore input, checkpoint identity, immutable rows, model digest and observed process cleanup. Clear stale dashboard error styling after a successful refresh.",
+      "committer_date": "2026-11-14T12:23:37Z",
+      "files": [
+        {
+          "additions": 395,
+          "changes": 395,
+          "deletions": 0,
+          "path": "scripts/qualify_restore.py",
+          "previous_path": null,
+          "sha": "929237e266f7c4251d3a3f310f8da68a0295c333",
+          "status": "added"
+        },
+        {
+          "additions": 1,
+          "changes": 2,
+          "deletions": 1,
+          "path": "src/industrial_mlops/dashboard.py",
+          "previous_path": null,
+          "sha": "e974a333c48929849a08415f64cb247f37de8c21",
+          "status": "modified"
+        }
+      ],
+      "html_url": "https://github.com/mehdisafer/industrial-streaming-mlops/commit/04c1822588a98620a83345857a2acbadc69cad66",
+      "parents": [
+        "6c9f33f4219385f9fce0cb09fa2122d5d73d0c4f"
+      ],
+      "sha": "04c1822588a98620a83345857a2acbadc69cad66",
+      "tree_sha": "8f13abd656bd829df906c04d39b3bfdbb5145bc0"
+    },
+    {
+      "author_date": "2026-11-14T12:25:20Z",
+      "commit_message": "fix: sequence restore training before broker startup\n\nPreserve the first failed attempt, whose broker exited by SIGKILL before publication. Start Kafka when the streaming phase needs it and continue owned-process cleanup even if the shared close helper raises. The signal's external cause is not inferred.",
+      "committer_date": "2026-11-14T12:25:20Z",
+      "files": [
+        {
+          "additions": 13,
+          "changes": 17,
+          "deletions": 4,
+          "path": "scripts/qualify_restore.py",
+          "previous_path": null,
+          "sha": "1ab03345db03db1ea1ff198431aa1481e6c0dd01",
+          "status": "modified"
+        }
+      ],
+      "html_url": "https://github.com/mehdisafer/industrial-streaming-mlops/commit/fc30fda58d6c6abf47a3306260825a20609a73a2",
+      "parents": [
+        "04c1822588a98620a83345857a2acbadc69cad66"
+      ],
+      "sha": "fc30fda58d6c6abf47a3306260825a20609a73a2",
+      "tree_sha": "c62b8533f089d350b7bf504d85041cf59c750887"
+    },
+    {
+      "author_date": "2026-11-14T12:28:15Z",
+      "commit_message": "fix: isolate restore training and observe worker resources\n\nRun training in its own bounded process before broker/Spark startup. Preserve worker RSS/CPU samples and failure summaries using the existing reviewed sampler, including unsuccessful worker runs. Retain both earlier failures; their external termination cause remains unresolved.",
+      "committer_date": "2026-11-14T12:28:15Z",
+      "files": [
+        {
+          "additions": 26,
+          "changes": 36,
+          "deletions": 10,
+          "path": "scripts/qualify_restore.py",
+          "previous_path": null,
+          "sha": "93728c636eeeb76cfda2a96ee537333a15e5429d",
+          "status": "modified"
+        }
+      ],
+      "html_url": "https://github.com/mehdisafer/industrial-streaming-mlops/commit/c1f7b5553b91dcb8e901bc6407864932e21ad2af",
+      "parents": [
+        "fc30fda58d6c6abf47a3306260825a20609a73a2"
+      ],
+      "sha": "c1f7b5553b91dcb8e901bc6407864932e21ad2af",
+      "tree_sha": "8ff45b03a4217469b2bfb3fa3b8158b1191d69e9"
+    },
+    {
+      "author_date": "2026-11-14T12:29:52Z",
+      "commit_message": "fix: retain container inventories and gate CI source checks\n\nFail container smoke when required JVM/OS/component inventories cannot be copied before scoped cleanup. Keep explicit mocked lifecycle regressions, restrict build context, select .dockerignore changes for integration and add frozen Ruff checks. No container or hosted runner pass is inferred.",
+      "committer_date": "2026-11-14T12:29:52Z",
+      "files": [
+        {
+          "additions": 24,
+          "changes": 24,
+          "deletions": 0,
+          "path": ".dockerignore",
+          "previous_path": null,
+          "sha": "8a4017d606ff44c91ef29756ad713292b22e367e",
+          "status": "added"
+        },
+        {
+          "additions": 3,
+          "changes": 4,
+          "deletions": 1,
+          "path": ".github/workflows/ci.yml",
+          "previous_path": null,
+          "sha": "1644cd0874767b019b6739862fec09e28cbd8959",
+          "status": "modified"
+        },
+        {
+          "additions": 60,
+          "changes": 62,
+          "deletions": 2,
+          "path": "scripts/integration.sh",
+          "previous_path": null,
+          "sha": "0fb274aa1b369a49550214d78516c79e63bb374d",
+          "status": "modified"
+        },
+        {
+          "additions": 253,
+          "changes": 253,
+          "deletions": 0,
+          "path": "tests/test_container_evidence.py",
+          "previous_path": null,
+          "sha": "be3d065c60f5d36bc257e62fdd39b0eae439fdaa",
+          "status": "added"
+        }
+      ],
+      "html_url": "https://github.com/mehdisafer/industrial-streaming-mlops/commit/bce709e55bc5d6e0a359d03056fff22dfe839c06",
+      "parents": [
+        "c1f7b5553b91dcb8e901bc6407864932e21ad2af"
+      ],
+      "sha": "bce709e55bc5d6e0a359d03056fff22dfe839c06",
+      "tree_sha": "f85d0ee2fd1301b72825faa7ed433b15c484ca75"
+    },
+    {
+      "author_date": "2026-11-14T12:30:22Z",
+      "commit_message": "fix: preserve provider label and alert recovery semantics\n\nMatch shared label acceptance, persist immutable alert decisions across partial Delta writes and evaluate actual emitted alerts. Validate installed and loaded numerical dependencies, pin their compatible overlay, bind checkpoint ownership before Delta writes and require native dbutils filesystem semantics. Add 37 local regressions and document new namespace migration; actual Databricks qualification remains open.",
+      "committer_date": "2026-11-14T12:30:22Z",
+      "files": [
+        {
+          "additions": 1,
+          "changes": 2,
+          "deletions": 1,
+          "path": "databricks.yml",
+          "previous_path": null,
+          "sha": "cb8959a932982866cb55312607ba1dcc2e399a95",
+          "status": "modified"
+        },
+        {
+          "additions": 328,
+          "changes": 367,
+          "deletions": 39,
+          "path": "databricks/job.py",
+          "previous_path": null,
+          "sha": "6d9f9d017d79de7d6451f7c2c199dd0631cbd946",
+          "status": "modified"
+        },
+        {
+          "additions": 3,
+          "changes": 3,
+          "deletions": 0,
+          "path": "databricks/qualify.py",
+          "previous_path": null,
+          "sha": "6e259f7967f2af422d2b41b50a7ef29360aa0c1d",
+          "status": "modified"
+        },
+        {
+          "additions": 145,
+          "changes": 150,
+          "deletions": 5,
+          "path": "docs/databricks.md",
+          "previous_path": null,
+          "sha": "c563bc856a57cb0e72b3daf82ec8f050ea3e6aa2",
+          "status": "modified"
+        },
+        {
+          "additions": 6,
+          "changes": 6,
+          "deletions": 0,
+          "path": "resources/qualification.yml",
+          "previous_path": null,
+          "sha": "e9b61e15ac7c99ffe06678bb2e98cb9988502a60",
+          "status": "modified"
+        },
+        {
+          "additions": 433,
+          "changes": 433,
+          "deletions": 0,
+          "path": "tests/test_databricks_adapter.py",
+          "previous_path": null,
+          "sha": "f580d204c5c7a2e35a6aeda5cd06055929fcb3f1",
+          "status": "added"
+        }
+      ],
+      "html_url": "https://github.com/mehdisafer/industrial-streaming-mlops/commit/54a442ea2aa0919acc6a7ec9726e2a07a2436239",
+      "parents": [
+        "bce709e55bc5d6e0a359d03056fff22dfe839c06"
+      ],
+      "sha": "54a442ea2aa0919acc6a7ec9726e2a07a2436239",
+      "tree_sha": "529dc22788c05d21b3dcdae9516a04e6fca5a45f"
+    },
+    {
+      "author_date": "2026-11-14T12:38:06Z",
+      "commit_message": "fix: reject interrupted or incomplete restore qualification\n\nRequire explicit completion of the full business protocol and retain BaseException failures before final cleanup. Pure counterexamples reproduce the earlier KeyboardInterrupt/SystemExit false-success path and verify the corrected report logic.",
+      "committer_date": "2026-11-14T12:38:06Z",
+      "files": [
+        {
+          "additions": 6,
+          "changes": 8,
+          "deletions": 2,
+          "path": "scripts/qualify_restore.py",
+          "previous_path": null,
+          "sha": "4f9b0631f994b98a08b28f6421065847cc31ebd4",
+          "status": "modified"
+        }
+      ],
+      "html_url": "https://github.com/mehdisafer/industrial-streaming-mlops/commit/5f02670137a330e23557ee8b5cb19f067eecee6f",
+      "parents": [
+        "54a442ea2aa0919acc6a7ec9726e2a07a2436239"
+      ],
+      "sha": "5f02670137a330e23557ee8b5cb19f067eecee6f",
+      "tree_sha": "673d15d236a3d9a14fe21154825af570fcd833d9"
+    },
+    {
+      "author_date": "2026-11-14T12:39:33Z",
+      "commit_message": "fix: wait for valid Kafka topic metadata before publication\n\nBound readiness retries for transient topic/leader metadata, reject permanent errors and actual partition mismatches, and retain compact observations. Respect the pinned producer delivery/request/linger timeout invariant across accepted values. Add 30 strict client regressions and installed SDK contract checks; do not publish until metadata is ready.",
+      "committer_date": "2026-11-14T12:39:33Z",
+      "files": [
+        {
+          "additions": 100,
+          "changes": 110,
+          "deletions": 10,
+          "path": "src/industrial_mlops/streaming.py",
+          "previous_path": null,
+          "sha": "f8532401dc32f6bef4003316298b3fdba7dfab4d",
+          "status": "modified"
+        },
+        {
+          "additions": 304,
+          "changes": 304,
+          "deletions": 0,
+          "path": "tests/test_producer_readiness.py",
+          "previous_path": null,
+          "sha": "94ce3310df7a7674d1fb9f8ab5e8678222bd6dbd",
+          "status": "added"
+        }
+      ],
+      "html_url": "https://github.com/mehdisafer/industrial-streaming-mlops/commit/01de43c5a15030e829cc6b58eca65c081bda8f6d",
+      "parents": [
+        "5f02670137a330e23557ee8b5cb19f067eecee6f"
+      ],
+      "sha": "01de43c5a15030e829cc6b58eca65c081bda8f6d",
+      "tree_sha": "a453f2a134670b2b642b186f5415309e093c5bfb"
+    },
+    {
+      "author_date": "2026-11-14T12:46:12Z",
+      "commit_message": "fix: bound slow broker startup and stop evidence samplers\n\nAllow 90 seconds for the broker listener inside the unchanged total work/cleanup budget after the recorded 60-second startup timeout. Sample managed services during startup and fail before backup if resource samplers have errors or remain alive. Pure negative controls preserve the previously unchecked live-thread case.",
+      "committer_date": "2026-11-14T12:46:12Z",
+      "files": [
+        {
+          "additions": 27,
+          "changes": 29,
+          "deletions": 2,
+          "path": "scripts/qualify_restore.py",
+          "previous_path": null,
+          "sha": "9170d9b829d60ce2406de613fbe1dc4af27b8e84",
+          "status": "modified"
+        }
+      ],
+      "html_url": "https://github.com/mehdisafer/industrial-streaming-mlops/commit/75a55de00be0da76d2502fb4a5ebe446669d21ea",
+      "parents": [
+        "01de43c5a15030e829cc6b58eca65c081bda8f6d"
+      ],
+      "sha": "75a55de00be0da76d2502fb4a5ebe446669d21ea",
+      "tree_sha": "4fbd8a676d08cf10ea0a9b16a20b7c548013fb51"
+    },
+    {
+      "author_date": "2026-11-14T12:56:09Z",
+      "commit_message": "fix: disable unused MLflow jobs in the bounded local profile\n\nScope the documented flag to native owned services and the Compose MLflow service, preserving HTTP tracking/artifact/registry behavior and shared environment. Require this profile in the restore runner and add isolated installed-SDK/configuration regressions. Resource observations motivated the change; earlier SIGKILL causes are not claimed as proven.",
+      "committer_date": "2026-11-14T12:56:09Z",
+      "files": [
+        {
+          "additions": 3,
+          "changes": 3,
+          "deletions": 0,
+          "path": "compose.yaml",
+          "previous_path": null,
+          "sha": "adef1c30d559119b22594bea8e3e19e22797f160",
+          "status": "modified"
+        },
+        {
+          "additions": 1,
+          "changes": 1,
+          "deletions": 0,
+          "path": "scripts/qualify_native.py",
+          "previous_path": null,
+          "sha": "78524f6828df27a392f5382dd073a09275913803",
+          "status": "modified"
+        },
+        {
+          "additions": 11,
+          "changes": 12,
+          "deletions": 1,
+          "path": "scripts/qualify_restore.py",
+          "previous_path": null,
+          "sha": "48195fc1815d0d3871a335b06b1c3f1e4b7032c4",
+          "status": "modified"
+        },
+        {
+          "additions": 68,
+          "changes": 69,
+          "deletions": 1,
+          "path": "tests/test_runtime_policy.py",
+          "previous_path": null,
+          "sha": "3a1899cd741cba93942a6d50190b626d6971dfa8",
+          "status": "modified"
+        }
+      ],
+      "html_url": "https://github.com/mehdisafer/industrial-streaming-mlops/commit/e0e8739e3dd207d1e853079b7a7de7ffe66f6381",
+      "parents": [
+        "75a55de00be0da76d2502fb4a5ebe446669d21ea"
+      ],
+      "sha": "e0e8739e3dd207d1e853079b7a7de7ffe66f6381",
+      "tree_sha": "9f68462a4482d64d9359a42e2017da7cd39dbdef"
+    },
+    {
+      "author_date": "2026-11-14T13:10:40Z",
+      "commit_message": "Verify restored Kafka offset ranges instead of Spark reread metrics\n\nReconcile complete per-partition Spark progress with producer receipts and the prior sink cursor. Preserve raw numInputRows observations, reject missing or discontinuous ranges, and retain inactive partitions. Add 93 pure regression cases including the recorded 303-offset/606-read counterexample. The original failed restore06 report remains unchanged; a fresh real run must qualify this protocol.",
+      "committer_date": "2026-11-14T13:10:40Z",
+      "files": [
+        {
+          "additions": 104,
+          "changes": 110,
+          "deletions": 6,
+          "path": "scripts/qualify_restore.py",
+          "previous_path": null,
+          "sha": "96197145a05f0b1ed249a71fcd033f85166c4d80",
+          "status": "modified"
+        },
+        {
+          "additions": 222,
+          "changes": 222,
+          "deletions": 0,
+          "path": "tests/test_restore_progress.py",
+          "previous_path": null,
+          "sha": "63d48bd4e76a1ef58097b72a6f2c99a0a96ce928",
+          "status": "added"
+        }
+      ],
+      "html_url": "https://github.com/mehdisafer/industrial-streaming-mlops/commit/879d4c1084d5478d0cac809abc8bef38afdfe241",
+      "parents": [
+        "e0e8739e3dd207d1e853079b7a7de7ffe66f6381"
+      ],
+      "sha": "879d4c1084d5478d0cac809abc8bef38afdfe241",
+      "tree_sha": "5ab0c7afc804052f780eb7155c1756e2317989b0"
+    },
+    {
+      "author_date": "2026-11-14T13:31:29Z",
+      "commit_message": "Declare native JVM processor ergonomics and record effective Spark values\n\nAppend ActiveProcessorCount=2 while preserving inherited Java options and avoiding duplicate suffixes during restoration. Record Runtime.availableProcessors inside protected Spark cleanup and require the declared value across all four restore workers. Keep heaps, data, worker timeouts and total budgets unchanged. This is not an OS CPU quota or a claim about the cause of prior timeouts; qualify the new profile separately.",
+      "committer_date": "2026-11-14T13:31:29Z",
+      "files": [
+        {
+          "additions": 7,
+          "changes": 7,
+          "deletions": 0,
+          "path": "scripts/qualify_native.py",
+          "previous_path": null,
+          "sha": "e549b5d831eae8fd266a0728a312a89892b97140",
+          "status": "modified"
+        },
+        {
+          "additions": 7,
+          "changes": 8,
+          "deletions": 1,
+          "path": "scripts/qualify_restore.py",
+          "previous_path": null,
+          "sha": "c7ca0cf5883552485bdf301d5dd6ebb49ec65829",
+          "status": "modified"
+        },
+        {
+          "additions": 3,
+          "changes": 4,
+          "deletions": 1,
+          "path": "src/industrial_mlops/streaming.py",
+          "previous_path": null,
+          "sha": "b858b74b93eabd0aef39e3528f64c5feb6ae270c",
+          "status": "modified"
+        },
+        {
+          "additions": 28,
+          "changes": 33,
+          "deletions": 5,
+          "path": "tests/test_runtime_policy.py",
+          "previous_path": null,
+          "sha": "b4cb099fcb329a213f1ecadb6be10c238d7e11e9",
+          "status": "modified"
+        }
+      ],
+      "html_url": "https://github.com/mehdisafer/industrial-streaming-mlops/commit/b80ffe4ed3cddad68de18e56c29b1e20f708d5af",
+      "parents": [
+        "879d4c1084d5478d0cac809abc8bef38afdfe241"
+      ],
+      "sha": "b80ffe4ed3cddad68de18e56c29b1e20f708d5af",
+      "tree_sha": "d63320ec9959a1e382aaa8167249781a1b632dda"
+    },
+    {
+      "author_date": "2026-11-15T19:53:55Z",
+      "commit_message": "fix: align provider limits and preserve restored business history\n\nSeparate Kafka's proportional rate target from the hard driver row cap, reject unsupported model registry layouts before provider access, and protect existing labels, event payloads and deployment history through restoration. Preserve mutable processing-state progress. Add fourteen regression cases and align the provider bundle and runbook.\n\nVerified locally with the frozen Python 3.11.18 environment: 294 tests passed and Ruff passed. Databricks execution, containers and hosted CI remain separate unverified gates.",
+      "committer_date": "2026-11-15T19:53:55Z",
+      "files": [
+        {
+          "additions": 4,
+          "changes": 8,
+          "deletions": 4,
+          "path": "databricks.yml",
+          "previous_path": null,
+          "sha": "b167a13c774919c104237f939b79e696cba8a621",
+          "status": "modified"
+        },
+        {
+          "additions": 39,
+          "changes": 43,
+          "deletions": 4,
+          "path": "databricks/job.py",
+          "previous_path": null,
+          "sha": "261414d80ec9b38d8360766ae69ba306e0d43066",
+          "status": "modified"
+        },
+        {
+          "additions": 38,
+          "changes": 46,
+          "deletions": 8,
+          "path": "docs/databricks.md",
+          "previous_path": null,
+          "sha": "fb186a36a9fc779ea48325715bf98f36e69f655f",
+          "status": "modified"
+        },
+        {
+          "additions": 14,
+          "changes": 16,
+          "deletions": 2,
+          "path": "scripts/qualify_restore.py",
+          "previous_path": null,
+          "sha": "3dac931f9e5ddeb71750a75fda560ccb8b6718fb",
+          "status": "modified"
+        },
+        {
+          "additions": 52,
+          "changes": 52,
+          "deletions": 0,
+          "path": "tests/test_databricks_adapter.py",
+          "previous_path": null,
+          "sha": "876f509a7bc8cca28dabb9d43453d1fecba83b82",
+          "status": "modified"
+        },
+        {
+          "additions": 90,
+          "changes": 91,
+          "deletions": 1,
+          "path": "tests/test_restore_progress.py",
+          "previous_path": null,
+          "sha": "8ff39ebb595f7cb62a9bb9967164c6f0c0ac5a8d",
+          "status": "modified"
+        }
+      ],
+      "html_url": "https://github.com/mehdisafer/industrial-streaming-mlops/commit/daaa5b8cc165b112c6cdce431fa1a8666c05892c",
+      "parents": [
+        "b80ffe4ed3cddad68de18e56c29b1e20f708d5af"
+      ],
+      "sha": "daaa5b8cc165b112c6cdce431fa1a8666c05892c",
+      "tree_sha": "cd07eba63f24ac53cddb8732bed17db65f4326aa"
+    }
+  ],
+  "conversation_review": {
+    "collection_counts": {
+      "issue_comments": 0,
+      "pr_comments": 0,
+      "pr_review_comments": 0,
+      "pr_reviews": 0
+    },
+    "obvious_credential_review": "Current issue/PR text describes implementation, IDs and evidence states; no exposed credential identified by review or the configured patterns.",
+    "snapshots": [
+      {
+        "bytes": 6603,
+        "kind": "issue",
+        "number": 1,
+        "scope": "current title and body only; historical edits are not exposed",
+        "sha256": "dcff46f4066d738667a8501ed283f43864551f89d701c6c21ac585a5c54a0760",
+        "updated_at": "2026-11-14T00:17:47Z",
+        "url": "https://github.com/mehdisafer/industrial-streaming-mlops/issues/1"
+      },
+      {
+        "bytes": 1552,
+        "kind": "pr",
+        "number": 3,
+        "scope": "current title and body only; historical edits are not exposed",
+        "sha256": "99cec024a1e7ee5f86c8459846b502d2dba7c8f14dd2b80e16dfc51e10f333a8",
+        "updated_at": "2026-11-15T19:53:57Z",
+        "url": "https://github.com/mehdisafer/industrial-streaming-mlops/pull/3"
+      }
+    ]
+  },
+  "counts": {
+    "blob_content_bytes": 621196,
+    "blobs_with_matching_git_sha": 34,
+    "changed_file_revisions": 34,
+    "comments_or_reviews_scanned": 0,
+    "commit_messages_scanned": 12,
+    "commits": 12,
+    "current_issue_or_pr_bodies_scanned": 2,
+    "pattern_findings": 0,
+    "skipped_changed_blobs": 0,
+    "unique_changed_blobs": 34,
+    "unique_changed_paths": 18
+  },
+  "findings": [],
+  "head_commit": "daaa5b8cc165b112c6cdce431fa1a8666c05892c",
+  "head_tree_sha": "cd07eba63f24ac53cddb8732bed17db65f4326aa",
+  "limitations": [
+    "Pattern checks and bounded text review do not prove absence of all secrets, personal data, or confidential content.",
+    "Hashes establish fetched-content correspondence, not certification.",
+    "Only changed blobs in this twelve-commit PR range were re-read; prior base history is outside this new review.",
+    "Current issue/PR titles and bodies were scanned; historical edits, deleted comments, actions artifacts, caches, and unavailable run logs are outside scope.",
+    "No binary or compressed artifacts occur among the thirty-four changed blobs. Existing main evidence archives are outside this incremental history review.",
+    "The remote PR or conversations can change after the recorded snapshot; later documentation/evidence commits require their own final publication-content check.",
+    "Raw outputs of the prior session restore01..restore07 failures were unavailable in this Git scope; counterexample fixtures are not substituted for original evidence."
+  ],
+  "observed_at_utc": "2026-11-15T19:59:15.091531+00:00",
+  "original_prior_failed_restore_artifacts": {
+    "action": "No original failed-run artifacts reconstructed or claimed reviewed.",
+    "current_head_tree_files": 223,
+    "matching_artifact_paths": [],
+    "observation": "No raw restore01..restore07 artifact path is present in the reviewed head tree or changed-file history. Some tests contain explicitly labeled counterexample fixtures; they are not original run receipts.",
+    "requested_runs": [
+      "restore01",
+      "restore02",
+      "restore03",
+      "restore04",
+      "restore05",
+      "restore06",
+      "restore07"
+    ],
+    "status": "unavailable_in_reviewed_git_scope"
+  },
+  "prior_main_history_review": "Already recorded for eight commits / 83 historical blobs; deliberately not repeated or re-certified here.",
+  "pull_request": 3,
+  "repository": "mehdisafer/industrial-streaming-mlops",
+  "result": "all_reviewed_blob_bytes_match_and_no_configured_secret_pattern_found",
+  "retrieval": {
+    "blob_content_fetched_at_utc": "2026-11-15T19:58:35.003Z",
+    "commit_metadata_fetched_at_utc": "2026-11-15T19:58:16.661Z",
+    "method": "GitHub connector: PR commit list, per-commit file metadata, fetch_blob by exact SHA, and issue/PR/review/comment endpoints",
+    "pagination": "PR snapshot declares twelve commits; list contains twelve. Each per-commit changed-file list has at most six entries. All four comment/review lists were empty.",
+    "parent_chain_complete_between_base_and_head": true,
+    "returned_content_encoding": "UTF-8 supplied by fetch_blob; re-encoded and matched against Git blob SHA-1 header+bytes"
+  },
+  "scanner": {
+    "maximum_file_bytes": 2097152,
+    "method": "Imported existing inspect_text(); no matched credential values are included in report.",
+    "path": "scripts/security_inventory.py",
+    "rules": [
+      "aws_access_key_id",
+      "credential_in_url",
+      "databricks_pat",
+      "github_classic_token",
+      "github_fine_grained_token",
+      "private_key"
+    ],
+    "sha256": "2c79f3662c464a9527fd0e68ed11dcdbf5a8b92d934077f5ff251d9fe553ce9e"
+  },
+  "schema_version": 1,
+  "scope": "Changed blobs in the twelve new PR #3 commits, commit messages, and current issue #1 / PR #3 text. No provider execution or public release."
+}

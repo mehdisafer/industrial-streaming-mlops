@@ -50,6 +50,9 @@ def main() -> None:
             "permission_levels_observed": sorted({entry["permission_level"] for grant in permissions.get("access_control_list", []) for entry in grant.get("all_permissions", [])}),
             "permission_limitation": "Observed ACL levels are not a determination of this identity's effective group permissions.",
             "compute_ready": cluster.get("state") == "RUNNING",
+            "reference_runtime": "15.4 LTS",
+            "reference_runtime_matches": bool(re.match(r"^15\.4(?:\.|$)", cluster.get("spark_version") or "")),
+            "runtime_import_preflight": "The job checks pinned imports and numerical ABI operations before model access or writes; this metadata-only preflight does not execute them.",
             "status": "observed_pending_operator_review",
             "unverified": ["effective attach/run/library permissions", "Kafka network and ACL", "model access and compatibility", "catalog/schema/volume access", "provider dependency resolution", "consumption budget"],
         }

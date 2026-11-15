@@ -2,7 +2,8 @@
 
 This is the private review candidate for an executable synthetic maintenance workflow.
 The notes are prepared for release review; no `v0.1.0-rc.1` tag or GitHub release has
-been published. [PR #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2)
+been published. [PR #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2),
+[follow-up PR #3](https://github.com/mehdisafer/industrial-streaming-mlops/pull/3)
 and the [acceptance register](acceptance.md) track review and outstanding gates.
 
 ## Intended outcome and changes
@@ -32,12 +33,13 @@ eventual delayed label. It includes:
 
 | Evidence | Observed result |
 |---|---|
-| [Application checks](evidence/checks/README.md) | 110 tests passed in 4.87 s; Python advisory audit covered 123 dependencies with zero known findings at scan time |
-| [Native08](evidence/native/README.md) | All 21 checks passed in 201.998 s; 4,380 raw records, 2,092 predictions, 12 alerts and zero observed source lag across three partitions |
-| [Recovery and restoration](evidence/native/README.md) | Before/after-commit recovery, unavailable-model replay, active broker interruption, candidate activation, rollback and restored caught-up checkpoint with no duplicate effects |
+| [Current application checks](evidence/followup/README.md) | 294 tests passed in 19.29 s, zero failures/errors/skips; Ruff passed; 122 third-party packages audited with zero known findings, one local project explicitly skipped |
+| [Fresh native execution](evidence/followup/native/qualification.json) | All 21 checks passed in 200.955 s at `daaa5b8`; 4,380 raw records, 2,092 predictions, 12 alerts and zero observed source lag across three partitions |
+| [Recovery and rollback](evidence/followup/native/qualification.json) | Before/after-commit recovery, unavailable-model replay, active broker interruption, candidate activation, rollback and restored caught-up checkpoint with no duplicate effects |
+| [Restored backlog and fresh input](evidence/followup/restore/restore-qualification.json) | 28/28 checks in 95.825 s; 303 retained records then 303 fresh records; immutable history, 1,965 final predictions, four worker runs and observed owned-process cleanup |
 | [Model holdout](evidence/model/README.md) | On 5,166 labeled rows / 24 failures, candidate useful recall 100%, alert precision 96%, one false alert (0.055749 per machine-day); baseline useful recall 87.5%, precision 42%, 29 false alerts |
 | [Streaming benchmark03](evidence/benchmark/README.md) | Four 2-hour/24-hour variants completed in 84.614 s; the three identical 24-hour inputs produced exact feature/score/alert/cooldown parity, each with 1,141 predictions, four alerts and 18 cooldown suppressions |
-| [Dashboard checks](evidence/checks/README.md) | Real HTTP HTML/JSON and actual JavaScript against the original snapshot using a minimal DOM/fetch double; 12 alert rows and 40 prediction rows |
+| [Dashboard checks](evidence/followup/README.md#dashboard-and-unresolved-environment-gates) | Real HTTP HTML/JSON and 13 assertions on actual JavaScript with explicit DOM/fetch doubles, including successful recovery after an HTTP error; six restored alert rows and 40 prediction rows |
 
 The benchmark's worker throughput includes Python/JVM startup and shutdown. The
 24-hour variants measured 143.18, 122.23 and 124.27 raw records per worker wall second
@@ -47,7 +49,9 @@ statistical speedup, distributed capacity or production service levels.
 
 Model results describe generated data and simulated lead from feature availability;
 they do not establish industrial generalization or wall-clock advance warning. The
-original native01 training result was reused unchanged for later qualification.
+original native01 training result was reused unchanged for the original native08
+qualification. The follow-up restoration trained the same fixed protocol, and its
+stopped model state was reused for the fresh fault/rollback run after source checks.
 Earlier failed/blocked attempts and the superseded native07 lag observation remain
 in [the attempt history](evidence/attempts/README.md). The [evidence index](evidence/README.md)
 links exact source identities and original receipts rather than substituting a later
@@ -108,9 +112,16 @@ is not implemented; preserve the original state and retained source data.
 `rollback` activates the previous compatible local numerical deployment. It leaves
 registry aliases separate and preserves existing predictions with their original
 model provenance. The [operations runbook](operations.md) describes stopped-state
-backup and the controlled relocation of a verified copied checkpoint. The observed
-restore resumed an already caught-up checkpoint; fresh input after restore and
-cross-host restoration remain additional qualification work.
+backup and the controlled relocation of a verified copied checkpoint. The original
+restore resumed an already caught-up checkpoint. The follow-up separately
+qualified retained backlog and fresh input after restoration while preserving old
+labels, observations, predictions and deployment history. Cross-host restoration
+remains additional qualification work.
+
+The provider follow-up adds immutable alert decisions, explicit checkpoint ownership,
+loaded-library checks, native Unity Catalog registry constraints and a separate hard
+driver row cap. Use the fresh namespace/table-prefix/checkpoint procedure in the
+[provider runbook](databricks.md); a general in-place provider migration is not claimed.
 
 This release candidate remains a bounded single-host reference. Complete local
 database/evidence retention, supervision, authenticated exposure, distributed feature

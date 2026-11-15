@@ -21,7 +21,7 @@ tables under a unique prefix in an existing authorized catalog/schema:
 | `accepted` | Strictly validated, deduplicated events with source-time metadata |
 | `labels` | Available-label contract records, separate from sensor inputs |
 | `features` | The shared causal feature vector and its source event identities |
-| `predictions` | Real registered-model inference, score, exact model version and evidence payload |
+| `predictions` | Real registered-model inference, immutable score and alert decision, exact model version and evidence payload |
 | `alerts` | Threshold and cooldown policy outcomes, linked to predictions |
 | `batches` | Completion records written after the other outputs |
 | `deployment` | Immutable source/config/model identity for the table/checkpoint namespace |
@@ -32,10 +32,44 @@ partial tables visible; its completion record is absent and replay finishes the
 remaining writes. A provider failure/restart exercise is still required before
 claiming that recovery behaviour is verified on Databricks.
 
+Label relationship checks match the shared replay contract. An orphan label, a
+label whose dataset/site/machine/time disagrees with its sensor, or a second label
+for the same anchor is explicitly rejected. A rejected label does not establish
+the Kafka partition assignment of the machine it claims to describe.
+
+New predictions are ordered by feature availability, event time and feature ID,
+matching the local cooldown order. Each prediction persists its `alert_emitted`
+decision before the separate alert-table write. Already committed predictions are
+not rescored or assigned a new decision. If a later write fails, a retry reconstructs
+missing alert rows from those decisions and checks the persisted alert rows before
+writing the completion record. Prior emissions seed cooldown for new features,
+including a feature whose supplied availability timestamp is earlier than an already
+committed emission. No historical alert is silently rewritten by a later replay.
+
+Performance evaluation joins available labels to actual persisted alert rows. It
+does not reconstruct cooldown after filtering out unavailable labels. Reports
+distinguish emitted alerts, evaluable alerts and `pending_alert_labels`; a missing
+outcome does not turn a suppressed prediction into a reported alert. Undefined
+precision/rates remain null when the required evidence is absent.
+
 To preserve feature parity, this first provider adapter replays the bounded raw
 dataset on the driver using `replay_with_report`. The default limit is 50,000 raw
 records, the allowed maximum is 200,000, total replay payload is capped at 64 MiB,
-and the micro-batch default is 1,000.
+and the Kafka micro-batch rate target defaults to 1,000. Spark allocates this
+target proportionally across partitions and rounds small nonempty partition
+shares up to one record. An actual batch can therefore exceed
+`maxOffsetsPerTrigger`: three active partitions with a target of one can yield
+three records; a skewed three-partition backlog can also exceed a target of 1,000.
+The independent `config/pipeline.json` `max_batch_rows` value is the hard sink cap
+(10,000 by default), checked after the distributed raw write and before any
+driver collection. The rate target must not exceed that cap. Completed batches report
+the target, observed rows, cap and `rate_target_exceeded` flag. If rounding takes
+the batch above the hard cap, the run fails explicitly with the raw rows retained;
+the existing checkpoint can already contain that batch's offset range. Lowering
+the target does not shrink a failed batch on replay. Preserve its checkpoint and
+tables, reconcile the incomplete batch, and prepare a new isolated deployment
+with a lower target or an explicitly reviewed migration. Do not delete checkpoint
+files or silently raise the hard cap to bypass the failure.
 Exceeding the bound stops the job after preserving raw input; it never silently
 drops records. This design is deliberately labelled a qualification adapter. A
 distributed Delta state/feature implementation and its partition-invariance/load
@@ -47,6 +81,41 @@ Use isolated qualification compute rather than a shared business cluster because
 the job installs pinned model libraries. The reference target is DBR 15.4 LTS;
 the task-library overlay still needs actual compatibility verification. PySpark
 is supplied by DBR and is never installed from the project wheel.
+The task also requires the native `dbutils` interface from compatible classic
+compute. It explicitly rejects the pinned SDK's `RemoteDbUtils` fallback, which
+can be selected when the native namespace is unavailable, including some Spark
+Connect contexts. The remote implementation has different directory metadata and
+path support. An existing-cluster ID alone does not establish this compatibility.
+
+The published DBR 15.4 baseline includes NumPy 1.23.5, SciPy 1.11.1 and PyArrow
+14.0.1. The model overlay uses NumPy 2.3.5, so retaining those older numerical
+binaries is not a compatible assumption: the SciPy 1.11 support table excludes
+NumPy 2, and Arrow's NumPy 2 compatibility work was completed in version 16.
+The task therefore also pins SciPy, PyArrow and the Databricks SDK from the reviewed
+Python 3.11 lock. These are explicit task libraries, not an installation of PySpark
+or a change to the existing cluster definition.
+
+| Used task dependency | Pin |
+| --- | --- |
+| MLflow | 3.17.2 |
+| NumPy | 2.3.5 |
+| pandas | 2.2.3 |
+| scikit-learn | 1.8.0 |
+| skops | 0.16.0 |
+| SciPy | 1.17.1 |
+| PyArrow | 25.0.1 |
+| Databricks SDK | 0.166.0 |
+
+Before model access or table writes, the job checks the installed distribution
+versions and the versions of the actually loaded modules, then performs small
+NumPy/SciPy, Arrow, pandas and scikit-learn operations. Its result is recorded in
+`runtime_import_preflight`.
+It rejects a stale preloaded module even when the distribution metadata already
+reports the new version. This check can catch missing pins and common binary
+interface failures; it does not validate every preinstalled vendor package,
+Spark/Delta integration or provider permissions. Disabling Spark Arrow conversion
+alone would not validate Python's PyArrow import. The actual overlay still
+requires execution on the selected compute.
 
 The operator must supply the workspace identity, existing compute ID, catalog,
 schema, writable volume/output location, durable checkpoint location, Kafka
@@ -65,10 +134,53 @@ paths and expanded artifact-provided trust lists are rejected. The registered
 version must resolve through an MLflow 3 logged-model identity with the same
 source run. This provider-side artifact API/layout still requires a real test;
 an unsupported imported model layout fails instead of bypassing the policy.
-For Unity Catalog use `catalog.schema.model`; for an existing workspace registry
-select its URI explicitly. A local `http://localhost:5000` model is not accessible
-from Databricks. Moving it requires an authorized model import/registration with
-its original provenance; the bundle does not expose the local tracking server.
+The reviewed provider loader requires `tracking_uri=databricks`,
+`registry_uri=databricks-uc`, and a `catalog.schema.model` name whose three parts
+are simple SQL identifiers. It rejects other registry/tracking combinations
+before MLflow access or provider writes. This is an explicit compatibility limit:
+MLflow 3.17.2 converts a logged-model URI to its artifact location for the workspace
+model registry, which does not match this loader's `models:/m-...` source contract.
+External tracking imported into Unity Catalog can also use another source layout.
+Neither path is qualified by these deployment artifacts. Supporting one requires
+a reviewed resolver and provenance checks rather than weakening the current
+artifact invariant. A local `http://localhost:5000` model is not accessible from
+Databricks. Moving it requires an authorized model import/registration that
+preserves provenance and produces the required native Databricks logged-model
+layout; the bundle does not expose the local tracking server.
+
+## Checkpoint ownership preflight
+
+Use a dedicated checkpoint child directory whose parent already exists and is
+listable by the selected compute. Supported locations are below an authorized
+`/Volumes/catalog/schema/volume/` directory or an `abfss://`, `s3://` or `gs://`
+location. A volume or bucket root, traversal components, query parameters and
+fragments are rejected. The guard rejects a parent or checkpoint listing with more
+than 10,000 returned entries; choose a small, isolated parent for the qualification.
+
+After selecting the native interface, before any Delta or streaming write, the
+job checks the existing Delta deployment identity, then uses the documented
+`dbutils.fs.ls`, `head`, `mkdirs` and `put`
+operations to bind the checkpoint. A new deployment requires an empty checkpoint
+or an absent child under that existing parent. The job writes a bounded
+`_industrial_deployment.json` marker without overwrite and reads it back. The
+marker binds the source hashes, code commit, configuration, model, Kafka topic and
+endpoint digest, checkpoint path, catalog, schema and table prefix.
+
+An existing deployment must have the same marker. A populated unbound checkpoint,
+a changed binding, a missing checkpoint for an existing namespace, or a populated
+checkpoint whose namespace is missing stops initialization. A matching marker
+alone can resume initialization if the process stopped before creating Delta
+tables. Listing and marker read failures propagate; a permission or transport
+error is never interpreted as an absent or empty path. The job does not adopt,
+delete or overwrite an old checkpoint to make a run succeed.
+
+This guard assumes one writer owns the namespace and checkpoint. The job's own
+concurrency limit does not prevent a separate job or an operator from writing the
+same paths. The marker is not an object-store lock, and no atomic transaction spans
+the filesystem and Delta. If initialization fails after creating a marker, preserve
+the path and reconcile its state before another run. Actual cloud filesystem
+semantics, Spark's use of the bound checkpoint and failure/restart recovery remain
+provider acceptance work.
 
 ## Read-only preflight
 
@@ -91,6 +203,8 @@ ACL presence alone does not determine effective group permissions. Check the
 actual ability to attach/run, install task libraries, read the model and secret,
 connect to Kafka and write the selected tables/volume. A stopped cluster is
 reported; the script does not start it or authorize spend.
+The receipt records whether the reported runtime matches the 15.4 reference. This
+metadata read does not execute the job's import preflight on the remote compute.
 
 ## Reproducible deployment and bounded run
 
@@ -100,6 +214,8 @@ Required variable names are listed in `databricks.yml`. Set `code_sha` to the
 reviewed Git commit and upload a clean checkout of that commit. Use a distinct
 `table_prefix`, `output_root` subdirectory and `checkpoint_root` for each intended
 source/config/model deployment. Keep each machine on one Kafka partition.
+Prepare the checkpoint's existing listable parent, leave its dedicated child
+empty, and reserve both the checkpoint and output namespace for this one job.
 
 After explicit authorization for the concrete workspace, compute and bounded
 run, the operator executes:
@@ -127,6 +243,14 @@ completed bounded run writes `run-<run_id>.json` below the supplied output volum
 It records code/config/model identity, runtime and package versions, query IDs,
 source progress, source-file hashes, table counts and latest Delta history versions, reconciliation,
 label coverage, prediction/alert counts and evaluation when labels are available.
+The `checkpoint_binding` receipt records marker verification and its manifest
+digest; `runtime_import_preflight` records installed and loaded package versions
+and the numerical smoke results. `registry_preflight` records the required native
+Databricks tracking and Unity Catalog registry combination; it does not verify
+registry connectivity or permissions. `native_dbutils_preflight` records the selected
+utility implementation; it does not itself execute filesystem operations.
+The per-batch report distinguishes `new_predictions` from total committed predictions
+and retains pending outcome counts instead of treating them as evaluated alerts.
 Zero predictions fail the run. Set `expected_records` before execution to make
 the source count an acceptance assertion; its default zero leaves that assertion
 unspecified.
@@ -158,15 +282,54 @@ predictions. No alias changes occur automatically on drift.
 
 Do not delete or repurpose a checkpoint while retaining its output namespace.
 The deployment manifest rejects a changed model, source, configuration or code
-identity against the existing namespace. Model/config changes need a reviewed
-new namespace or an explicit migration, with preserved old evidence. Keep the
-previous model and its source/config dependencies available until rollback has
-been exercised.
+identity against the existing namespace. The checkpoint marker also rejects
+reusing that checkpoint for a different namespace, even if its Delta tables do not
+yet exist. Model/config changes need a reviewed new namespace and checkpoint or an
+explicit migration, with preserved old evidence. Keep the previous model and its
+source/config dependencies available until rollback has been exercised.
+
+The provider correction adds immutable alert decisions to prediction payloads.
+Pre-correction predictions without those decisions are not silently upgraded or
+reinterpreted. The changed source manifest requires a new isolated namespace and
+checkpoint under the existing deployment guard; preserve the previous namespace
+as evidence. No in-place provider migration is implemented by this change.
+Legacy checkpoints without the ownership marker are not automatically adopted.
 
 Never change a topic's partition layout in place for this qualification: it can
 change a machine's arrival order. Use a new topic, checkpoint and output prefix,
 then compare invariants on a fixed replay dataset. No cross-table exactly-once
 guarantee or distributed scalability claim is made by this adapter.
+
+## Local adapter regression evidence
+
+The follow-up review reproduced three invalid-label accounting mismatches, a tied
+availability ordering mismatch, and a delayed-label example that reported a
+suppressed prediction as an alert. These were pure Python counterexamples against
+the previously delivered source, not failures observed on a Databricks workspace.
+
+The focused [adapter tests](../tests/test_databricks_adapter.py) now exercise those
+cases, retained cooldown decisions, reconstruction after an explicit in-memory
+prediction/alert-write boundary, transport-delayed outcomes, positive lead-time
+metrics, dependency pin consistency and the guard against treating local Spark as
+Databricks. An explicit in-memory filesystem double covers checkpoint creation,
+ownership, initialization retry, missing namespaces, invalid paths and failed
+reads/permissions. These filesystem cases do not contact DBFS or a cloud storage service.
+The numerical import/ABI smoke executes against the clean locked local Python 3.11
+environment, including rejection of stale loaded modules. Run the focused checks with:
+
+```bash
+MLFLOW_DISABLE_TELEMETRY=true DO_NOT_TRACK=true \
+  uv run --frozen --python 3.11.18 pytest -q tests/test_databricks_adapter.py
+```
+
+The focused suite covers partition-rounding counterexamples, the independent
+hard row cap and rejection of unsupported registry layouts before MLflow imports,
+as well as 14 filesystem-double cases and four native-interface guard cases.
+The latter use an explicit double or an SDK fallback
+object created without its authentication/client constructor. No test
+executes Spark, Delta, Kafka, a registry or a Databricks workspace; no provider
+acceptance gate is closed by these results. Actual Delta partial-write recovery,
+runtime library resolution and provider business-output parity remain required.
 
 ## Official references
 
@@ -176,4 +339,11 @@ guarantee or distributed scalability claim is made by this adapter.
 - [Bundle settings](https://docs.databricks.com/aws/en/dev-tools/bundles/settings)
 - [Job tutorial and CLI requirements](https://docs.databricks.com/aws/en/dev-tools/bundles/jobs-tutorial)
 - [Compute permissions](https://docs.databricks.com/aws/en/security/auth/access-control)
+- [Documented dbutils filesystem operations](https://docs.databricks.com/aws/en/dev-tools/databricks-utils)
+- [SDK runtime selection source](https://github.com/databricks/databricks-sdk-py/blob/main/databricks/sdk/runtime/__init__.py)
 - [Existing-cluster Jobs API task](https://docs.databricks.com/api/jobs/v2/run)
+- [Spark 3.5.9 Kafka proportional rate allocator](https://github.com/apache/spark/blob/v3.5.9/connector/kafka-0-10-sql/src/main/scala/org/apache/spark/sql/kafka010/KafkaMicroBatchStream.scala)
+- [Spark 3.5.0 rate allocator matching the DBR 15.4 Spark baseline](https://github.com/apache/spark/blob/v3.5.0/connector/kafka-0-10-sql/src/main/scala/org/apache/spark/sql/kafka010/KafkaMicroBatchStream.scala)
+- [MLflow 3.17.2 registry source resolution](https://github.com/mlflow/mlflow/blob/v3.17.2/mlflow/tracking/client.py)
+- [SciPy Python/NumPy support table](https://docs.scipy.org/doc/scipy/dev/toolchain.html)
+- [Arrow 16 NumPy 2 compatibility notes](https://arrow.apache.org/blog/2024/04/20/16.0.0-release/)

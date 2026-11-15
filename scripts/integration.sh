@@ -32,11 +32,57 @@ industrial_stage=preflight
 stack_start_attempted=0
 smoke_completed=0
 owned_project=0
+runtime_inventory_capture=not_attempted
 started_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 compose() { docker compose --project-name "$COMPOSE_PROJECT_NAME" "$@"; }
 record_stage() {
   industrial_stage="$1"
   printf '%s %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$industrial_stage" >> "$evidence_dir/stages.log"
+}
+capture_runtime_inventory() {
+  local inventory_dir="$evidence_dir/runtime-inventory"
+  local inventory_name copy_code
+  mkdir -p -- "$inventory_dir" || return 1
+  : > "$inventory_dir/copy-status.tsv" || return 1
+  for inventory_name in runtime-jars.json os-packages.tsv java-version.txt; do
+    compose cp "dashboard:/app/$inventory_name" "$inventory_dir/$inventory_name" \
+      >> "$evidence_dir/capture-errors.log" 2>&1
+    copy_code=$?
+    printf '%s\t%s\n' "$inventory_name" "$copy_code" >> "$inventory_dir/copy-status.tsv" || return 1
+  done
+  "$python_bin" - "$inventory_dir" "$evidence_dir/runtime-inventory-capture.json" <<'PY'
+import hashlib, json, pathlib, sys
+directory, output = map(pathlib.Path, sys.argv[1:])
+files = []
+for line in (directory / 'copy-status.tsv').read_text().splitlines():
+    name, code = line.split('\t')
+    path = directory / name
+    data = path.read_bytes() if path.is_file() and not path.is_symlink() else b''
+    reason = None
+    if int(code) != 0:
+        reason = 'copy_failed'
+    elif not data:
+        reason = 'empty_or_missing_file'
+    elif name == 'runtime-jars.json':
+        try:
+            jars = json.loads(data)
+            if not isinstance(jars, list) or not jars:
+                reason = 'empty_or_invalid_jar_inventory'
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            reason = 'invalid_jar_json'
+    files.append({
+        'source': f'dashboard:/app/{name}', 'path': f'runtime-inventory/{name}',
+        'copy_exit_code': int(code), 'captured': reason is None, 'failure_reason': reason,
+        'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest() if data else None,
+    })
+complete = len(files) == 3 and all(item['captured'] for item in files)
+output.write_text(json.dumps({
+    'schema_version': 1,
+    'scope': 'Original image inventories copied from the dashboard container before cleanup; not a dependency audit.',
+    'status': 'complete' if complete else 'failed', 'complete': complete, 'files': files,
+}, indent=2) + '\n', encoding='utf-8')
+raise SystemExit(0 if complete else 1)
+PY
 }
 finish() {
   result_code=$?
@@ -50,6 +96,12 @@ finish() {
     docker image inspect industrial-streaming-mlops:local apache/kafka:3.9.2 > "$evidence_dir/pre-cleanup-images.json" 2>> "$evidence_dir/capture-errors.log"
     mkdir -p "$evidence_dir/service-evidence"
     compose cp dashboard:/state/evidence/. "$evidence_dir/service-evidence/" >> "$evidence_dir/capture-errors.log" 2>&1
+    if capture_runtime_inventory; then
+      runtime_inventory_capture=complete
+    else
+      runtime_inventory_capture=failed
+      if [ "$result_code" -eq 0 ]; then result_code=1; fi
+    fi
     compose --profile streaming --profile tools down --timeout 45 > "$evidence_dir/cleanup.log" 2>&1
     cleanup_code=$?
     if [ "$cleanup_code" -eq 0 ]; then
@@ -60,9 +112,10 @@ finish() {
   fi
   "$python_bin" - "$evidence_dir/run-receipt.json" "$COMPOSE_PROJECT_NAME" "$industrial_stage" \
     "$result_code" "$cleanup_code" "$started_at" "$owned_project" "$stack_start_attempted" \
-    "$smoke_completed" "$preflight_only" <<'PY'
+    "$smoke_completed" "$preflight_only" "$runtime_inventory_capture" <<'PY'
 import datetime, hashlib, json, pathlib, subprocess, sys
-(output, project, stage, result, cleanup, started, owned, attempted, completed, preflight) = sys.argv[1:]
+(output, project, stage, result, cleanup, started, owned, attempted, completed,
+ preflight, inventory_capture) = sys.argv[1:]
 try:
     commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True, stderr=subprocess.DEVNULL).strip()
 except (OSError, subprocess.CalledProcessError):
@@ -75,6 +128,11 @@ payload = {
     'namespace_ownership_checked': owned == '1', 'stack_start_attempted': attempted == '1',
     'preflight_only': preflight == '1',
     'container_smoke_completed': completed == '1' and result == '0',
+    'runtime_inventory_capture': inventory_capture,
+    'runtime_inventory_receipt': (
+        'runtime-inventory-capture.json'
+        if pathlib.Path(output).with_name('runtime-inventory-capture.json').is_file() else None
+    ),
     'cleanup_attempted': int(cleanup) >= 0,
     'cleanup_exit_code': int(cleanup) if int(cleanup) >= 0 else None,
     'volumes_preserved': True,

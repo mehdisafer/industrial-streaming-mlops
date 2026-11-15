@@ -1,0 +1,241 @@
+{
+  "outage": {
+    "new_input_acknowledged": true,
+    "port_closed": true,
+    "restarted_at": 1794772862.7160413,
+    "stopped_at": 1794772847.6130955
+  },
+  "stream": {
+    "drained": false,
+    "elapsed_seconds": 46.300162422000085,
+    "engine": "Spark Structured Streaming",
+    "jvm_available_processors": 2,
+    "max_offsets_per_trigger": 1000,
+    "mode": "duration",
+    "progress": [
+      {
+        "batchId": 4,
+        "durationMs": {
+          "latestOffset": 365,
+          "triggerExecution": 468
+        },
+        "id": "97a8eba5-4441-4975-9534-506090291bf6",
+        "inputRowsPerSecond": 0.0,
+        "name": "qualification",
+        "numInputRows": 0,
+        "processedRowsPerSecond": 0.0,
+        "runId": "c2fdbf7c-8c1f-4d59-bd1c-e8df64a5c5c9",
+        "sink": {
+          "description": "ForeachBatchSink",
+          "numOutputRows": -1
+        },
+        "sources": [
+          {
+            "description": "KafkaV2[Subscribe[qualification]]",
+            "endOffset": {
+              "qualification": {
+                "0": 585,
+                "1": 2309,
+                "2": 577
+              }
+            },
+            "inputRowsPerSecond": 0.0,
+            "latestOffset": {
+              "qualification": {
+                "0": 585,
+                "1": 2309,
+                "2": 577
+              }
+            },
+            "metrics": {
+              "avgOffsetsBehindLatest": "0.0",
+              "maxOffsetsBehindLatest": "0",
+              "minOffsetsBehindLatest": "0"
+            },
+            "numInputRows": 0,
+            "processedRowsPerSecond": 0.0,
+            "startOffset": {
+              "qualification": {
+                "0": 585,
+                "1": 2309,
+                "2": 577
+              }
+            }
+          }
+        ],
+        "stateOperators": [],
+        "timestamp": "2026-11-15T20:00:45.453Z"
+      },
+      {
+        "batchId": 4,
+        "durationMs": {
+          "addBatch": 7082,
+          "commitOffsets": 27,
+          "getBatch": 2,
+          "latestOffset": 13629,
+          "queryPlanning": 355,
+          "triggerExecution": 21154,
+          "walCommit": 48
+        },
+        "id": "97a8eba5-4441-4975-9534-506090291bf6",
+        "inputRowsPerSecond": 133.21609144867003,
+        "name": "qualification",
+        "numInputRows": 606,
+        "processedRowsPerSecond": 28.64706438498629,
+        "runId": "c2fdbf7c-8c1f-4d59-bd1c-e8df64a5c5c9",
+        "sink": {
+          "description": "ForeachBatchSink",
+          "numOutputRows": -1
+        },
+        "sources": [
+          {
+            "description": "KafkaV2[Subscribe[qualification]]",
+            "endOffset": {
+              "qualification": {
+                "0": 691,
+                "1": 2408,
+                "2": 675
+              }
+            },
+            "inputRowsPerSecond": 133.21609144867003,
+            "latestOffset": {
+              "qualification": {
+                "0": 691,
+                "1": 2408,
+                "2": 675
+              }
+            },
+            "metrics": {
+              "avgOffsetsBehindLatest": "0.0",
+              "maxOffsetsBehindLatest": "0",
+              "minOffsetsBehindLatest": "0"
+            },
+            "numInputRows": 606,
+            "processedRowsPerSecond": 28.64706438498629,
+            "startOffset": {
+              "qualification": {
+                "0": 585,
+                "1": 2309,
+                "2": 577
+              }
+            }
+          }
+        ],
+        "stateOperators": [],
+        "timestamp": "2026-11-15T20:00:50.002Z"
+      },
+      {
+        "batchId": 5,
+        "durationMs": {
+          "latestOffset": 18,
+          "triggerExecution": 20
+        },
+        "id": "97a8eba5-4441-4975-9534-506090291bf6",
+        "inputRowsPerSecond": 0.0,
+        "name": "qualification",
+        "numInputRows": 0,
+        "processedRowsPerSecond": 0.0,
+        "runId": "c2fdbf7c-8c1f-4d59-bd1c-e8df64a5c5c9",
+        "sink": {
+          "description": "ForeachBatchSink",
+          "numOutputRows": -1
+        },
+        "sources": [
+          {
+            "description": "KafkaV2[Subscribe[qualification]]",
+            "endOffset": {
+              "qualification": {
+                "0": 691,
+                "1": 2408,
+                "2": 675
+              }
+            },
+            "inputRowsPerSecond": 0.0,
+            "latestOffset": {
+              "qualification": {
+                "0": 691,
+                "1": 2408,
+                "2": 675
+              }
+            },
+            "metrics": {
+              "avgOffsetsBehindLatest": "0.0",
+              "maxOffsetsBehindLatest": "0",
+              "minOffsetsBehindLatest": "0"
+            },
+            "numInputRows": 0,
+            "processedRowsPerSecond": 0.0,
+            "startOffset": {
+              "qualification": {
+                "0": 691,
+                "1": 2408,
+                "2": 675
+              }
+            }
+          }
+        ],
+        "stateOperators": [],
+        "timestamp": "2026-11-15T20:01:25.001Z"
+      }
+    ],
+    "query_id": "97a8eba5-4441-4975-9534-506090291bf6",
+    "run_id": "c2fdbf7c-8c1f-4d59-bd1c-e8df64a5c5c9",
+    "source_lag": {
+      "offsets_behind": 0,
+      "partitions": [
+        {
+          "behind": 0,
+          "broker_end": 691,
+          "partition": 0,
+          "retained_start": 0,
+          "sink_next": 691
+        },
+        {
+          "behind": 0,
+          "broker_end": 2408,
+          "partition": 1,
+          "retained_start": 0,
+          "sink_next": 2408
+        },
+        {
+          "behind": 0,
+          "broker_end": 675,
+          "partition": 2,
+          "retained_start": 0,
+          "sink_next": 675
+        }
+      ],
+      "status": "observed",
+      "topic": "qualification"
+    },
+    "spark_version": "3.5.9",
+    "verification": {
+      "checks": {
+        "accepted_events_balance": true,
+        "alerts_have_predictions": true,
+        "labels_balance": true,
+        "predictions_have_features": true,
+        "source_dispositions_balance": true,
+        "sqlite_integrity": true
+      },
+      "counts": {
+        "accepted": 1874,
+        "alerts": 12,
+        "batches": 5,
+        "control": 12,
+        "duplicate": 2,
+        "events": 1874,
+        "features": 1838,
+        "label": 1874,
+        "labels": 1874,
+        "pending_events": 0,
+        "pending_predictions": 0,
+        "predictions": 1838,
+        "raw": 3774,
+        "rejected": 12
+      },
+      "valid": true
+    },
+    "workers": 2
+  }
+}

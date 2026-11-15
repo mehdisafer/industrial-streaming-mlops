@@ -1,0 +1,26 @@
+{
+  "checked_at": 1794772933.3490608,
+  "cluster": {
+    "authorized_operations": [
+      "CREATE",
+      "ALTER",
+      "DESCRIBE",
+      "CLUSTER_ACTION",
+      "DESCRIBE_CONFIGS",
+      "ALTER_CONFIGS",
+      "IDEMPOTENT_WRITE"
+    ],
+    "brokers": [
+      {
+        "host": "127.0.0.1",
+        "node_id": 1,
+        "port": 19092,
+        "rack": null
+      }
+    ],
+    "cluster_id": "Y-IGX9OARu2R0gYdVpWUEA",
+    "controller_id": 1,
+    "throttle_time_ms": 0
+  },
+  "scope": "successful Kafka cluster and topic metadata requests"
+}

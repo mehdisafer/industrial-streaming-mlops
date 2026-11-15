@@ -39,7 +39,7 @@ jobs:
               run = True
           else:
               paths = subprocess.check_output(['git', 'diff', '--name-only', base, head], text=True).splitlines()
-              exact = {'pyproject.toml', 'uv.lock', 'compose.yaml', 'databricks.yml'}
+              exact = {'pyproject.toml', 'uv.lock', 'compose.yaml', 'databricks.yml', '.dockerignore'}
               prefixes = ('src/', 'tests/', 'config/', 'schemas/', 'scripts/', 'infra/', 'databricks/', 'resources/', '.github/workflows/')
               run = any(path in exact or path.startswith(prefixes) for path in paths)
           with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
@@ -52,6 +52,8 @@ jobs:
           uv sync --frozen --all-extras --python 3.11.18
       - name: Compile source and provider entrypoints
         run: uv run --frozen python -m compileall -q src databricks scripts
+      - name: Lint source and provider entrypoints
+        run: uv run --frozen ruff check src tests scripts databricks
       - name: Unit, contract and temporal correctness tests
         run: |
           mkdir -p evidence/ci

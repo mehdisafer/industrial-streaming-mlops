@@ -1,0 +1,51 @@
+{
+  "native": {
+    "checks": 21,
+    "counts": {
+      "accepted": 2164,
+      "alerts": 12,
+      "batches": 7,
+      "control": 24,
+      "duplicate": 4,
+      "events": 2164,
+      "features": 2092,
+      "label": 2164,
+      "labels": 2164,
+      "pending_events": 0,
+      "pending_predictions": 0,
+      "predictions": 2092,
+      "raw": 4380,
+      "rejected": 24
+    },
+    "elapsed_seconds": 200.95462775230408,
+    "passed": true
+  },
+  "restore": {
+    "checks": 28,
+    "counts": {
+      "accepted": 2019,
+      "alerts": 6,
+      "batches": 22,
+      "control": 18,
+      "duplicate": 3,
+      "events": 2019,
+      "features": 1965,
+      "label": 2019,
+      "labels": 2019,
+      "pending_events": 0,
+      "pending_predictions": 0,
+      "predictions": 1965,
+      "raw": 4077,
+      "rejected": 18
+    },
+    "elapsed_seconds": 95.824555766,
+    "passed": true
+  },
+  "source_commit": "daaa5b8cc165b112c6cdce431fa1a8666c05892c",
+  "tests": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 294
+  }
+}

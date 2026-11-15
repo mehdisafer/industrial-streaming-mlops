@@ -1,0 +1,109 @@
+{
+  "observed_spark_masters": [],
+  "processes": [
+    {
+      "initial_cpu_seconds": 2.41,
+      "last_cpu_seconds": 2.4899999999999998,
+      "name": "python",
+      "peak_rss_bytes": 288608256,
+      "pid": 5,
+      "role": "runner_python"
+    },
+    {
+      "initial_cpu_seconds": 4.67,
+      "last_cpu_seconds": 4.67,
+      "name": "python",
+      "peak_rss_bytes": 284037120,
+      "pid": 7,
+      "role": "mlflow_tree"
+    },
+    {
+      "initial_cpu_seconds": 3.61,
+      "last_cpu_seconds": 3.62,
+      "name": "python",
+      "peak_rss_bytes": 287707136,
+      "pid": 10,
+      "role": "mlflow_tree"
+    },
+    {
+      "initial_cpu_seconds": 0.0,
+      "last_cpu_seconds": 4.17,
+      "name": "kafka-run-class",
+      "peak_rss_bytes": 345862144,
+      "pid": 443,
+      "role": "kafka_tree"
+    },
+    {
+      "initial_cpu_seconds": 0.0,
+      "last_cpu_seconds": 0.0,
+      "name": "kafka-run-class",
+      "peak_rss_bytes": 753664,
+      "pid": 449,
+      "role": "kafka_tree"
+    },
+    {
+      "initial_cpu_seconds": 0.0,
+      "last_cpu_seconds": 0.0,
+      "name": "kafka-run-class",
+      "peak_rss_bytes": 0,
+      "pid": 450,
+      "role": "kafka_tree"
+    },
+    {
+      "initial_cpu_seconds": 0.0,
+      "last_cpu_seconds": 0.0,
+      "name": "cut",
+      "peak_rss_bytes": 0,
+      "pid": 451,
+      "role": "kafka_tree"
+    },
+    {
+      "initial_cpu_seconds": 0.0,
+      "last_cpu_seconds": 0.0,
+      "name": "kafka-run-class",
+      "peak_rss_bytes": 876544,
+      "pid": 596,
+      "role": "kafka_tree"
+    },
+    {
+      "initial_cpu_seconds": 0.0,
+      "last_cpu_seconds": 0.0,
+      "name": "grep",
+      "peak_rss_bytes": 1167360,
+      "pid": 598,
+      "role": "kafka_tree"
+    },
+    {
+      "initial_cpu_seconds": 0.0,
+      "last_cpu_seconds": 0.0,
+      "name": "kafka-run-class",
+      "peak_rss_bytes": 933888,
+      "pid": 755,
+      "role": "kafka_tree"
+    }
+  ],
+  "raw_samples": "/workspace/scratch/ab3ef819fe8f/industrial-streaming-mlops/state/restore-20261115-01/evidence/initial-broker-startup-resources.jsonl",
+  "sampled_cpu_seconds_by_scope": {
+    "kafka_tree": 4.17,
+    "mlflow_tree": 0.010000000000000231,
+    "runner_python": 0.07999999999999963
+  },
+  "sampled_peak_rss_bytes_by_scope": {
+    "all_children": 917606400,
+    "kafka_tree": 345862144,
+    "mlflow_tree": 571744256,
+    "runner_python": 288608256
+  },
+  "sampler_errors": 0,
+  "samples": 39,
+  "scope": {
+    "children_rusage": "OS CPU delta for reaped children, separately reported; do not add to sampled child CPU",
+    "cpu": "sampled per-process user+system CPU deltas; short-lived processes and final sampling tails may be missed",
+    "processes": "runner and registered owned service trees; the short-lived format subprocess is not sampled",
+    "rss": "sampled resident bytes; simultaneous sums double-count shared pages and are not total host memory",
+    "runner_cpu": "exact process_time delta for benchmark Python, including producer and sampler threads",
+    "sample_interval_seconds": 0.1,
+    "window": "broker format/startup through metadata readiness or failure"
+  },
+  "thread_stopped": true
+}

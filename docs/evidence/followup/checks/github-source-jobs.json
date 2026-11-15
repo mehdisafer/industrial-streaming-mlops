@@ -1,0 +1,59 @@
+{
+  "total_count": 2,
+  "jobs": [
+    {
+      "id": 132936984797,
+      "run_id": 43754981478,
+      "workflow_name": "Verify local reference",
+      "head_branch": "fix/qualification-followup",
+      "run_url": "https://api.github.com/repos/mehdisafer/industrial-streaming-mlops/actions/runs/43754981478",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVtqYW88AAAAe86lo3Q",
+      "head_sha": "daaa5b8cc165b112c6cdce431fa1a8666c05892c",
+      "url": "https://api.github.com/repos/mehdisafer/industrial-streaming-mlops/actions/jobs/132936984797",
+      "html_url": "https://github.com/mehdisafer/industrial-streaming-mlops/actions/runs/43754981478/job/132936984797",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-11-15T19:54:01Z",
+      "started_at": "2026-11-15T19:54:01Z",
+      "completed_at": "2026-11-15T19:54:04Z",
+      "name": "checks",
+      "steps": [],
+      "check_run_url": "https://api.github.com/repos/mehdisafer/industrial-streaming-mlops/check-runs/132936984797",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": 0,
+      "runner_name": "",
+      "runner_group_id": 0,
+      "runner_group_name": ""
+    },
+    {
+      "id": 132937001107,
+      "run_id": 43754981478,
+      "workflow_name": "Verify local reference",
+      "head_branch": "fix/qualification-followup",
+      "run_url": "https://api.github.com/repos/mehdisafer/industrial-streaming-mlops/actions/runs/43754981478",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVtqYW88AAAAe86mokw",
+      "head_sha": "daaa5b8cc165b112c6cdce431fa1a8666c05892c",
+      "url": "https://api.github.com/repos/mehdisafer/industrial-streaming-mlops/actions/jobs/132937001107",
+      "html_url": "https://github.com/mehdisafer/industrial-streaming-mlops/actions/runs/43754981478/job/132937001107",
+      "status": "completed",
+      "conclusion": "skipped",
+      "created_at": "2026-11-15T19:54:04Z",
+      "started_at": "2026-11-15T19:54:04Z",
+      "completed_at": "2026-11-15T19:54:04Z",
+      "name": "real-integration",
+      "steps": [],
+      "check_run_url": "https://api.github.com/repos/mehdisafer/industrial-streaming-mlops/check-runs/132937001107",
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "runner_id": null,
+      "runner_name": null,
+      "runner_group_id": null,
+      "runner_group_name": null
+    }
+  ]
+}

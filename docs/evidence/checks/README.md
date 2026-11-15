@@ -1,5 +1,10 @@
 # Checks and qualification boundaries
 
+These are the original delivery's check receipts. The
+[15 November follow-up](../followup/README.md) contains the current 294-test run,
+incremental PR history review and fresh environment observations. Original outputs
+in this folder remain unchanged.
+
 The files in this folder preserve the actual local check outputs and the GitHub API
 responses available during delivery. They do not turn an unexecuted container or
 provider job into a passing integration.
@@ -25,10 +30,11 @@ The real [native qualification](../native/README.md) and
 
 ## Dependency and content review
 
-The final [Python advisory result](dependency-audit.json) covers **123 installed
-dependencies**, including the explicitly pinned resource sampler, with **zero known
-vulnerabilities reported** at execution. The editable project is excluded by
-`pip-audit --skip-editable`. This does not cover container OS packages, every JVM
+The final [Python advisory result](dependency-audit.json) contains **123 entries**:
+**122 third-party packages were audited**, including the explicitly pinned resource
+sampler, with **zero known vulnerabilities reported** at execution. The editable
+project is explicitly skipped by `pip-audit --skip-editable` and is not an audited
+dependency. This does not cover container OS packages, every JVM
 component or future advisories.
 
 The [initial result](dependency-audit-before-fixes.json) records findings in

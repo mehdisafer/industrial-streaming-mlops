@@ -1,0 +1,24 @@
+# The image only needs the inputs copied by infra/Dockerfile.
+# Keep native tools/state, environments, Git metadata and evidence out of context.
+**
+!pyproject.toml
+!uv.lock
+!README.md
+!infra/
+!infra/Dockerfile
+!src/
+!src/**
+!config/
+!config/**
+!schemas/
+!schemas/**
+!scripts/
+!scripts/**
+
+# Do not re-include generated caches or local environment files inside source trees.
+**/__pycache__
+**/*.py[cod]
+**/.pytest_cache
+**/.ruff_cache
+**/.env
+**/.env.*

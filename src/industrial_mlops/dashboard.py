@@ -52,7 +52,7 @@ function row(target,values){const tr=document.createElement('tr');values.forEach
 async function refresh(){try{const r=await fetch('/api/snapshot',{cache:'no-store'});if(!r.ok)throw Error(r.status);const d=await r.json();
 const c=d.counts;el('cards').replaceChildren();
 [['Raw messages',c.raw],['Accepted sensors',c.accepted],['Rejected / duplicates',c.rejected+' / '+c.duplicate],['Predictions',c.predictions],['Maintenance alerts',c.alerts]].forEach(([k,v])=>{const a=document.createElement('div');a.className='card';const l=document.createElement('div');l.className='label';l.textContent=k;const n=document.createElement('div');n.className='number';n.textContent=v;a.append(l,n);el('cards').append(a)});
-const state=d.runtime.model?.value?.status||'not activated';el('status').textContent=state+' · '+(d.freshness_seconds===null?'no batch':Math.round(d.freshness_seconds)+'s since batch');
+const state=d.runtime.model?.value?.status||'not activated';el('status').className='';el('status').textContent=state+' · '+(d.freshness_seconds===null?'no batch':Math.round(d.freshness_seconds)+'s since batch');
 el('model').textContent=d.deployment?'Active model: '+d.deployment.model_name+' / v'+d.deployment.model_version+' · '+d.deployment.mode+' · '+c.pending_predictions+' pending predictions':'No active model. Features are retained until activation.';
 el('alerts').replaceChildren();d.alerts.slice(0,20).forEach(a=>row(el('alerts'),[a.site_id+' / '+a.machine_id,(100*a.score).toFixed(1)+'%',a.event_time,'v'+a.model_version+' · '+a.mode,a.feature_id.slice(0,14)+' · '+a.source_event_ids.length+' sensor events']));
 if(!d.alerts.length)row(el('alerts'),['No alerts emitted','','','','']);

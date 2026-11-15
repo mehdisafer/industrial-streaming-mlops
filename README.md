@@ -34,8 +34,9 @@ separates the completed local checks from the remaining platform and release gat
 
 | Area | Current boundary |
 |---|---|
-| Application tests | **110 passed in 4.87 s**; [checks and audit receipts](docs/evidence/checks/README.md) |
-| Native Kafka/Spark/MLflow and recovery | **21 checks passed** in native08; [original service evidence](docs/evidence/native/README.md) |
+| Application tests | **294 passed in 19.29 s**, zero failures/errors/skips; [current checks](docs/evidence/followup/README.md) |
+| Native Kafka/Spark/MLflow and recovery | **21 checks passed** on the current reviewed source; [fresh service evidence](docs/evidence/followup/native/qualification.json) |
+| Restored backlog and new input | **28 checks passed**: retained backlog, fresh input, immutable history and owned-process cleanup; [restoration evidence](docs/evidence/followup/README.md#restored-backlog-and-fresh-input-proof) |
 | Model evaluation | Baseline and candidate met the recorded synthetic holdout gates; [original evaluation](docs/evidence/model/README.md) |
 | Streaming comparison | Four measured variants; exact business-output parity across the three 24-hour variants; [benchmark evidence](docs/evidence/benchmark/README.md) |
 | Container profile | **Not executed**: Docker was unavailable in the qualification environment |
@@ -43,8 +44,9 @@ separates the completed local checks from the remaining platform and release gat
 | Databricks | **Open**: implementation prepared; no authorized workspace run |
 | Public release | Private repository; owner license and public-visibility decisions remain open |
 
-See [scope issue #1](https://github.com/mehdisafer/industrial-streaming-mlops/issues/1)
-and [delivery review #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2)
+See [scope issue #1](https://github.com/mehdisafer/industrial-streaming-mlops/issues/1),
+[original delivery #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2)
+and [follow-up review #3](https://github.com/mehdisafer/industrial-streaming-mlops/pull/3)
 for the review state. The prepared release candidate is `v0.1.0-rc.1`; a tag and
 GitHub release have not been published.
 
@@ -52,26 +54,34 @@ GitHub release have not been published.
 
 ### Local service chain and recovery
 
-[Native08](docs/evidence/native/README.md) reconciled **4,380 raw records** into 2,164
+[The 15 November qualification](docs/evidence/followup/README.md) reconciled **4,380 raw records** into 2,164
 accepted sensor events, 2,164 delayed labels, 24 heartbeats, 24 rejects and four
 duplicates. It persisted **2,092 predictions and 12 alerts**, with no pending events
 or predictions and observed lag of **zero offsets in each of three partitions**.
-All 21 checks completed in 201.998 seconds, including service startup and recovery.
+All 21 checks completed in 200.955 seconds, including service startup and recovery,
+on source commit `daaa5b8`. The separately completed fixed-protocol training was
+reused only after its training-source identity matched.
 
-During an active Spark query, the broker stop-to-restart interval was 15.379 seconds;
+During an active Spark query, the broker stop-to-restart interval was 15.103 seconds;
 the same active worker subsequently consumed 303 newly published recovery records.
 The run also exercised failures before and after the sink commit, unavailable-model
 recovery, candidate activation, rollback on new telemetry and stopped-state restore
 of the database, Kafka logs, MLflow artifacts and checkpoint. The restored checkpoint
-resumed with zero new input rows and no duplicate effects. This restore observation
-covers an already caught-up checkpoint; new input after restore remains a separate
-test.
+resumed with zero new input rows and no duplicate effects.
 
-The dashboard returned real HTTP HTML and JSON from that sink. A separate minimal
-DOM/fetch test executed its actual JavaScript against the saved snapshot and produced
-12 alert rows and 40 prediction rows. Chromium could not start because of the
-environment's Unix-socket restriction, so browser layout and screenshot review remain
-open. See the [dashboard check scope](docs/evidence/checks/README.md).
+A separate **28-check restored-backlog exercise** completed in 95.825 seconds.
+It restored **303 unconsumed messages**, processed **303 newly published messages**,
+and ended with **4,077 raw records, 1,965 predictions and six preserved alerts**.
+The same Spark query identity survived four worker runs; old labels, observations,
+predictions and deployments were preserved. Source lag drained to zero and the
+runner observed its owned processes stopped. Cross-host restoration remains open.
+
+The dashboard returned real HTTP HTML and JSON from both sinks. A separate
+13-assertion minimal-DOM/fetch check executed its actual JavaScript against the
+restored snapshot: six alert rows, 40 prediction rows and recovery after an HTTP
+error. A fresh Chromium attempt was blocked by the environment's socket restriction,
+so browser layout and screenshot review remain open. See the
+[current dashboard check scope](docs/evidence/followup/README.md#dashboard-and-unresolved-environment-gates).
 
 ### Held-out maintenance evaluation
 
@@ -215,6 +225,10 @@ bash scripts/bootstrap_native.sh
 uv run python scripts/fetch_spark_jars.py
 uv run python scripts/qualify_native.py \
   --work-dir state/native-run-001 --machines 6 --hours 24 --training-hours 72
+
+# Separate retained-backlog and fresh-input restoration exercise.
+uv run --frozen python scripts/qualify_restore.py \
+  --work-dir state/restore-run-001 --machines 6 --budget-seconds 600
 ```
 
 Use a new work directory for each qualification. The runner preserves original logs,
@@ -270,9 +284,10 @@ Documentation-only pushes in an existing code PR are checked against that push's
 previous head. Only the selected heavy job joins a per-PR/ref concurrency group;
 it preserves a running job and allows one pending job. Local Git fixtures and static
 workflow checks exercised this selection, but hosted scheduling remains unexecuted.
-The [check evidence](docs/evidence/checks/README.md) also records 123 audited Python
-dependencies with zero known advisories at scan time; that result is limited to the
-recorded environment and advisory database.
+The [current check evidence](docs/evidence/followup/README.md) records 122 audited
+third-party Python packages with zero known advisories at scan time. The 123-entry
+report explicitly skips this local project, which is not indexed on PyPI. These
+results are limited to the recorded environment and advisory database.
 
 ## Data and model semantics
 

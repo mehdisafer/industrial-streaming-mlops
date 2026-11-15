@@ -38,3 +38,31 @@ The destination must be new. Restore rejects path traversal and symlink ancestor
 
 Checkpoint bindings contain absolute sink paths, source and configuration. Preserve those service paths; do not hand-edit bindings to suppress a mismatch. A changed path/configuration needs an explicit new-store/checkpoint migration and retained-input replay. The native restoration exercise makes one controlled exception for an unchanged, hash-verified stopped-state copy: it checks the exact original database path, changes only that path in the copied binding, and resumes the copied checkpoint against the restored database and broker. The original binding remains intact. This is verified-copy relocation, not permission to combine unrelated stores and checkpoints. Only the initial schema is implemented; no general in-place migration is claimed. Keep the old snapshot until the restoration exercise has passed. Broker data must still cover all unreconciled offsets; expired history cannot be reconstructed from a checkpoint.
 
+## Rehearse restored backlog and continued processing
+
+The [15 November exercise](evidence/followup/README.md#restored-backlog-and-fresh-input-proof)
+qualified a stopped single-host copy with unconsumed Kafka messages, followed by
+new publication after restore. It checks original labels, event payloads, features,
+predictions, alerts, configuration and deployment history while allowing mutable
+finalization, watermarks and runtime health to advance.
+
+After installing the pinned native prerequisites, select a new work directory:
+
+```bash
+export MLFLOW_DISABLE_TELEMETRY=true DO_NOT_TRACK=true
+GITHUB_SHA=$(git rev-parse HEAD) uv run --frozen --python 3.11.18 \
+  python scripts/qualify_restore.py \
+  --work-dir state/restore-rehearsal-001 --machines 6 --budget-seconds 600
+```
+
+The original work, backup and restored destinations must all be new. The runner
+owns the services on loopback ports 5000, 8080, 19092 and 19093, reserves 180 seconds
+of its total budget for cleanup, and records process-group/port observations before
+backup and after completion. A failed or interrupted business protocol cannot pass
+merely because cleanup succeeded. Keep its protocol, reports, inputs and logs.
+
+In the recorded run, 303 retained messages and 303 new messages were consumed;
+1,965 predictions remained with no pending work or observed lag. The final empty
+resume did not duplicate historical business rows. This exercise does not qualify
+cross-host recovery or recovery after the required broker offsets have expired.
+

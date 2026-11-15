@@ -17,12 +17,13 @@ def produce(
 ) -> dict:
     from kafka import KafkaAdminClient, KafkaProducer
     from kafka.admin import NewTopic
-    from kafka.errors import TopicAlreadyExistsError
+    from kafka.errors import KafkaError, KafkaTimeoutError, NoError, TopicAlreadyExistsError, for_code
 
     if (not 1 <= partitions <= 32 or not 1 <= max_events <= 1000000 or rate < 0
             or not 1 <= timeout_seconds <= 120):
         raise ValueError("invalid bounded producer configuration")
-    admin = KafkaAdminClient(bootstrap_servers=bootstrap, request_timeout_ms=timeout_seconds * 1000)
+    timeout_ms, linger_ms = timeout_seconds * 1000, 5
+    admin = KafkaAdminClient(bootstrap_servers=bootstrap, request_timeout_ms=timeout_ms)
     try:
         try:
             admin.create_topics([NewTopic(topic, partitions, 1, topic_configs={
@@ -30,18 +31,106 @@ def produce(
             })])
         except TopicAlreadyExistsError:
             pass
-        description = admin.describe_topics([topic])[0]
-        observed_partitions = len(description["partitions"])
-        if observed_partitions != partitions:
-            raise ValueError("existing topic partition count differs; use a new topic for the experiment")
+        # Creation success can precede topic/leader metadata propagation. The
+        # pinned 2.3.2 describe_topics API has no per-call timeout argument;
+        # SDK broker-readiness and request waits remain synchronous.
+        # Bound retries with a monotonic deadline and never publish a response
+        # that arrives after it. Only known transient metadata/leader errors retry.
+        readiness_started = time.monotonic()
+        deadline = readiness_started + timeout_seconds
+        attempts, retry_reasons, last_reason = 0, {}, "metadata_not_requested"
+        metadata_error_codes = {3, 5, 6, 9}
+
+        def metadata_error(code):
+            if type(code) is not int:
+                raise ValueError("topic metadata has an invalid error code")
+            error_type = for_code(code)
+            if error_type is NoError:
+                return None
+            if code not in metadata_error_codes or not error_type.retriable:
+                raise error_type(f"metadata for topic {topic}")
+            return error_type.__name__
+
+        def readiness_timeout():
+            return KafkaTimeoutError(
+                f"topic {topic} metadata was not ready within {timeout_seconds}s "
+                f"after {attempts} attempts; last state: {last_reason}")
+
+        while True:
+            if time.monotonic() >= deadline:
+                raise readiness_timeout()
+            attempts += 1
+            reason, leaders = None, {}
+            try:
+                descriptions = admin.describe_topics([topic])
+            except KafkaError as exc:
+                if getattr(exc, "errno", None) not in metadata_error_codes or not exc.retriable:
+                    raise
+                reason = type(exc).__name__
+            else:
+                if not isinstance(descriptions, list) or any(
+                        not isinstance(item, dict) for item in descriptions):
+                    raise ValueError("unexpected topic metadata response")
+                matches = [item for item in descriptions if item.get("topic") == topic]
+                if not matches:
+                    reason = "topic_metadata_absent"
+                elif len(matches) != 1:
+                    raise ValueError("topic metadata contains duplicate topic entries")
+                else:
+                    description = matches[0]
+                    reason = metadata_error(description.get("error_code"))
+                    if reason is None:
+                        rows = description.get("partitions")
+                        if not isinstance(rows, list):
+                            raise ValueError("topic metadata has invalid partitions")
+                        seen, partition_error_seen = set(), False
+                        for row in rows:
+                            if not isinstance(row, dict):
+                                raise ValueError("topic metadata has an invalid partition entry")
+                            error = metadata_error(row.get("error_code"))
+                            partition, leader = row.get("partition"), row.get("leader")
+                            if (type(partition) is not int or partition < 0 or partition in seen
+                                    or type(leader) is not int):
+                                raise ValueError("topic metadata has invalid partition IDs or leaders")
+                            seen.add(partition)
+                            # Inspect every partition so an earlier transient
+                            # error cannot hide a later authorization failure.
+                            if error is not None:
+                                partition_error_seen = True
+                                reason = reason or error
+                            elif leader < 0:
+                                reason = reason or "partition_leader_unassigned"
+                            leaders[partition] = leader
+                        if not rows:
+                            reason = "partition_metadata_absent"
+                        elif not partition_error_seen and seen != set(range(partitions)):
+                            raise ValueError(
+                                "existing topic partition IDs/count differ; "
+                                "use a new topic for the experiment")
+            observed_at = time.monotonic()
+            if observed_at >= deadline:
+                last_reason = reason or "ready_response_after_deadline"
+                raise readiness_timeout()
+            if reason is None:
+                topic_readiness = {
+                    "attempts": attempts, "elapsed_seconds": observed_at - readiness_started,
+                    "partition_ids": sorted(leaders),
+                    "leaders": {str(part): leaders[part] for part in sorted(leaders)},
+                    "retry_reasons": retry_reasons,
+                }
+                break
+            last_reason = reason
+            retry_reasons[reason] = retry_reasons.get(reason, 0) + 1
+            time.sleep(min(.1, deadline - observed_at))
     finally:
         admin.close()
     producer = KafkaProducer(
         bootstrap_servers=bootstrap, acks="all", enable_idempotence=True,
-        max_block_ms=timeout_seconds * 1000, request_timeout_ms=30000,
-        delivery_timeout_ms=timeout_seconds * 1000,
+        # kafka-python requires delivery_timeout_ms >= request_timeout_ms + linger_ms.
+        max_block_ms=timeout_ms, request_timeout_ms=min(30000, timeout_ms - linger_ms),
+        delivery_timeout_ms=timeout_ms,
         max_in_flight_requests_per_connection=1, max_request_size=1048576,
-        linger_ms=5,
+        linger_ms=linger_ms,
     )
     futures, offsets, count = [], {}, 0
     started = time.perf_counter()
@@ -83,7 +172,8 @@ def produce(
     finally:
         producer.close(timeout=timeout_seconds)
     elapsed = time.perf_counter() - started
-    return {"topic": topic, "partitions": partitions, "acknowledged": count, "offsets": offsets,
+    return {"topic": topic, "partitions": partitions, "topic_readiness": topic_readiness,
+            "acknowledged": count, "offsets": offsets,
             "elapsed_seconds": elapsed, "events_per_second": count / max(elapsed, .000001)}
 
 
@@ -188,10 +278,12 @@ def stream(
     spark.sparkContext.setLogLevel("WARN")
     query = None
     started = time.perf_counter()
-    result = {"engine": "Spark Structured Streaming", "spark_version": spark.version,
+    result = {"engine": "Spark Structured Streaming",
               "mode": "availableNow" if available_now else "duration",
               "workers": workers, "max_offsets_per_trigger": max_offsets}
     try:
+        result["spark_version"] = spark.version
+        result["jvm_available_processors"] = int(spark._jvm.java.lang.Runtime.getRuntime().availableProcessors())
         source = (
             spark.readStream.format("kafka")
             .option("kafka.bootstrap.servers", bootstrap)

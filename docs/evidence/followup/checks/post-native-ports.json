@@ -1,0 +1,11 @@
+{
+  "scope": "Observed loopback ports after the native command returned exit0. This receipt does not assert native process-group cleanup; that stronger observation is part of the separate restore runner.",
+  "observed_at": "2026-11-15T20:03:18.754549+00:00",
+  "ports": {
+    "5000": "closed",
+    "8080": "closed",
+    "19092": "closed",
+    "19093": "closed"
+  },
+  "all_expected_ports_closed": true
+}

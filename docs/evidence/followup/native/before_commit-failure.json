@@ -1,0 +1,5 @@
+{
+  "exception": "RuntimeError",
+  "injected": "before_commit",
+  "message": "worker before_commit-0 exited 1; see before_commit-0.log"
+}
