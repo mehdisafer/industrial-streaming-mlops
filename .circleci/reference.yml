@@ -14,11 +14,12 @@ jobs:
       - run:
           name: Record the source and isolated Docker host
           command: |
-            mkdir -p evidence/integration
-            git rev-parse HEAD > evidence/integration/commit.txt
-            docker version > evidence/integration/docker-version.txt
-            docker compose version > evidence/integration/compose-version.txt
-            uname -a > evidence/integration/kernel.txt
+            # integration.sh deliberately refuses an existing output directory.
+            mkdir -p evidence/ci-host
+            git rev-parse HEAD > evidence/ci-host/commit.txt
+            docker version > evidence/ci-host/docker-version.txt
+            docker compose version > evidence/ci-host/compose-version.txt
+            uname -a > evidence/ci-host/kernel.txt
             printf 'export COMPOSE_PROJECT_NAME=industrial-ci-%s\n' "$CIRCLE_WORKFLOW_ID" >> "$BASH_ENV"
             printf 'export SOURCE_REVISION=%s\n' "$CIRCLE_SHA1" >> "$BASH_ENV"
             printf 'export EVIDENCE_DIR=evidence/integration\n' >> "$BASH_ENV"
@@ -43,6 +44,9 @@ jobs:
               docker compose --project-name "$COMPOSE_PROJECT_NAME" --profile streaming --profile tools down --timeout 45 > evidence/integration/ci-fallback-cleanup.log 2>&1
               printf '%s\n' "$COMPOSE_PROJECT_NAME" > evidence/integration/.cleanup-complete
             fi
+      - store_artifacts:
+          path: evidence/ci-host
+          destination: ci-host
       - store_artifacts:
           path: evidence/integration
           destination: integration
