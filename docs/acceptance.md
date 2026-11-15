@@ -55,9 +55,12 @@ uv run --frozen ruff check src tests scripts databricks
 | Container qualification | **Success reported by CircleCI** on exact `4bcc55e` in [`reference-containers`](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7); the old [pipeline #8](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/8?useNewPipelines=false) failed on `ce7674c` | GitHub's `ci/circleci: reference-containers` status is `success` at `4bcc55e`. The job runs real `scripts/integration.sh`. Detailed original artifacts are held by CircleCI and not independently rechecked in this merge |
 
 The Python unit job alone never establishes Docker acceptance. The separate
-Docker reference job now reports success on `4bcc55e`; that status does not
-qualify GitHub Actions runner allocation, Databricks, rendered browser behavior
-or a public release.
+Docker reference job reports success on `4bcc55e`. **CircleCI, not GitHub
+Actions, is the required CI for P03 acceptance.** The maintainer reports that
+GitHub Actions has exhausted its quota. This explanation is not independently
+proven by the unavailable runner annotation, but GitHub Actions is a
+non-blocking historical/optional CI path. Neither CircleCI result qualifies
+Databricks, rendered browser behavior or a public release.
 
 ## Hosted container execution — source-bound record
 
@@ -93,31 +96,35 @@ Databricks acceptance, distributed scalability or production readiness.
 | Gate | Current state | Evidence needed to close it |
 |---|---|---|
 | CircleCI container reference | **Job succeeded on source `4bcc55e`**; original artifact hashes/contents not independently rechecked in this merge | Download and retain source, image identities, Kafka/Spark/MLflow logs, HTTP/recovery and cleanup artifacts from the [successful job](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7); verify SHA-256 against the reported values |
-| Hosted GitHub Actions | [Source run 43754981478](https://github.com/mehdisafer/industrial-streaming-mlops/actions/runs/43754981478): no executed steps, runner ID 0, one unreadable annotation; integration skipped | Read the annotation through supported GitHub access, resolve its actual cause, then obtain hosted checks/integration on the reviewed source; no green status inferred from local tests |
+| CI acceptance authority | CircleCI `build-and-test` succeeded on merged `main` (`c58b923`); `reference-containers` succeeded at `4bcc55e`, with identical tested Compose/reference config in `main` | Preserve the [merged-main unit job](https://app.circleci.com/workflow/e8c0015b-3fd7-4d81-b0e2-86b642af8cf4/job/e2faa590-3824-4c69-8c40-1d13fdbccdbf), [hosted Docker job](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7) and original artifacts as recorded above |
 | Databricks | **Open**; no authorized workspace run | Existing authorized compute/storage, Kafka access, provider run IDs, Delta versions and recovery evidence |
 | Browser presentation | Fresh Chromium launch on 15 November blocked by `socket(): Operation not permitted`; [original receipt](evidence/followup/checks/browser/startup.json) | Real browser layout/interaction review and captured output; minimal-DOM checks do not close this gate |
 | Release publication | `v0.1.0-rc.1` notes prepared; no tag or GitHub release published | [PR #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2) and [follow-up PR #3](https://github.com/mehdisafer/industrial-streaming-mlops/pull/3) record source review; tag/release publication requires its own verified action |
 | License and visibility | Repository private; no owner-approved license | Owner decisions and publication review before any visibility change |
 | Repository settings | Description is null and topics are empty; no supported metadata/release mutation tools. Rulesets read returned a plan/visibility 403; branch-protection read returned an integration-access 403 | Supported authorized administration and, for rulesets, a separate owner decision on the documented plan/visibility requirement |
 
-The [check receipts](evidence/checks/README.md) preserve the distinct GitHub responses.
-The rulesets restriction does not establish the cause of the Actions job failures.
-No plan upgrade or public-visibility change is assumed, even though the repository
-readback reports the user's administrative permission.
+The [historical check receipts](evidence/checks/README.md) preserve GitHub Actions
+jobs that failed before runner allocation (`runner_id=0`, no executed steps).
+The maintainer reports an exhausted GitHub Actions quota. The annotation is
+inaccessible, so quota exhaustion is not independently verified from those
+jobs. This historical failure is not an application test failure or a P03 gate.
+CircleCI is the accepted CI alternative. No plan upgrade, quota restoration,
+public-visibility change or GitHub Actions rerun is required or implied.
 
-CI scope selection was tested with real temporary Git history: documentation-only
-updates skip the heavy job, source changes select it, and manual dispatch selects the
-full path. Job-level concurrency preserves an active integration and bounds its group
-to one pending job. These are locally tested selection logic and statically checked
-configuration; hosted scheduling remains open. No paid runner or cloud resource was
-provisioned to close a gate.
+Historical GitHub Actions CI scope selection was locally exercised with real
+temporary Git history: documentation-only updates skip heavy integration,
+source changes select it, and manual dispatch selects the full path.
+Job-level concurrency behavior is implemented and statically checked but
+**hosted GitHub Actions scheduling was not executed**; this is not a P03 blocker
+because CircleCI is the designated hosted CI. No paid runner or cloud resource
+was provisioned or requested.
 
 ## Prioritized follow-up
 
 1. Preserve and independently check CircleCI Docker job artifacts from the
    successful source `4bcc55e`. The earlier exit-64 failure is diagnosed;
    record the exact correction and retained evidence, not a fabricated rerun.
-   Separately resolve GitHub Actions runner allocation from its own annotation.
+   GitHub Actions runner allocation/quota is **out of P03 acceptance scope**.
 2. Run the [Databricks qualification](databricks.md) on explicitly authorized existing
    resources, including library/access checks, business-output parity, recovery and
    available consumption data. Local Spark is not provider qualification.

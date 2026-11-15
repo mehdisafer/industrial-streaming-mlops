@@ -62,7 +62,12 @@ commit for code that was actually executed.
 ## Open gates and publication decisions
 
 - **Hosted Docker reference passed** in CircleCI [`reference-containers`](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7) on source `4bcc55e`; the older [#8](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/8?useNewPipelines=false) failed before integration because its wrapper pre-created `evidence/integration`. Later `9e6852d` corrected the evidence directory, and `4bcc55e` corrected loopback service ingress. The successful job's original artifacts were reported in the working-branch acceptance record, but their bytes are not independently rechecked in this documentation merge.
-- **Hosted GitHub Actions remains open.** Jobs failed before runner allocation (runner ID 0, no steps); the cause is not established. CircleCI unit success does not close that separate gate.
+- **CircleCI is the required hosted CI.** Its Python checks and separate Docker
+  reference job succeeded on the recorded source commits. The maintainer reports
+  an exhausted GitHub Actions quota; the inaccessible runner annotation does not
+  independently prove that explanation. GitHub Actions failures before runner
+  allocation remain historical evidence, **not an open release prerequisite**.
+  No quota purchase, Actions rerun or billing change is required.
 - **Databricks remains open.** It needs an authorized workspace, existing compute
   and storage, reachable Kafka and trusted artifacts, with a bounded run budget.
 - **Browser presentation remains open.** Chromium startup was blocked by an
