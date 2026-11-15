@@ -39,15 +39,18 @@ separates the completed local checks from the remaining platform and release gat
 | Restored backlog and new input | **28 checks passed**: retained backlog, fresh input, immutable history and owned-process cleanup; [restoration evidence](docs/evidence/followup/README.md#restored-backlog-and-fresh-input-proof) |
 | Model evaluation | Baseline and candidate met the recorded synthetic holdout gates; [original evaluation](docs/evidence/model/README.md) |
 | Streaming comparison | Four measured variants; exact business-output parity across the three 24-hour variants; [benchmark evidence](docs/evidence/benchmark/README.md) |
-| Container profile | **Not executed**: Docker was unavailable in the qualification environment |
-| Hosted CI | Jobs failed with no executed steps and runner ID 0; cause unresolved, no hosted pass |
+| Container profile | **Not qualified**: Docker unavailable locally; [CircleCI #8](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/8?useNewPipelines=false) failed on older `ce7674c`; latest [draft PR #5](https://github.com/mehdisafer/industrial-streaming-mlops/pull/5) is untested |
+| CircleCI Python unit CI | **Succeeded** at `579cbc5` ([#5](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/5?useNewPipelines=false)) and `ce7674c` ([#7](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/7?useNewPipelines=false)); merged [PR #4](https://github.com/mehdisafer/industrial-streaming-mlops/pull/4) |
+| Hosted GitHub Actions | Jobs failed before runner allocation (runner ID 0, no steps); cause unresolved, no Actions pass |
 | Databricks | **Open**: implementation prepared; no authorized workspace run |
 | Public release | Private repository; owner license and public-visibility decisions remain open |
 
 See [scope issue #1](https://github.com/mehdisafer/industrial-streaming-mlops/issues/1),
-[original delivery #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2)
-and [follow-up review #3](https://github.com/mehdisafer/industrial-streaming-mlops/pull/3)
-for the review state. The prepared release candidate is `v0.1.0-rc.1`; a tag and
+[original delivery #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2),
+[follow-up review #3](https://github.com/mehdisafer/industrial-streaming-mlops/pull/3),
+[CircleCI unit merge #4](https://github.com/mehdisafer/industrial-streaming-mlops/pull/4) and
+[container qualification draft #5](https://github.com/mehdisafer/industrial-streaming-mlops/pull/5)
+for the respective review and qualification states. The prepared release candidate is `v0.1.0-rc.1`; a tag and
 GitHub release have not been published.
 
 ## Observed outcomes
@@ -154,8 +157,9 @@ and [verified dependency baseline](docs/compatibility.md).
 Requirements: Docker Engine with Compose v2, and a reference budget of four CPUs,
 8 GiB RAM and 10 GiB free disk. These are requested local limits, not measured minimums.
 The broker, registry and dashboard are published on loopback only.
-This container profile is implemented but unexecuted in this delivery; the observed
-integration results above come from the native path. Its smoke script also requires
+This container profile remains unqualified: local Docker was unavailable,
+CircleCI's container attempt failed on older source and its latest fixes have not
+been rerun. Observed integration results above come from the native path. Its smoke script also requires
 Bash, curl and Python 3 on the host.
 
 ```bash
@@ -257,8 +261,8 @@ recovery, batch/stream feature and prediction parity, failures before and after
 the sink commit, a broker interruption during an active query, candidate activation,
 rollback on new telemetry, the live dashboard and restoration of stopped state.
 The container script implements a smaller smoke profile with broker/worker interruption
-steps. It still needs a real Docker execution. Native and container receipts are
-separate.
+steps. A successful Docker execution with current-source receipts remains
+necessary. Native and container receipts are separate.
 
 The container smoke script allocates a fresh Compose project, rejects existing
 project resources or occupied loopback ports, and preserves original evidence before
@@ -277,13 +281,16 @@ bound. It compares feature/score identities, backlog drainage, measured latencie
 CPU and RSS within a ten-minute total budget. Model training is reused only when its
 source manifest matches; the benchmark performs no promotion.
 
-The workflow is configured to run lightweight checks on every relevant event and
+The GitHub Actions workflow is configured to run lightweight checks on every relevant event and
 select heavy integration for changes in executable/configuration paths or manual
 dispatch, with a conservative full run when no comparison base is available.
 Documentation-only pushes in an existing code PR are checked against that push's
 previous head. Only the selected heavy job joins a per-PR/ref concurrency group;
 it preserves a running job and allows one pending job. Local Git fixtures and static
-workflow checks exercised this selection, but hosted scheduling remains unexecuted.
+workflow checks exercised this selection, but hosted GitHub Actions scheduling
+remains unexecuted. The separate CircleCI Python lane succeeded at `579cbc5`
+and `ce7674c`; Docker qualification failed on older `ce7674c`, and the latest
+changes in draft PR #5 have no observed container run.
 The [current check evidence](docs/evidence/followup/README.md) records 122 audited
 third-party Python packages with zero known advisories at scan time. The 123-entry
 report explicitly skips this local project, which is not indexed on PyPI. These
@@ -328,9 +335,9 @@ No Databricks execution is claimed from these local tests.
 - [Release preparation and publication decisions](docs/release-notes.md)
 - [Python dependency lock](uv.lock) and [JVM connector lock](config/spark-jars.lock.json)
 
-The next milestones are a real container/hosted-CI run, an authorized Databricks
-qualification, browser rendering review, and the owner decisions needed for a public
-release. Longer unattended operation also needs retention limits and supervision;
+The next milestones are a successful current-source Docker qualification,
+GitHub Actions runner allocation, authorized Databricks qualification,
+browser rendering review and owner decisions needed for a public release. Longer unattended operation also needs retention limits and supervision;
 multi-node serving/state, authenticated service exposure and external model validation
 are future work. The [acceptance register](docs/acceptance.md) records these boundaries.
 

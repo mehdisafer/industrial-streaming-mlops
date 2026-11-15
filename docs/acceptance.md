@@ -47,11 +47,21 @@ uv run --frozen pytest -q -m 'not integration'
 uv run --frozen ruff check src tests scripts databricks
 ```
 
+## Hosted CircleCI unit verification — 15 November 2026
+
+| Lane | Observed result | Boundary |
+|---|---|---|
+| Python build-and-test | **Success** at `579cbc5` in [pipeline #5](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/5?useNewPipelines=false) (1m14s) and `ce7674c` in [pipeline #7](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/7?useNewPipelines=false) (1m15s) | Compile, lint, pytest test-suite and JUnit output; CI assertion counts not independently read. Merged as [PR #4](https://github.com/mehdisafer/industrial-streaming-mlops/pull/4) at `b454451` |
+| Container qualification | **Failed** on older `ce7674c` in [pipeline #8](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/8?useNewPipelines=false) (9s workflow) | No failing-step log in connected listing. Later evidence-directory fix `9e6852d` and ingress fix `4bcc55e` are in [draft #5](https://github.com/mehdisafer/industrial-streaming-mlops/pull/5) without observed current-head qualification |
+
+The successful CircleCI Python unit lane does not establish Docker,
+GitHub Actions runner, Databricks or public release acceptance.
+
 ## Open qualification and release gates
 
 | Gate | Current state | Evidence needed to close it |
 |---|---|---|
-| Container profile | **Not executed**; Docker unavailable | Fresh-project build/smoke, resolved image identities, service logs and scoped cleanup receipts |
+| Container profile | **Not qualified**; Docker unavailable locally, CircleCI #8 failed on older source and the latest draft #5 head remains untested | Read [job #10](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/8/workflows/1541ad9d-069a-4da4-a313-d8e5e9f5f440/jobs/10), rerun on exact current head and preserve image identities, Kafka/Spark/MLflow logs, HTTP/recovery and cleanup receipts |
 | Hosted GitHub Actions | [Source run 43754981478](https://github.com/mehdisafer/industrial-streaming-mlops/actions/runs/43754981478): no executed steps, runner ID 0, one unreadable annotation; integration skipped | Read the annotation through supported GitHub access, resolve its actual cause, then obtain hosted checks/integration on the reviewed source; no green status inferred from local tests |
 | Databricks | **Open**; no authorized workspace run | Existing authorized compute/storage, Kafka access, provider run IDs, Delta versions and recovery evidence |
 | Browser presentation | Fresh Chromium launch on 15 November blocked by `socket(): Operation not permitted`; [original receipt](evidence/followup/checks/browser/startup.json) | Real browser layout/interaction review and captured output; minimal-DOM checks do not close this gate |
@@ -73,8 +83,10 @@ provisioned to close a gate.
 
 ## Prioritized follow-up
 
-1. Execute the container and hosted-CI gates on an available authorized runner for
-   the reviewed source. Preserve original failures and receipts.
+1. Inspect CircleCI's original failed Docker job, then trigger the manual
+   qualification pipeline on draft PR #5's exact head. Preserve original
+   failures, image/service/HTTP/recovery logs and cleanup receipts. Separately
+   resolve GitHub Actions runner allocation from its own annotation.
 2. Run the [Databricks qualification](databricks.md) on explicitly authorized existing
    resources, including library/access checks, business-output parity, recovery and
    available consumption data. Local Spark is not provider qualification.
