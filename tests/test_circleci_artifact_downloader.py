@@ -8,10 +8,14 @@ import hashlib
 import io
 import json
 from pathlib import Path
+import sys
 from urllib.error import HTTPError
 from urllib.request import Request
 
 import pytest
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 
 from scripts.download_circleci_artifacts import (
     JOB_NUMBER, PROJECT, RestrictedRedirect, allowed_redirect, download,
