@@ -1,0 +1,48 @@
+{
+  "schema_version": "industrial-dashboard-browser-originals-1",
+  "observed_date": "2026-11-16",
+  "repo": "mehdisafer/industrial-streaming-mlops",
+  "source_head": "2148c9f84fea93de1d4d065c9683cf04f5525ded",
+  "run_id": 43921124746,
+  "artifact_id": 14253962621,
+  "source_dashboard_blob": "bb05e07f88b8aaf8d1ea6918979ddd82b6ff6f48",
+  "source_dashboard_sha256": "794163773db059fc615057fd0b0be8d353fa2f316dd7696358dc511db6b1b433",
+  "browser": "Google Chrome 157.0.8103.50",
+  "original_zip_files_inspected": 19,
+  "verification": {
+    "original_png_hashes_recomputed": true,
+    "json_hashes_recomputed": true,
+    "visual_review": true,
+    "html_real_source": true,
+    "api_synthetic": true,
+    "live_backend_qualified_here": false
+  },
+  "scenarios": [
+    {
+      "name": "healthy-desktop",
+      "width": 1440,
+      "height": 1000,
+      "result": "passed",
+      "png_sha256": "1787d7001d6f847b7ea1f06086db443f5f23ec3b06f94187848b4261353d31eb",
+      "json_sha256": "27ec345a44ca28a1fb5f507083411c00a59fd47f3bf6b9d487d52aeda658ace5"
+    },
+    {
+      "name": "healthy-narrow",
+      "width": 600,
+      "height": 850,
+      "result": "passed",
+      "png_sha256": "94d8f215a069630fcecec34e862b9afcbc878b1ef10ef76698888cd6399cc1c2",
+      "json_sha256": "03a62e14726abe4ad679771492a6f69b00408887f99efd847f1e24f43e41d1aa"
+    },
+    {
+      "name": "unavailable-desktop",
+      "width": 1440,
+      "height": 1000,
+      "result": "passed",
+      "png_sha256": "3041e000638b5974e80f6d40f9f0e4c02c9449213100813a21325ce30175d480",
+      "json_sha256": "3dab377bb84fff3a0962eef3cffd9d62b3fce7641f1c9852f20a0ba0f61b46ab"
+    }
+  ],
+  "summary_sha256": "d9d833db8a3e1723ba8339ecb992e611443acdfedc9106be4417c312ac6ebd9f",
+  "limitation": "HTML from real app; API data synthetic; no live Kafka, provider, production, or accessibility acceptance."
+}
