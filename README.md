@@ -43,7 +43,7 @@ separates the completed local checks from the remaining platform and release gat
 | CircleCI Python unit CI | **Succeeded** at `579cbc5` ([#5](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/5?useNewPipelines=false)) and `ce7674c` ([#7](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/7?useNewPipelines=false)); merged [PR #4](https://github.com/mehdisafer/industrial-streaming-mlops/pull/4) |
 | CI policy | **CircleCI is the acceptance CI** for Python, browser and separate Docker reference gates. Earlier GitHub Actions runs failed before runner assignment; more recent PR runs executed successfully. Provider-specific results stay source-bound. |
 | Databricks | **Open**: implementation prepared; no authorized workspace run |
-| Public source | **GitHub reports `public` (16 November 2026)**. No project licence, release tag or published GitHub release; anonymous readback and protection verification are separate. |
+| Public source | **GitHub reports `public` and anonymous repository/README access was observed (16 November 2026)**. Project licence, release tag, published release and repository protections remain separate. |
 
 See [scope issue #1](https://github.com/mehdisafer/industrial-streaming-mlops/issues/1),
 [original delivery #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2),
@@ -165,9 +165,12 @@ ingress-attached services retain potential outbound connectivity.
 CircleCI's `reference-containers` job succeeded on the exact Docker source
 revision `4bcc55e`, after an earlier failed attempt on `ce7674c` (the old wrapper
 pre-created `evidence/integration` and the smoke script correctly refused it).
-The hosted result is linked above. The individual retained CircleCI artifacts
-and their reported hashes have not been independently copied and rechecked by
-this documentation merge. Earlier detailed local service runs remain distinct. Its smoke script also requires
+The hosted result is linked above. The public CircleCI v2 API lists job #13
+artifacts, but raw URLs require authorization and independent original-byte
+verification remains open. Use the [bounded API downloader](scripts/download_circleci_artifacts.py)
+and [offline evidence intake](docs/evidence/circleci/README.md) with a local
+`CIRCLE_TOKEN` environment variable; never commit credentials or claim an
+unverified SHA-256 baseline. Earlier detailed local service runs remain distinct. Its smoke script also requires
 Bash, curl and Python 3 on the host.
 
 ```bash
