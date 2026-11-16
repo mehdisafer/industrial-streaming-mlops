@@ -51,7 +51,7 @@ uv run --frozen ruff check src tests scripts databricks
 
 The default CircleCI workflow additionally defines a small `publication-security` job. It fetches visible branches and tags, rejects shallow history, and captures the exact checkout/ref scope. Existing bounded secret-pattern checks cover current files and reachable Git blobs; installed package licence declarations and Python dependency advisories are reported separately. Original JSON reports remain as artifacts even on failure. This check does not start Kafka, Spark, MLflow, training, Databricks or a paid machine executor.
 
-**Evidence boundary:** a successful CI status is not an independent inspection of raw JSON. The scanner reports but does not inspect oversized/binary files, unreachable Git objects, opaque compressed contents or external services. Compare its skipped list with the separately retained decompressed-evidence review. No project licence has been selected; public visibility alone does not grant an open-source licence. The public status must not be presented as full provider or production acceptance.
+**Evidence boundary:** a successful CI status is not an independent inspection of raw JSON. The scanner reports but does not inspect oversized/binary files, unreachable Git objects, opaque compressed contents or external services. Compare its skipped list with the separately retained decompressed-evidence review. The maintainer selected **Apache-2.0** for original project source and documentation; third-party dependencies retain separate rights, and the scanner is not legal clearance. Public visibility and licensing do not establish provider or production acceptance.
 
 ## Hosted CircleCI unit verification — 15 November 2026
 
@@ -159,7 +159,7 @@ accessibility conformance or independent human-operator acceptance is inferred.
 | Databricks | **Open**; no authorized workspace run | Existing authorized compute/storage, Kafka access, provider run IDs, Delta versions and recovery evidence |
 | Browser presentation | **Chrome 157 passed and its 3 original images + JSON receipts were independently inspected** (1440px desktop, 600px responsive, HTTP 503); no horizontal overflow, header badge overlap or external resources after the correction. The blocked local Chrome attempt is historical. | [Artifact / exact SHA manifest](evidence/browser-2026-11-16/README.md); deliberately synthetic snapshot and source HTML, not Kafka-backed UI or independent operator/accessibility acceptance |
 | Release publication | `v0.1.0-rc.1` notes prepared; no tag or GitHub release published | [PR #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2) and [follow-up PR #3](https://github.com/mehdisafer/industrial-streaming-mlops/pull/3) record source review; tag/release publication requires its own verified action |
-| License and visibility | **Public** by GitHub API and independent anonymous README/page readback on 16 Nov 2026; no approved project licence | Public source is not an OSS reuse grant; the owner must select the project licence separately |
+| License and visibility | **Apache-2.0 selected by the maintainer** and delivered through [LICENSE](../LICENSE), [NOTICE](../NOTICE) and the project's `pyproject.toml` SPDX declaration; repository already public and anonymously readable | Verify GitHub's post-merge license recognition, build metadata, and review third-party notices separately; the project's license is not a Databricks/provider acceptance claim |
 | Repository settings | Description is null and topics empty (16 Nov). Current rulesets API returns `[]`; branch-protection read remains 403 for this integration | Maintainer applies About metadata and checks available `main` protections; empty rulesets do not establish whether classic protection is enabled |
 
 The [historical check receipts](evidence/checks/README.md) preserve GitHub Actions
@@ -194,8 +194,9 @@ was provisioned or requested.
    available consumption data. Local Spark is not provider qualification.
 3. Retain the independently rehashed original hosted synthetic dashboard-browser
    screenshots at their exact source SHA, and qualify live-data and operator/
-   accessibility behavior separately. The source is public; licence, About metadata,
-   branch protection, anonymous readback and release-tag decisions remain distinct.
+   accessibility behavior separately. The source is public and Apache-2.0 is
+   selected; third-party notice review, About metadata, branch protection and
+   release-tag publication remain separate decisions.
 4. Before unattended local operation, define database/evidence retention, archival,
    disk limits, service supervision and recovery objectives. The current finite demo
    profile and Kafka retention setting do not implement complete local retention.
