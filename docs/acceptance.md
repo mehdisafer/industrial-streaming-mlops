@@ -18,7 +18,7 @@ container qualification and Databricks qualification have separate gates.
 | Fixed-input business invariance | Three 24-hour variants produced identical features, scores, alert business fields and cooldown outcomes | [Benchmark03](evidence/benchmark/README.md); each has 2,317 raw records, 1,141 predictions, 4 alerts and 18 cooldown suppressions |
 | Bounded load/resource observation | Four 2-hour/24-hour variants completed in 84.614 s overall | Worker wall times include startup/shutdown; CPU/RSS and latency receipts are scoped observations, without statistical speedup or multi-node capacity claims |
 | Model quality gates | Baseline and candidate eligible on the original synthetic holdout | [Model evidence](evidence/model/README.md); 5,166 rows, 24 failures, 17.9375 machine-days |
-| Dashboard data and script behavior | Real HTTP HTML/JSON; **13 JavaScript assertions** including HTTP-error recovery, six restored alert rows and 40 prediction rows | [Current check scope](evidence/followup/README.md#dashboard-and-unresolved-environment-gates); explicit minimal DOM/fetch doubles, no browser rendering or screenshot acceptance |
+| Dashboard data and script behavior | Real HTTP HTML/JSON; **13 JavaScript assertions** including HTTP-error recovery, six restored alert rows and 40 prediction rows | [Current check scope](evidence/followup/README.md#dashboard-and-unresolved-environment-gates); historical minimal DOM/fetch doubles only; actual Chrome-rendered proof documented separately |
 | Python dependency advisories | 122 third-party packages audited; zero known advisories reported on 15 November | [123-entry report](evidence/followup/checks/dependency-audit.json) explicitly skips the local project, which is not indexed on PyPI; limited to the recorded dependency/database state |
 
 The baseline emitted 29 false alerts (1.6167 per machine-day), with 87.5% useful
@@ -65,8 +65,10 @@ Docker reference job reports success on `4bcc55e`. **CircleCI, not GitHub
 Actions, is the required CI for P03 acceptance.** The maintainer reports that
 GitHub Actions has exhausted its quota. This explanation is not independently
 proven by the unavailable runner annotation, but GitHub Actions is a
-non-blocking historical/optional CI path. Neither CircleCI result qualifies
-Databricks, rendered browser behavior or a public release.
+non-blocking historical/optional CI path. Those older Python/Docker CircleCI
+runs alone did not qualify browser rendering, but a **subsequent separate**
+real-Chrome presentation run now does. None of these checks qualifies live
+Databricks, production accessibility or an unrestricted public release.
 
 ## Hosted container execution — source-bound record
 
@@ -107,13 +109,38 @@ SHA-256 baseline is established.
 This hosted Docker reference remains single-host synthetic validation, not
 Databricks acceptance, distributed scalability or production readiness.
 
+## Independently inspected original Chrome evidence — 16 November 2026
+
+The hosted [GitHub Actions run 43921124746](https://github.com/mehdisafer/industrial-streaming-mlops/actions/runs/43921124746)
+executed **real Chrome 157.0.8103.50** and uploaded original
+[artifact 14253962621](https://github.com/mehdisafer/industrial-streaming-mlops/actions/runs/43921124746/artifacts/14253962621).
+All **19 ZIP entries** were downloaded and inventoried. Original PNG and JSON SHA-256
+digests were independently recomputed for each scenario, and the three images were
+visually inspected. The Git blob of the tested `dashboard.py` equals that on
+`main` (`bb05e07f88b8aaf8d1ea6918979ddd82b6ff6f48`).
+See [manifest and complete scope](evidence/browser-2026-11-16/README.md).
+
+| Scenario | Original image SHA-256 | Result |
+|---|---|---|
+| Healthy desktop, 1440×1000 | `1787d7001d6f847b7ea1f06086db443f5f23ec3b06f94187848b4261353d31eb` | PASS |
+| Healthy responsive, 600×850 | `94d8f215a069630fcecec34e862b9afcbc878b1ef10ef76698888cd6399cc1c2` | PASS |
+| HTTP 503, desktop | `3041e000638b5974e80f6d40f9f0e4c02c9449213100813a21325ce30175d480` | PASS |
+
+The first narrow visual capture exposed a real header/status collision; CSS and
+a DOM-geometry assertion corrected this, and the final captures report
+`horizontal_overflow=false`, `header_overlap=false`,
+`external_resources=0`. Historical blocked/failing executions are preserved.
+**Scope:** real browser presenting the exact application HTML, but with **synthetic
+HTTP snapshot data**. No live Kafka/Spark/MLflow, Databricks, paid provider,
+accessibility conformance or independent human-operator acceptance is inferred.
+
 ## Open qualification and release gates
 
 | Gate | Current state | Evidence needed to close it |
 |---|---|---|
 | CircleCI container reference | **Job succeeded on source `4bcc55e`**, but the four reported digest strings are malformed and no original archive was independently rehashed | Obtain the original [job artifacts](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7), run the [offline verification procedure](evidence/circleci/README.md), independently review the computed 64-character digests and pin a correct baseline |
 | Databricks | **Open**; no authorized workspace run | Existing authorized compute/storage, Kafka access, provider run IDs, Delta versions and recovery evidence |
-| Browser presentation | **CircleCI `dashboard-browser` succeeded on `main` `f83bec3`**, exercising fixture-backed Chrome desktop/narrow/HTTP-outage views; the 15 November native Chrome socket error remains a separate historical observation | [Hosted job](https://app.circleci.com/workflow/3db01d8e-aad5-403c-ab43-d3a3bc6b8629/job/60e9d9c5-f51b-49fd-aed3-f4c474095c48); original screenshots and live Kafka-driven UI still require independent review |
+| Browser presentation | **Chrome 157 passed and its 3 original images + JSON receipts were independently inspected** (1440px desktop, 600px responsive, HTTP 503); no horizontal overflow, header badge overlap or external resources after the correction. The blocked local Chrome attempt is historical. | [Artifact / exact SHA manifest](evidence/browser-2026-11-16/README.md); deliberately synthetic snapshot and source HTML, not Kafka-backed UI or independent operator/accessibility acceptance |
 | Release publication | `v0.1.0-rc.1` notes prepared; no tag or GitHub release published | [PR #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2) and [follow-up PR #3](https://github.com/mehdisafer/industrial-streaming-mlops/pull/3) record source review; tag/release publication requires its own verified action |
 | License and visibility | **Public** according to GitHub repository API (16 Nov 2026); no approved project licence | Public source is not an open-source licence grant; licence choice and anonymous content readback remain open |
 | Repository settings | Description is null and topics empty (16 Nov). Current rulesets API returns `[]`; branch-protection read remains 403 for this integration | Maintainer applies About metadata and checks available `main` protections; empty rulesets do not establish whether classic protection is enabled |
@@ -148,10 +175,10 @@ was provisioned or requested.
 2. Run the [Databricks qualification](databricks.md) on explicitly authorized existing
    resources, including library/access checks, business-output parity, recovery and
    available consumption data. Local Spark is not provider qualification.
-3. Retain the hosted synthetic dashboard-browser result at its tested SHA, inspect
-   original screenshots, then qualify live-data browser behavior separately. The source
-   is public, but licence, About metadata, branch protection, anonymous readback and
-   release-tag decisions remain for independent maintainer review.
+3. Retain the independently rehashed original hosted synthetic dashboard-browser
+   screenshots at their exact source SHA, and qualify live-data and operator/
+   accessibility behavior separately. The source is public; licence, About metadata,
+   branch protection, anonymous readback and release-tag decisions remain distinct.
 4. Before unattended local operation, define database/evidence retention, archival,
    disk limits, service supervision and recovery objectives. The current finite demo
    profile and Kafka retention setting do not implement complete local retention.

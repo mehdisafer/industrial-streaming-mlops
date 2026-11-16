@@ -30,7 +30,10 @@ The checkpoint binding includes source, query, sink path and complete configurat
 
 ## Deployment limits
 
-The [Compose reference](../compose.yaml) uses one KRaft broker, one local Spark worker process, MLflow and the dashboard. Published ports bind to loopback; the service network is internal. Runtime secrets are external. Kafka and MLflow each have a 1 GiB ceiling; the worker has 4 GiB. These limits are configuration, not measured capacity.
+The [Compose reference](../compose.yaml) uses one KRaft broker, one local Spark worker process, MLflow and the dashboard. Published ports bind to loopback. Kafka, MLflow and dashboard additionally join a
+routable ingress bridge for actual localhost access, while worker, CLI and setup
+services remain on the internal-only network. **Ingress-connected services may
+initiate egress, so the stack is not wholly air-gapped.** Runtime secrets are external. Kafka and MLflow each have a 1 GiB ceiling; the worker has 4 GiB. These limits are configuration, not measured capacity.
 
 There is no high availability. SQLite/raw history retention and cold-state archival are not automated. Kafka retention must exceed the intended recovery interval. [Databricks](databricks.md) uses a separate bounded Delta adapter and requires its own real provider qualification. See [compatibility](compatibility.md) for pinned versions and vendor references.
 
