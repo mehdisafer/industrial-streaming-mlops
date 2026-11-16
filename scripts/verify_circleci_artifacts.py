@@ -58,6 +58,8 @@ def verify(artifacts: Path, manifest: Path, *, full: bool = False,
             obj = json.loads(data)
             if not isinstance(obj, dict):
                 raise ValueError("expected a JSON object")
+            if not obj:
+                errors.append(f"{name}: empty JSON object is not a valid receipt")
             records[name] = obj
         except (ValueError, OSError, UnicodeDecodeError) as exc:
             errors.append(f"{name}: {exc}")
@@ -79,7 +81,7 @@ def verify(artifacts: Path, manifest: Path, *, full: bool = False,
         checks, counts = final.get("checks"), final.get("counts")
         if final.get("valid") is not True or not isinstance(checks, dict) or not CHECKS <= checks.keys():
             errors.append("final-verification.json: incomplete or invalid named verification")
-        elif any(checks[name] is not True for name in CHECKS):
+        elif not checks or any(value is not True for value in checks.values()):
             errors.append("final-verification.json: one or more invariants are not true")
         if not isinstance(counts, dict):
             errors.append("final-verification.json: missing counts")
@@ -114,7 +116,11 @@ def verify(artifacts: Path, manifest: Path, *, full: bool = False,
                           "dashboard-snapshot.json", "cleanup.log", "runtime-inventory-capture.json")
         for name in required_extra:
             try:
-                _read(artifacts / name)
+                data = _read(artifacts / name)
+                if name in ("pre-cleanup-images.json", "dashboard-snapshot.json"):
+                    parsed = json.loads(data)
+                    if not isinstance(parsed, (dict, list)):
+                        raise ValueError(f"invalid JSON artifact: {name}")
             except (OSError, ValueError) as exc:
                 errors.append(f"full evidence: {exc}")
         try:

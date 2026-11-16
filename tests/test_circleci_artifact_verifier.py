@@ -88,6 +88,20 @@ class CircleCIArtifactVerifierTests(unittest.TestCase):
         self.assertEqual(result["status"], "failed")
         self.assertTrue(any("reconciliation failed" in e for e in result["errors"]))
 
+    def test_empty_json_receipt_is_not_a_pass_even_if_pinned(self):
+        self.receipts["run-receipt.json"] = {}
+        self.save()
+        result = verify(self.artifacts, self.manifest)
+        self.assertEqual(result["status"], "failed")
+        self.assertTrue(any("empty JSON object" in e for e in result["errors"]))
+
+    def test_added_failed_check_is_not_ignored(self):
+        self.receipts["final-verification.json"]["checks"]["new_check"] = False
+        self.save()
+        result = verify(self.artifacts, self.manifest)
+        self.assertEqual(result["status"], "failed")
+        self.assertTrue(any("one or more invariants" in e for e in result["errors"]))
+
     def test_missing_named_check_is_not_a_pass(self):
         self.receipts["final-verification.json"]["checks"].pop("sqlite_integrity")
         self.save()
@@ -123,10 +137,18 @@ class CircleCIArtifactVerifierTests(unittest.TestCase):
         self.assertEqual(result["status"], "failed")
         self.assertTrue(any("--host" in e for e in result["errors"]))
 
+    def test_bad_dashboard_json_is_not_full_evidence(self):
+        self.test_full_evidence_verifies_inventory_and_host_identity()
+        (self.artifacts / "dashboard-snapshot.json").write_text("not json")
+        result = verify(self.artifacts, self.manifest, full=True, host=self.host)
+        self.assertEqual(result["status"], "failed")
+
     def test_full_evidence_verifies_inventory_and_host_identity(self):
         for name in ("pre-cleanup-images.json", "pre-cleanup-container.log",
                      "dashboard-snapshot.json", "cleanup.log"):
-            (self.artifacts / name).write_text("fixture\n")
+            (self.artifacts / name).write_text(
+                "[]\n" if name == "pre-cleanup-images.json" else
+                "{}\n" if name == "dashboard-snapshot.json" else "fixture\n")
         inventory = self.artifacts / "runtime-inventory"
         inventory.mkdir()
         entries = []

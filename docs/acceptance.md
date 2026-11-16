@@ -73,20 +73,30 @@ The previous [#8 failure](https://app.circleci.com/pipelines/circleci/Um5XQQtD4B
 metadata into `evidence/ci-host`, and `4bcc55e` added a routable ingress
 bridge while keeping published host ports bound to loopback.
 
-The branch's earlier hosted acceptance note **reports** a passing run receipt,
-20 final checks, 4,380 raw rows, 2,092 features/scores, 12 alerts, model
-lifecycle and recovery assertions, and scoped cleanup. Its four reported SHA-256
-values are preserved below for later comparison with the original CircleCI
-artifacts. These receipt-level details are **not independently byte-verified by
-this reconciliation**; a successful job status is not a substitute for their
-original contents.
+An intermediate working-branch note **reported** a passing run receipt, a total
+of 20 final checks, 4,380 raw rows, 2,092 features/scores, 12 alerts and recovery/
+lifecycle assertions. These receipt-level values have **not been independently
+reconciled with the original CircleCI artifacts**. In particular, the current
+`Store.verify()` method emits **six named checks**, so the reported "20 final
+checks" cannot be assigned to `final-verification.json` without inspecting it.
 
-| CircleCI artifact (reported) | Recorded SHA-256, not independently rechecked |
-|---|---|
-| `integration/run-receipt.json` | `78b45855d20b1ab5c6784f59eff21dd8e42f2c0dedc345f8383cfc19312d148a9` |
-| `integration/final-verification.json` | `5026ba8908142f6e21ca83a1ff2a03be6be63d9df3bb6f348a02723463d4383dd` |
-| `integration/lifecycle-assertions.json` | `c9d805ba5503796db98a688e9b593de147744d2019455fe11b8d659811eb3c0de` |
-| `integration/recovery-assertions.json` | `66589288bdba4bb79b6068baab056fa822fa1545df851779f407ce62e7ec42512e` |
+**Integrity defect found:** the four strings published as SHA-256 contain 65,
+65, 65 and 66 hex characters respectively, whereas a SHA-256 hex digest always
+contains 64. They are **invalid as reported**, not just unverified. They are
+preserved strictly as historical text in [the CircleCI manifest](evidence/circleci/manifest.json),
+with no trusted digest baseline. Do not truncate or guess them. The
+[offline intake procedure](evidence/circleci/README.md) and
+[locally fixture-tested verifier](../scripts/verify_circleci_artifacts.py) can
+recompute actual hashes from an original downloaded artifact set. The checker
+returns `observed_unpinned`, not `verified`, until a separately reviewed valid
+SHA-256 baseline is established.
+
+| CircleCI artifact | Historical reported string — INVALID SHA-256 | Length |
+|---|---|---|
+| `integration/run-receipt.json` | `78b45855d20b1ab5c6784f59eff21dd8e42f2c0dedc345f8383cfc19312d148a9` | 65 |
+| `integration/final-verification.json` | `5026ba8908142f6e21ca83a1ff2a03be6be63d9df3bb6f348a02723463d4383dd` | 65 |
+| `integration/lifecycle-assertions.json` | `c9d805ba5503796db98a688e9b593de147744d2019455fe11b8d659811eb3c0de` | 65 |
+| `integration/recovery-assertions.json` | `66589288bdba4bb79b6068baab056fa822fa1545df851779f407ce62e7ec42512e` | 66 |
 
 This hosted Docker reference remains single-host synthetic validation, not
 Databricks acceptance, distributed scalability or production readiness.
@@ -95,7 +105,7 @@ Databricks acceptance, distributed scalability or production readiness.
 
 | Gate | Current state | Evidence needed to close it |
 |---|---|---|
-| CircleCI container reference | **Job succeeded on source `4bcc55e`**; original artifact hashes/contents not independently rechecked in this merge | Download and retain source, image identities, Kafka/Spark/MLflow logs, HTTP/recovery and cleanup artifacts from the [successful job](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7); verify SHA-256 against the reported values |
+| CircleCI container reference | **Job succeeded on source `4bcc55e`**, but the four reported digest strings are malformed and no original archive was independently rehashed | Obtain the original [job artifacts](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7), run the [offline verification procedure](evidence/circleci/README.md), independently review the computed 64-character digests and pin a correct baseline |
 | Databricks | **Open**; no authorized workspace run | Existing authorized compute/storage, Kafka access, provider run IDs, Delta versions and recovery evidence |
 | Browser presentation | Fresh Chromium launch on 15 November blocked by `socket(): Operation not permitted`; [original receipt](evidence/followup/checks/browser/startup.json) | Real browser layout/interaction review and captured output; minimal-DOM checks do not close this gate |
 | Release publication | `v0.1.0-rc.1` notes prepared; no tag or GitHub release published | [PR #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2) and [follow-up PR #3](https://github.com/mehdisafer/industrial-streaming-mlops/pull/3) record source review; tag/release publication requires its own verified action |
@@ -120,9 +130,11 @@ was provisioned or requested.
 
 ## Prioritized follow-up
 
-1. Preserve and independently check CircleCI Docker job artifacts from the
-   successful source `4bcc55e`. The earlier exit-64 failure is diagnosed;
-   record the exact correction and retained evidence, not a fabricated rerun.
+1. Obtain the original CircleCI Docker artifacts from source `4bcc55e`;
+   fix the **invalid 65/65/65/66-character historical hash claims** using the
+   [offline intake verifier](evidence/circleci/README.md). Record actual bytes,
+   six named `Store.verify()` checks, model lifecycle/recovery, image identities
+   and scoped cleanup. Do not infer 20 checks from a six-check JSON report.
    GitHub Actions runner allocation/quota is **out of P03 acceptance scope**.
 2. Run the [Databricks qualification](databricks.md) on explicitly authorized existing
    resources, including library/access checks, business-output parity, recovery and
