@@ -44,7 +44,7 @@ separates the completed local checks from the remaining platform and release gat
 | CircleCI Python unit CI | **Succeeded** at `579cbc5` ([#5](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/5?useNewPipelines=false)) and `ce7674c` ([#7](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/7?useNewPipelines=false)); merged [PR #4](https://github.com/mehdisafer/industrial-streaming-mlops/pull/4) |
 | CI policy | **CircleCI is the acceptance CI** for Python, browser and separate Docker reference gates. Earlier GitHub Actions runs failed before runner assignment; more recent PR runs executed successfully. Provider-specific results stay source-bound. |
 | Databricks | **Open**: implementation prepared; no authorized workspace run |
-| Public source | **GitHub reports `public` and anonymous repository/README access was observed (16 November 2026)**. Project licence, release tag, published release and repository protections remain separate. |
+| Public source | **Public and anonymously readable**; the maintainer approved **Apache-2.0** for the original project source and documentation ([LICENSE](LICENSE), [NOTICE](NOTICE)). Repository settings and the `v0.1.0-rc.1` release remain separate. |
 
 See [scope issue #1](https://github.com/mehdisafer/industrial-streaming-mlops/issues/1),
 [original delivery #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2),
@@ -367,14 +367,25 @@ operator/accessibility review. The
 from the synthetic desktop/narrow/outage test have been **independently downloaded,
 rehash-checked and visually inspected**. The application's tested dashboard
 source blob remains identical on the current `main` branch.
-Maintainer decisions on the open-source licence, About metadata, protection and a
-release tag remain distinct. GitHub Actions quota renewal is not a prerequisite. Longer unattended operation
+The maintainer selected **Apache-2.0** for this project's original source and
+documentation. The About metadata, available branch protections and release tag
+remain separate actions. GitHub Actions quota renewal is not a prerequisite. Longer unattended operation
 also needs retention limits and supervision;
 multi-node serving/state, authenticated service exposure and external model validation
 are future work. The [acceptance register](docs/acceptance.md) records these boundaries.
 
-No client code, identifiers or data are used. The synthetic generator has no third-party
-dataset dependency. This repository currently has no owner-approved license; third-party
-software retains its own rights. The source is publicly visible, but no open-source
-reuse grant is implied; choosing a licence, changing settings and provisioning paid
-infrastructure remain distinct maintainer decisions.
+## License and attribution
+
+Copyright 2026 Mehdi Safer. The original project source and documentation are
+licensed under the [Apache License, Version 2.0](LICENSE) (SPDX:
+`Apache-2.0`). See [NOTICE](NOTICE) for attribution.
+
+Third-party dependencies, JVM libraries, images and services retain their own
+licenses and notices; the Apache-2.0 project license does **not** relicense those
+separate components. Dependency versions are retained in [uv.lock](uv.lock) and
+[the JVM lock](config/spark-jars.lock.json). The source-only security/licence
+inventory is a review input, not a legal compliance certification.
+
+No client code, identifiers or data are used. The synthetic generator has no
+third-party dataset dependency. Repository administration, releases, Databricks
+execution and any paid infrastructure remain separate explicit decisions.
