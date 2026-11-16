@@ -41,9 +41,9 @@ separates the completed local checks from the remaining platform and release gat
 | Streaming comparison | Four measured variants; exact business-output parity across the three 24-hour variants; [benchmark evidence](docs/evidence/benchmark/README.md) |
 | Hosted Docker reference | [CircleCI `reference-containers`](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7) **succeeded at `4bcc55e`**; original artifact bytes are not locally verified and four historical "SHA-256" strings have invalid lengths (65–66 hex digits). [Offline audit instructions](docs/evidence/circleci/README.md) |
 | CircleCI Python unit CI | **Succeeded** at `579cbc5` ([#5](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/5?useNewPipelines=false)) and `ce7674c` ([#7](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/7?useNewPipelines=false)); merged [PR #4](https://github.com/mehdisafer/industrial-streaming-mlops/pull/4) |
-| CI policy | **CircleCI is the authoritative acceptance CI** (Python unit/build checks and separate Docker reference). GitHub Actions quota is exhausted according to the maintainer; its execution is **not a P03 acceptance prerequisite** |
+| CI policy | **CircleCI is the acceptance CI** for Python, browser and separate Docker reference gates. Earlier GitHub Actions runs failed before runner assignment; more recent PR runs executed successfully. Provider-specific results stay source-bound. |
 | Databricks | **Open**: implementation prepared; no authorized workspace run |
-| Public release | Private repository; owner license and public-visibility decisions remain open |
+| Public source | **GitHub reports `public` (16 November 2026)**. No project licence, release tag or published GitHub release; anonymous readback and protection verification are separate. |
 
 See [scope issue #1](https://github.com/mehdisafer/industrial-streaming-mlops/issues/1),
 [original delivery #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2),
@@ -348,15 +348,17 @@ No Databricks execution is claimed from these local tests.
 - [Release preparation and publication decisions](docs/release-notes.md)
 - [Python dependency lock](uv.lock) and [JVM connector lock](config/spark-jars.lock.json)
 
-The next milestones are durable retrieval/review of the hosted CircleCI Docker
-artifacts, authorized Databricks qualification, browser rendering review and
-owner decisions needed for a public release. GitHub Actions quota renewal and
-runner allocation are explicitly **non-blocking**. Longer unattended operation
+The next milestones are independent integrity checks of the original hosted Docker
+artifacts, authorized Databricks qualification and broader live-data browser review.
+The [CircleCI dashboard-browser job](https://app.circleci.com/workflow/3db01d8e-aad5-403c-ab43-d3a3bc6b8629/job/60e9d9c5-f51b-49fd-aed3-f4c474095c48) reported success on `main` at `f83bec3` for synthetic desktop/narrow/outage views; its original screenshots are not independently reviewed here.
+Maintainer decisions on the open-source licence, About metadata, protection and a
+release tag remain distinct. GitHub Actions quota renewal is not a prerequisite. Longer unattended operation
 also needs retention limits and supervision;
 multi-node serving/state, authenticated service exposure and external model validation
 are future work. The [acceptance register](docs/acceptance.md) records these boundaries.
 
 No client code, identifiers or data are used. The synthetic generator has no third-party
 dataset dependency. This repository currently has no owner-approved license; third-party
-software retains its own rights. Selecting a repository license, changing visibility
-and provisioning paid infrastructure are separate owner decisions.
+software retains its own rights. The source is publicly visible, but no open-source
+reuse grant is implied; choosing a licence, changing settings and provisioning paid
+infrastructure remain distinct maintainer decisions.
