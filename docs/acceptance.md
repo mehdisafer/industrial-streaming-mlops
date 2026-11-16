@@ -99,6 +99,15 @@ recompute actual hashes from an original downloaded artifact set. The checker
 returns `observed_unpinned`, not `verified`, until a separately reviewed valid
 SHA-256 baseline is established.
 
+**CircleCI artifact retrieval boundary (16 November):** the public v2 API lists
+artifacts for the successful `reference-containers` job #13, but attempted raw
+unauthenticated download of the four receipts and host commit returned HTTP 404.
+CircleCI requires authorization for raw artifacts; **this does not demonstrate
+that their bytes are lost or verified**. A [bounded authenticated downloader](../scripts/download_circleci_artifacts.py)
+and its [intake procedure](evidence/circleci/README.md) now support local
+collection using `CIRCLE_TOKEN` from a secure environment. Neither has been run
+with a connected authorized CircleCI token in this session.
+
 | CircleCI artifact | Historical reported string — INVALID SHA-256 | Length |
 |---|---|---|
 | `integration/run-receipt.json` | `78b45855d20b1ab5c6784f59eff21dd8e42f2c0dedc345f8383cfc19312d148a9` | 65 |
@@ -138,11 +147,11 @@ accessibility conformance or independent human-operator acceptance is inferred.
 
 | Gate | Current state | Evidence needed to close it |
 |---|---|---|
-| CircleCI container reference | **Job succeeded on source `4bcc55e`**, but the four reported digest strings are malformed and no original archive was independently rehashed | Obtain the original [job artifacts](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7), run the [offline verification procedure](evidence/circleci/README.md), independently review the computed 64-character digests and pin a correct baseline |
+| CircleCI container reference | **Job succeeded on source `4bcc55e`**; original bytes require authorized retrieval, and four earlier digest strings are invalid | Use the [token-from-environment downloader](evidence/circleci/README.md) or the original [job artifacts](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7), run the offline verifier, review the actual 64-character hashes and pin an independently accepted baseline |
 | Databricks | **Open**; no authorized workspace run | Existing authorized compute/storage, Kafka access, provider run IDs, Delta versions and recovery evidence |
 | Browser presentation | **Chrome 157 passed and its 3 original images + JSON receipts were independently inspected** (1440px desktop, 600px responsive, HTTP 503); no horizontal overflow, header badge overlap or external resources after the correction. The blocked local Chrome attempt is historical. | [Artifact / exact SHA manifest](evidence/browser-2026-11-16/README.md); deliberately synthetic snapshot and source HTML, not Kafka-backed UI or independent operator/accessibility acceptance |
 | Release publication | `v0.1.0-rc.1` notes prepared; no tag or GitHub release published | [PR #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2) and [follow-up PR #3](https://github.com/mehdisafer/industrial-streaming-mlops/pull/3) record source review; tag/release publication requires its own verified action |
-| License and visibility | **Public** according to GitHub repository API (16 Nov 2026); no approved project licence | Public source is not an open-source licence grant; licence choice and anonymous content readback remain open |
+| License and visibility | **Public** by GitHub API and independent anonymous README/page readback on 16 Nov 2026; no approved project licence | Public source is not an OSS reuse grant; the owner must select the project licence separately |
 | Repository settings | Description is null and topics empty (16 Nov). Current rulesets API returns `[]`; branch-protection read remains 403 for this integration | Maintainer applies About metadata and checks available `main` protections; empty rulesets do not establish whether classic protection is enabled |
 
 The [historical check receipts](evidence/checks/README.md) preserve GitHub Actions

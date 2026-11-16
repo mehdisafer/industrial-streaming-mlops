@@ -10,5 +10,7 @@
     "lifecycle-assertions.json": "c9d805ba5503796db98a688e9b593de147744d2019455fe11b8d659811eb3c0de",
     "recovery-assertions.json": "66589288bdba4bb79b6068baab056fa822fa1545df851779f407ce62e7ec42512e"
   },
-  "expected_sha256": {}
+  "expected_sha256": {},
+  "project_slug": "circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu",
+  "job_number": 13
 }
