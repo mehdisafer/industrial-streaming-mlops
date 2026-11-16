@@ -32,7 +32,69 @@ jobs:
           command: circleci testsuite run "python-unit"
       - store_test_results:
           path: test-results
+  publication-security:
+    # Source-only security check; no Docker daemon, model training or paid cloud.
+    docker:
+      - image: cimg/python:3.11
+    resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: Fetch and identify visible branch/tag history
+          command: |
+            mkdir -p artifacts/publication-security
+            git rev-parse HEAD > artifacts/publication-security/checkout-sha.txt
+            if [ "$(git rev-parse --is-shallow-repository)" = "true" ]; then
+              git fetch --no-tags --prune --unshallow origin '+refs/heads/*:refs/remotes/origin/*'
+            else
+              git fetch --no-tags --prune origin '+refs/heads/*:refs/remotes/origin/*'
+            fi
+            git fetch --tags origin
+            test "$(git rev-parse --is-shallow-repository)" = "false"
+            git rev-list --all --count > artifacts/publication-security/reachable-commits.txt
+            test "$(cat artifacts/publication-security/reachable-commits.txt)" -gt 0
+            git for-each-ref --format='%(refname)' refs/remotes/origin refs/tags > artifacts/publication-security/visible-refs.txt
+      - run:
+          name: Install pinned and locked Python dependencies
+          command: |
+            python -m pip install --disable-pip-version-check uv==0.13.6
+            uv sync --frozen --all-extras --python 3.11
+      - run:
+          name: Scan sources, history and installed license declarations
+          command: |
+            uv run --frozen python scripts/security_inventory.py --scan-history --output artifacts/publication-security/security-inventory.json
+            uv run --frozen python - <<'PY'
+            import json
+            from pathlib import Path
+            report = json.loads(Path('artifacts/publication-security/security-inventory.json').read_text())
+            secrets = report['secrets']
+            assert secrets['history_requested'] is True
+            assert secrets['history_blobs_inspected'] > 0
+            assert not secrets['findings'], 'Unresolved potential secret findings'
+            assert report['inventory']['components'], 'Missing component inventory'
+            print(json.dumps({
+                'history_blobs_inspected': secrets['history_blobs_inspected'],
+                'files_inspected': secrets['worktree_files_inspected'],
+                'unscanned_files_recorded': len(secrets['skipped']),
+                'inventory_components': len(report['inventory']['components']),
+            }))
+            PY
+      - run:
+          name: Audit installed dependencies against published advisories
+          when: always
+          command: |
+            if [ -x .venv/bin/pip-audit ]; then
+              uv run --frozen pip-audit --skip-editable --format json --output artifacts/publication-security/dependency-audit.json
+            else
+              echo 'Dependency audit unavailable because locked environment installation failed'
+              exit 2
+            fi
+      - store_artifacts:
+          path: artifacts/publication-security
+          destination: publication-security
+
 workflows:
   build-and-test:
     jobs:
       - build-and-test
+      - publication-security
