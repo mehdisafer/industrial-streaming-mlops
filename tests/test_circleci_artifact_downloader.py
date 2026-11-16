@@ -17,11 +17,11 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from scripts.download_circleci_artifacts import (
+from scripts.download_circleci_artifacts import (  # noqa: E402
     JOB_NUMBER, PROJECT, RestrictedRedirect, allowed_redirect, download,
     is_artifact_url, list_artifacts, safe_path,
 )
-from scripts.verify_circleci_artifacts import CHECKS, verify
+from scripts.verify_circleci_artifacts import CHECKS, verify  # noqa: E402
 
 JOB_ID = "424ad872-14fc-4952-ba99-970ee84cf7d7"
 SOURCE = "4bcc55ec470a752bac59dfa45f561dad0261d95e"
