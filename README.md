@@ -40,6 +40,7 @@ separates the completed local checks from the remaining platform and release gat
 | Model evaluation | Baseline and candidate met the recorded synthetic holdout gates; [original evaluation](docs/evidence/model/README.md) |
 | Streaming comparison | Four measured variants; exact business-output parity across the three 24-hour variants; [benchmark evidence](docs/evidence/benchmark/README.md) |
 | Hosted Docker reference | [CircleCI `reference-containers`](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7) **succeeded at `4bcc55e`** after fixing the evidence directory and ingress; original job artifacts are referenced externally, not independently mirrored here |
+| Rendered dashboard in actual Chrome | **Qualified** on [PR #8](https://github.com/mehdisafer/industrial-streaming-mlops/pull/8) with real Chrome 157: desktop 1440px, responsive 600px and HTTP 503, all three screenshots/results inspected; no header overlap, horizontal overflow or third-party requests. Synthetic snapshot fixture, not live service UI capacity. [Original artifacts](https://github.com/mehdisafer/industrial-streaming-mlops/actions/runs/43921124746/artifacts/14253962621) |
 | CircleCI Python unit CI | **Succeeded** at `579cbc5` ([#5](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/5?useNewPipelines=false)) and `ce7674c` ([#7](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/7?useNewPipelines=false)); merged [PR #4](https://github.com/mehdisafer/industrial-streaming-mlops/pull/4) |
 | CI policy | **CircleCI is the authoritative acceptance CI** (Python unit/build checks and separate Docker reference). GitHub Actions quota is exhausted according to the maintainer; its execution is **not a P03 acceptance prerequisite** |
 | Databricks | **Open**: implementation prepared; no authorized workspace run |
@@ -79,12 +80,23 @@ The same Spark query identity survived four worker runs; old labels, observation
 predictions and deployments were preserved. Source lag drained to zero and the
 runner observed its owned processes stopped. Cross-host restoration remains open.
 
-The dashboard returned real HTTP HTML and JSON from both sinks. A separate
-13-assertion minimal-DOM/fetch check executed its actual JavaScript against the
-restored snapshot: six alert rows, 40 prediction rows and recovery after an HTTP
-error. A fresh Chromium attempt was blocked by the environment's socket restriction,
-so browser layout and screenshot review remain open. See the
-[current dashboard check scope](docs/evidence/followup/README.md#dashboard-and-unresolved-environment-gates).
+The dashboard returned real HTTP HTML and JSON from both sinks, and an earlier
+13-assertion minimal-DOM/fetch exercise verified six restored alert rows,
+40 prediction rows and recovery after an HTTP error. That older simulation and
+the blocked local Chromium attempt remain historical evidence in the
+[follow-up results](docs/evidence/followup/README.md#dashboard-and-unresolved-environment-gates).
+
+On **16 November 2026**, actual Chrome 157 rendered the **same application
+dashboard HTML** with explicitly synthetic snapshot responses on a hosted Linux
+runner. I inspected all three original screenshots: desktop 1440 px, responsive
+600 px, and a failed HTTP 503 snapshot. The narrow view first revealed the
+status badge overlapping its description; that was corrected and a measured DOM
+rectangle check was added. The final run confirms no overlap, no document-wide
+horizontal overflow and no third-party requests. A malicious-looking source
+identifier is displayed as literal text, not executed markup. The complete
+[browser proof and its limitations](docs/acceptance.md#hosted-real-chrome-dashboard-qualification--16-november-2026)
+are distinct from the genuine Kafka/Spark/MLflow test and from manual accessibility
+or a deployed production monitor.
 
 ### Held-out maintenance evaluation
 
@@ -349,10 +361,12 @@ No Databricks execution is claimed from these local tests.
 - [Python dependency lock](uv.lock) and [JVM connector lock](config/spark-jars.lock.json)
 
 The next milestones are durable retrieval/review of the hosted CircleCI Docker
-artifacts, authorized Databricks qualification, browser rendering review and
-owner decisions needed for a public release. GitHub Actions quota renewal and
-runner allocation are explicitly **non-blocking**. Longer unattended operation
-also needs retention limits and supervision;
+artifacts, authorized Databricks qualification, independent operator/accessibility
+review and owner decisions needed for a public release. The synthetic real-Chrome
+rendering gate now has separate CI evidence. Historic GitHub Actions quota and
+runner-allocation failures are **not** retroactively presented as application
+test failures. Longer unattended operation also needs retention limits and
+supervision;
 multi-node serving/state, authenticated service exposure and external model validation
 are future work. The [acceptance register](docs/acceptance.md) records these boundaries.
 

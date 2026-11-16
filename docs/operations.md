@@ -4,7 +4,7 @@ The Compose worker defaults to a **300-second run** and `restart: no`. Select `-
 
 ## Observe before changing state
 
-The dashboard is at `http://127.0.0.1:8080`; MLflow is at `http://127.0.0.1:5000`. `/api/snapshot` exposes pipeline state, recent alerts, mature labels and rejection reasons. `/metrics` exposes database counters. `/health` verifies persisted invariants; **it does not certify freshness, broker availability or model quality**.
+The dashboard is at `http://127.0.0.1:8080`; MLflow is at `http://127.0.0.1:5000`. `/api/snapshot` exposes pipeline state, recent alerts, mature labels and rejection reasons. `/metrics` exposes database counters. `/health` verifies persisted invariants; **it does not certify freshness, broker availability or model quality**. A separate real-Chrome qualification runs against the dashboard's original HTML and synthetic API responses on desktop, 600px responsive and HTTP-503 views. Its screenshots prove bounded rendering, not live-pipeline freshness; see [acceptance](acceptance.md#hosted-real-chrome-dashboard-qualification--16-november-2026).
 
 Inspect Spark source offsets/progress, acknowledged producer counts, throughput, batch age, pending predictions, active model/version, rejection reasons and measured inference/end-to-end latency. Synthetic event time and wall-clock processing time have different meanings. Qualification requires balanced source dispositions, complete expected input, compatible inference and recovery without duplicated effects. The [model card](model-card.md) states the predeclared alert budget and quality gates.
 

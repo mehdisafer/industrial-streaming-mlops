@@ -19,6 +19,7 @@ container qualification and Databricks qualification have separate gates.
 | Bounded load/resource observation | Four 2-hour/24-hour variants completed in 84.614 s overall | Worker wall times include startup/shutdown; CPU/RSS and latency receipts are scoped observations, without statistical speedup or multi-node capacity claims |
 | Model quality gates | Baseline and candidate eligible on the original synthetic holdout | [Model evidence](evidence/model/README.md); 5,166 rows, 24 failures, 17.9375 machine-days |
 | Dashboard data and script behavior | Real HTTP HTML/JSON; **13 JavaScript assertions** including HTTP-error recovery, six restored alert rows and 40 prediction rows | [Current check scope](evidence/followup/README.md#dashboard-and-unresolved-environment-gates); explicit minimal DOM/fetch doubles, no browser rendering or screenshot acceptance |
+| Rendered dashboard in a real browser | **Chrome 157 successfully rendered 3 hosted scenarios**: desktop 1440px, responsive 600px, and HTTP 503. After fixing observed narrow-header overlap, all 3 original PNGs and JSON reports were inspected. | [PR #8 / original GitHub run](https://github.com/mehdisafer/industrial-streaming-mlops/actions/runs/43921124746); deliberately synthetic API fixture of the actual source HTML, **not** Kafka/Spark live UI or production accessibility acceptance |
 | Python dependency advisories | 122 third-party packages audited; zero known advisories reported on 15 November | [123-entry report](evidence/followup/checks/dependency-audit.json) explicitly skips the local project, which is not indexed on PyPI; limited to the recorded dependency/database state |
 
 The baseline emitted 29 false alerts (1.6167 per machine-day), with 87.5% useful
@@ -59,8 +60,10 @@ Docker reference job reports success on `4bcc55e`. **CircleCI, not GitHub
 Actions, is the required CI for P03 acceptance.** The maintainer reports that
 GitHub Actions has exhausted its quota. This explanation is not independently
 proven by the unavailable runner annotation, but GitHub Actions is a
-non-blocking historical/optional CI path. Neither CircleCI result qualifies
-Databricks, rendered browser behavior or a public release.
+non-blocking historical/optional CI path. Those **earlier** CircleCI unit/container
+results do not qualify Databricks, rendered browser behavior or a public release.
+The separately executed 16 November Chrome qualification below closes only the
+synthetic rendered-dashboard gate.
 
 ## Hosted container execution — source-bound record
 
@@ -91,13 +94,66 @@ original contents.
 This hosted Docker reference remains single-host synthetic validation, not
 Databricks acceptance, distributed scalability or production readiness.
 
+## Hosted real Chrome dashboard qualification — 16 November 2026
+
+**Scope:** source-bound visual qualification of the actual read-only
+`src/industrial_mlops/dashboard.py` HTML page with explicitly synthetic JSON API
+responses, not another Kafka/Spark/MLflow, Databricks or operational hardware run.
+
+- GitHub source branch: [PR #8](https://github.com/mehdisafer/industrial-streaming-mlops/pull/8),
+  tested implementation `2148c9f84fea93de1d4d065c9683cf04f5525ded`.
+- [GitHub Actions run 43921124746](https://github.com/mehdisafer/industrial-streaming-mlops/actions/runs/43921124746),
+  job **Rendered dashboard (real Chrome)** succeeded with **Chrome 157.0.8103.50**.
+  Its reviewed PR checkout was `d7ee5640139b9d3defa4900fcc768a979d9c72ab`,
+  which identifies the PR merge checkout, not the source branch head.
+- [Original browser artifact 14253962621](https://github.com/mehdisafer/industrial-streaming-mlops/actions/runs/43921124746/artifacts/14253962621):
+  all three JSON receipts, PNG screenshots, original `dashboard.py` SHA-256,
+  Chrome version, source commit and failure-state evidence were downloaded and inspected.
+- CircleCI `build-and-test` and `dashboard-browser` both reported **success**
+  on the corresponding PR head in [workflow 541ae815](https://app.circleci.com/workflow/541ae815-63f8-4aec-b814-bb3e2554f941).
+  The GHA browser logs and original artifacts were independently inspected;
+  this is not a claim about all pending GitHub Actions integration jobs.
+
+| Observed Chrome scenario | Width | Actual results | Screenshot SHA-256 |
+|---|---:|---|---|
+| Healthy dashboard desktop | 1440 px | Five metric cards, synthetic alert and prediction visible; no external resource, overflow or header overlap | `1787d7001d6f847b7ea1f06086db443f5f23ec3b06f94187848b4261353d31eb` |
+| Healthy dashboard responsive | 600 px | Two-column metric layout, readable separated status badge, scrolling table constrained inside panel, no document-level overflow or badge overlap | `94d8f215a069630fcecec34e862b9afcbc878b1ef10ef76698888cd6399cc1c2` |
+| Unavailable API (HTTP 503) desktop | 1440 px | Explicit `Pipeline unavailable` message; no false healthy state | `3041e000638b5974e80f6d40f9f0e4c02c9449213100813a21325ce30175d480` |
+
+All three `*.json` receipt files report `passed: true`,
+`horizontal_overflow: false`, `header_overlap: false` and
+`external_resources: 0`. The actual dashboard source SHA-256 is
+`794163773db059fc615057fd0b0be8d353fa2f316dd7696358dc511db6b1b433`.
+The intentionally untrusted HTML-looking site identifier remained **literal text**
+in the rendered table; no injected `<img>` element was created.
+
+**Failure history remains visible:** the older local Chromium attempt was blocked
+by sandbox socket restrictions; a first CircleCI capture failed on an assertion
+that expected the complete feature ID despite the UI's existing 14-character
+projection. A subsequent *successful* browser screenshot still showed a genuine
+mobile header overlap not covered by the initial checks. The amended CSS and
+actual DOM rectangle assertion passed on the final screenshots. The old failures
+are not relabeled as passes.
+
+Reproduce with `bash scripts/dashboard_browser_smoke.sh` from a supported
+non-root Linux runner with sandboxed Chrome, an unused local socket and a **new**
+`DASHBOARD_BROWSER_EVIDENCE` path. The script uses the original static HTML
+source plus a synthetic, locally hosted data fixture, retains independent
+screenshot/DOM hashes and does not modify the application's backend. No
+`--no-sandbox`, provider credentials, external telemetry or deployment applies.
+
+**This completes the specific synthetic browser rendering evidence gap.**
+Keyboard/screen-reader accessibility, an attended operator assessment, source
+data quality and browser behavior with a live Kafka-backed service remain
+outside this isolated visual proof.
+
 ## Open qualification and release gates
 
 | Gate | Current state | Evidence needed to close it |
 |---|---|---|
 | CircleCI container reference | **Job succeeded on source `4bcc55e`**; original artifact hashes/contents not independently rechecked in this merge | Download and retain source, image identities, Kafka/Spark/MLflow logs, HTTP/recovery and cleanup artifacts from the [successful job](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7); verify SHA-256 against the reported values |
 | Databricks | **Open**; no authorized workspace run | Existing authorized compute/storage, Kafka access, provider run IDs, Delta versions and recovery evidence |
-| Browser presentation | Fresh Chromium launch on 15 November blocked by `socket(): Operation not permitted`; [original receipt](evidence/followup/checks/browser/startup.json) | Real browser layout/interaction review and captured output; minimal-DOM checks do not close this gate |
+| Browser presentation on synthetic fixture | **Chrome 157 real rendered screenshots and DOM checks passed on 16 November 2026**, including corrected mobile header. Original local Chromium blocker remains historical. | Accessibility/operator evaluation and actual production-backed UI still require separate proof; see [hosted screenshots](https://github.com/mehdisafer/industrial-streaming-mlops/actions/runs/43921124746/artifacts/14253962621) |
 | Release publication | `v0.1.0-rc.1` notes prepared; no tag or GitHub release published | [PR #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2) and [follow-up PR #3](https://github.com/mehdisafer/industrial-streaming-mlops/pull/3) record source review; tag/release publication requires its own verified action |
 | License and visibility | Repository private; no owner-approved license | Owner decisions and publication review before any visibility change |
 | Repository settings | Description is null and topics are empty; no supported metadata/release mutation tools. Rulesets read returned a plan/visibility 403; branch-protection read returned an integration-access 403 | Supported authorized administration and, for rulesets, a separate owner decision on the documented plan/visibility requirement |
@@ -127,7 +183,7 @@ was provisioned or requested.
 2. Run the [Databricks qualification](databricks.md) on explicitly authorized existing
    resources, including library/access checks, business-output parity, recovery and
    available consumption data. Local Spark is not provider qualification.
-3. Complete browser presentation review and the owner license/publication decisions.
+3. Complete independent operator/accessibility review and the owner license/publication decisions. The source-bound real Chrome rendering gate is now supported by separate executed evidence.
    Apply prepared description/topics/protection only through a supported authorized
    administration path; verify anonymous access only after a visibility change.
 4. Before unattended local operation, define database/evidence retention, archival,
