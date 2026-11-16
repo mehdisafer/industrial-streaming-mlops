@@ -101,7 +101,7 @@ def list_artifacts(opener, *, token: str, project: str, number: int) -> list[dic
 
 
 def download(opener, *, artifacts: list[dict], dest: Path, token: str, manifest: dict,
-             max_file_bytes: int, max_total_bytes: int) -> dict:
+             job_number: int, max_file_bytes: int, max_total_bytes: int) -> dict:
     job_id, source = manifest["job_id"], manifest["source_commit"]
     if not SOURCE_RE.fullmatch(source) or not re.fullmatch(r"[0-9a-f-]{36}", job_id):
         raise ValueError("manifest has an invalid job ID or source SHA")
@@ -119,6 +119,8 @@ def download(opener, *, artifacts: list[dict], dest: Path, token: str, manifest:
             raise ValueError("artifact has invalid node or URL")
         if not is_artifact_url(url, job_id=job_id, node=node, path=path):
             raise ValueError(f"artifact URL is not source-bound: {path}")
+        if str(path) == "download-manifest.json":
+            raise ValueError("artifact collides with the intake manifest")
         if str(path) in seen:
             raise ValueError(f"duplicate artifact path: {path}")
         seen.add(str(path))
@@ -134,7 +136,7 @@ def download(opener, *, artifacts: list[dict], dest: Path, token: str, manifest:
         raise ValueError("output directory already exists: refuse overwrite")
     dest.mkdir(parents=True)
     result = {"schema_version": 1, "status": "failed", "scope": "original CircleCI artifact download",
-              "job_id": job_id, "source_commit": source, "job_number": JOB_NUMBER,
+              "job_id": job_id, "source_commit": source, "job_number": job_number,
               "files": [], "errors": [], "original_digests_are_not_yet_independently_pinned": True}
     total = 0
     try:
@@ -164,10 +166,13 @@ def download(opener, *, artifacts: list[dict], dest: Path, token: str, manifest:
                                          "http_status": exc.code if isinstance(exc, HTTPError) else None})
                 break
         if not result["errors"]:
-            host = (dest / "ci-host" / "commit.txt").read_text(encoding="utf-8").strip()
-            receipt = json.loads((dest / "integration" / "run-receipt.json").read_bytes())
-            if host != source or receipt.get("git_commit") != source:
-                result["errors"].append({"reason": "source_identity_mismatch"})
+            try:
+                host = (dest / "ci-host" / "commit.txt").read_text(encoding="utf-8").strip()
+                receipt = json.loads((dest / "integration" / "run-receipt.json").read_bytes())
+                if not isinstance(receipt, dict) or host != source or receipt.get("git_commit") != source:
+                    result["errors"].append({"reason": "source_identity_mismatch"})
+            except (OSError, ValueError, UnicodeDecodeError):
+                result["errors"].append({"reason": "invalid_source_receipt"})
         if not result["errors"]:
             result["status"] = "downloaded_unpinned"
     finally:
@@ -194,7 +199,8 @@ def main() -> int:
         artifacts = list_artifacts(opener, token=token, project=args.project_slug,
                                    number=args.job_number)
         output = download(opener, artifacts=artifacts, dest=args.output, token=token,
-                          manifest=manifest, max_file_bytes=args.max_file_mib * 1024 * 1024,
+                          manifest=manifest, job_number=args.job_number,
+                          max_file_bytes=args.max_file_mib * 1024 * 1024,
                           max_total_bytes=args.max_total_mib * 1024 * 1024)
     except (OSError, ValueError, KeyError, TypeError, HTTPError, URLError) as exc:
         # Never include request URL, credentials or signed redirect tokens in diagnostics.
