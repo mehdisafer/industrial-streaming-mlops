@@ -124,10 +124,18 @@ The hosted [GitHub Actions run 43921124746](https://github.com/mehdisafer/indust
 executed **real Chrome 157.0.8103.50** and uploaded original
 [artifact 14253962621](https://github.com/mehdisafer/industrial-streaming-mlops/actions/runs/43921124746/artifacts/14253962621).
 All **19 ZIP entries** were downloaded and inventoried. Original PNG and JSON SHA-256
-digests were independently recomputed for each scenario, and the three images were
-visually inspected. The Git blob of the tested `dashboard.py` equals that on
+digests were recomputed for each scenario, and the three images were visually
+inspected. The Git blob of the tested `dashboard.py` equals the one on
 `main` (`bb05e07f88b8aaf8d1ea6918979ddd82b6ff6f48`).
-See [manifest and complete scope](evidence/browser-2026-11-16/README.md).
+A fresh **17 November** isolated recheck confirmed all three PNG SHA-256, three
+JSON SHA-256, summary hash and screenshot dimensions from the original
+218,970-byte ZIP. Its ZIP digest is recorded in the
+[manifest](evidence/browser-2026-11-16/manifest.json).
+The run's PR head was `2148c9f`; `source-commit.txt` records GitHub's
+synthetic merge checkout `d7ee564`. GitHub metadata confirms the commits share
+**exact Git tree `4641b61794ea5d3dd4af01fc7459ee17a6431200`**, so there is
+no source content discrepancy. This is an assisted original-byte recheck, not
+independent human certification. [Proof and limits](evidence/browser-2026-11-16/README.md).
 
 | Scenario | Original image SHA-256 | Result |
 |---|---|---|

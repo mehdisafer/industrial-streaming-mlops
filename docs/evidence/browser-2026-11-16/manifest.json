@@ -44,5 +44,33 @@
     }
   ],
   "summary_sha256": "d9d833db8a3e1723ba8339ecb992e611443acdfedc9106be4417c312ac6ebd9f",
-  "limitation": "HTML from real app; API data synthetic; no live Kafka, provider, production, or accessibility acceptance."
+  "limitation": "HTML from real app; API data synthetic; no live Kafka, provider, production, or accessibility acceptance.",
+  "checkout_provenance": {
+    "source_head": "2148c9f84fea93de1d4d065c9683cf04f5525ded",
+    "checkout_commit": "d7ee5640139b9d3defa4900fcc768a979d9c72ab",
+    "checkout_commit_type": "GitHub Actions pull_request synthetic merge commit",
+    "checkout_parents": [
+      "580e130db6603e38b7a546825957ca3e1d586deb",
+      "2148c9f84fea93de1d4d065c9683cf04f5525ded"
+    ],
+    "source_head_tree": "4641b61794ea5d3dd4af01fc7459ee17a6431200",
+    "checkout_tree": "4641b61794ea5d3dd4af01fc7459ee17a6431200",
+    "identical_source_tree": true,
+    "basis": "GitHub REST run head, commit parents, tree SHAs, and source-commit.txt in original ZIP"
+  },
+  "archive_recheck_2026_11_17": {
+    "original_archive_zip_sha256": "319c160ff552126141f73968747190bb02ee54269d827818435a14b4904f1525",
+    "original_archive_bytes": 218970,
+    "inspected_members": 19,
+    "png_sha256_matches_manifest": 3,
+    "json_sha256_matches_manifest": 3,
+    "summary_sha256_matches_manifest": true,
+    "source_file_sha256_matches_manifest": true,
+    "recorded_browser_version_matches": true,
+    "original_receipt_passed_all_three": true,
+    "screenshot_dimensions_match_manifest": true,
+    "browser_horizontal_overflow_reported": false,
+    "browser_header_overlap_reported": false,
+    "verification_scope": "Assistant re-check in isolated file environment; not independent human sign-off; synthetic API fixture, not a live Kafka service session"
+  }
 }
