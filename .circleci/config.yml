@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  browser-tools: circleci/browser-tools@2.4.2
 jobs:
   build-and-test:
     docker:
@@ -32,7 +34,24 @@ jobs:
           command: circleci testsuite run "python-unit"
       - store_test_results:
           path: test-results
+  dashboard-browser:
+    machine:
+      image: ubuntu-2404:2026.10.1
+    resource_class: medium
+    steps:
+      - checkout
+      - browser-tools/install_chrome
+      - run:
+          name: Qualify rendered desktop, narrow and HTTP outage dashboard views
+          no_output_timeout: 10m
+          command: bash scripts/dashboard_browser_smoke.sh
+      - store_artifacts:
+          path: evidence/browser
+          destination: dashboard-browser
 workflows:
   build-and-test:
     jobs:
       - build-and-test
+      - dashboard-browser:
+          requires:
+            - build-and-test
