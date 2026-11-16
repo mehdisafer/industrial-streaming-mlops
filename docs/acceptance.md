@@ -113,25 +113,28 @@ Databricks acceptance, distributed scalability or production readiness.
 |---|---|---|
 | CircleCI container reference | **Job succeeded on source `4bcc55e`**, but the four reported digest strings are malformed and no original archive was independently rehashed | Obtain the original [job artifacts](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7), run the [offline verification procedure](evidence/circleci/README.md), independently review the computed 64-character digests and pin a correct baseline |
 | Databricks | **Open**; no authorized workspace run | Existing authorized compute/storage, Kafka access, provider run IDs, Delta versions and recovery evidence |
-| Browser presentation | Fresh Chromium launch on 15 November blocked by `socket(): Operation not permitted`; [original receipt](evidence/followup/checks/browser/startup.json) | Real browser layout/interaction review and captured output; minimal-DOM checks do not close this gate |
+| Browser presentation | **CircleCI `dashboard-browser` succeeded on `main` `f83bec3`**, exercising fixture-backed Chrome desktop/narrow/HTTP-outage views; the 15 November native Chrome socket error remains a separate historical observation | [Hosted job](https://app.circleci.com/workflow/3db01d8e-aad5-403c-ab43-d3a3bc6b8629/job/60e9d9c5-f51b-49fd-aed3-f4c474095c48); original screenshots and live Kafka-driven UI still require independent review |
 | Release publication | `v0.1.0-rc.1` notes prepared; no tag or GitHub release published | [PR #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2) and [follow-up PR #3](https://github.com/mehdisafer/industrial-streaming-mlops/pull/3) record source review; tag/release publication requires its own verified action |
-| License and visibility | Repository private; no owner-approved license | Owner decisions and publication review before any visibility change |
-| Repository settings | Description is null and topics are empty; no supported metadata/release mutation tools. Rulesets read returned a plan/visibility 403; branch-protection read returned an integration-access 403 | Supported authorized administration and, for rulesets, a separate owner decision on the documented plan/visibility requirement |
+| License and visibility | **Public** according to GitHub repository API (16 Nov 2026); no approved project licence | Public source is not an open-source licence grant; licence choice and anonymous content readback remain open |
+| Repository settings | Description is null and topics empty (16 Nov). Current rulesets API returns `[]`; branch-protection read remains 403 for this integration | Maintainer applies About metadata and checks available `main` protections; empty rulesets do not establish whether classic protection is enabled |
 
 The [historical check receipts](evidence/checks/README.md) preserve GitHub Actions
 jobs that failed before runner allocation (`runner_id=0`, no executed steps).
 The maintainer reports an exhausted GitHub Actions quota. The annotation is
 inaccessible, so quota exhaustion is not independently verified from those
 jobs. This historical failure is not an application test failure or a P03 gate.
-CircleCI is the accepted CI alternative. No plan upgrade, quota restoration,
-public-visibility change or GitHub Actions rerun is required or implied.
+CircleCI remains the acceptance CI. Public visibility is now observed; no plan
+upgrade, quota restoration or GitHub Actions rerun is required or implied.
+Recent GitHub Actions runs did execute their Python/security checks on PR merge
+revisions, which does not replace any scoped CircleCI Docker/provider gate.
 
 Historical GitHub Actions CI scope selection was locally exercised with real
 temporary Git history: documentation-only updates skip heavy integration,
 source changes select it, and manual dispatch selects the full path.
 Job-level concurrency behavior is implemented and statically checked but
-**hosted GitHub Actions scheduling was not executed**; this is not a P03 blocker
-because CircleCI is the designated hosted CI. No paid runner or cloud resource
+**that historical scheduling check was not exercised at the time**. Later GitHub
+Actions runs did execute on PR revisions; this does not establish Docker acceptance
+or change CircleCI's role as the designated acceptance CI. No paid runner or cloud resource
 was provisioned or requested.
 
 ## Prioritized follow-up
@@ -145,9 +148,10 @@ was provisioned or requested.
 2. Run the [Databricks qualification](databricks.md) on explicitly authorized existing
    resources, including library/access checks, business-output parity, recovery and
    available consumption data. Local Spark is not provider qualification.
-3. Complete browser presentation review and the owner license/publication decisions.
-   Apply prepared description/topics/protection only through a supported authorized
-   administration path; verify anonymous access only after a visibility change.
+3. Retain the hosted synthetic dashboard-browser result at its tested SHA, inspect
+   original screenshots, then qualify live-data browser behavior separately. The source
+   is public, but licence, About metadata, branch protection, anonymous readback and
+   release-tag decisions remain for independent maintainer review.
 4. Before unattended local operation, define database/evidence retention, archival,
    disk limits, service supervision and recovery objectives. The current finite demo
    profile and Kafka retention setting do not implement complete local retention.
