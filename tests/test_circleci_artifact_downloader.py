@@ -17,11 +17,14 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from scripts.download_circleci_artifacts import (  # noqa: E402
+# The CLI helpers live under the checkout root, not the src-only package path.
+# Keep the test runnable as an installed pytest entry point; restrict E402 to
+# these two imports rather than disabling module-level import lint globally.
+from scripts.download_circleci_artifacts import (  # noqa: E402  # noqa: E402
     JOB_NUMBER, PROJECT, RestrictedRedirect, allowed_redirect, download,
     is_artifact_url, list_artifacts, safe_path,
 )
-from scripts.verify_circleci_artifacts import CHECKS, verify  # noqa: E402
+from scripts.verify_circleci_artifacts import CHECKS, verify  # noqa: E402  # noqa: E402
 
 JOB_ID = "424ad872-14fc-4952-ba99-970ee84cf7d7"
 SOURCE = "4bcc55ec470a752bac59dfa45f561dad0261d95e"
