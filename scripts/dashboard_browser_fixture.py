@@ -38,6 +38,12 @@ def dashboard_html() -> str:
       documentWidth: document.documentElement.scrollWidth,
       overflow: document.documentElement.scrollWidth > innerWidth + 1,
       status: get('status').textContent.trim(),
+      headerOverlap: (() => {
+        const desc = document.querySelector('header .muted').getBoundingClientRect();
+        const badge = get('status').getBoundingClientRect();
+        return desc.left < badge.right && desc.right > badge.left &&
+               desc.top < badge.bottom && desc.bottom > badge.top;
+      })(),
       cardCount: get('cards').querySelectorAll('.card').length,
       alertText: get('alerts').textContent,
       predictionText: get('predictions').textContent,

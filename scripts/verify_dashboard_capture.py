@@ -58,6 +58,8 @@ def main() -> int:
         raise AssertionError("Screenshot dimensions/size outside a real rendering")
     if data["overflow"]:
         raise AssertionError("Rendered page overflows the actual viewport")
+    if data["headerOverlap"]:
+        raise AssertionError("The status badge visually overlaps the header description")
     if data["externalResourceCount"] or data["executableImageCount"]:
         raise AssertionError("External resources or untrusted HTML execution observed")
     if args.viewport == "desktop" and data["viewport"] < 1100:
@@ -85,6 +87,7 @@ def main() -> int:
         "screenshot_width": width,
         "screenshot_height": height,
         "horizontal_overflow": data["overflow"],
+        "header_overlap": data["headerOverlap"],
         "rendered_summary_cards": data["cardCount"],
         "rendered_status": data["status"],
         "external_resources": data["externalResourceCount"],

@@ -30,7 +30,7 @@ th{color:#96a6ba;font-size:12px;text-transform:uppercase}code{font-size:11px;col
 details{padding:16px;border:1px solid #25374e;border-radius:10px;margin-top:15px}
 pre{white-space:pre-wrap;word-break:break-word;font-size:12px}
 footer{margin-top:30px;font-size:12px;color:#96a6ba}
-@media(max-width:800px){.cards{grid-template-columns:repeat(2,1fr)}header{display:block}}
+@media(max-width:800px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}header{display:flex;flex-direction:column;align-items:flex-start;gap:15px}#status{display:inline-flex;max-width:100%;align-items:center}}
 </style><main>
 <header><div><div class="eyebrow">Synthetic industrial fleet</div><h1>Maintenance Monitor</h1>
 <div class="muted">Machine risk, alert evidence and pipeline recovery in one view.</div></div>
