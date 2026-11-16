@@ -47,6 +47,12 @@ uv run --frozen pytest -q -m 'not integration'
 uv run --frozen ruff check src tests scripts databricks
 ```
 
+## Public-source security qualification
+
+The default CircleCI workflow additionally defines a small `publication-security` job. It fetches visible branches and tags, rejects shallow history, and captures the exact checkout/ref scope. Existing bounded secret-pattern checks cover current files and reachable Git blobs; installed package licence declarations and Python dependency advisories are reported separately. Original JSON reports remain as artifacts even on failure. This check does not start Kafka, Spark, MLflow, training, Databricks or a paid machine executor.
+
+**Evidence boundary:** a successful CI status is not an independent inspection of raw JSON. The scanner reports but does not inspect oversized/binary files, unreachable Git objects, opaque compressed contents or external services. Compare its skipped list with the separately retained decompressed-evidence review. No project licence has been selected; public visibility alone does not grant an open-source licence. The public status must not be presented as full provider or production acceptance.
+
 ## Hosted CircleCI unit verification — 15 November 2026
 
 | Lane | Observed result | Boundary |
