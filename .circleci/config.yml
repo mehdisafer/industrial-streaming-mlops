@@ -63,7 +63,7 @@ jobs:
           name: Scan sources, history and installed license declarations
           command: |
             uv run --frozen python scripts/security_inventory.py --scan-history --output artifacts/publication-security/security-inventory.json
-            uv run --frozen python - <<'PY'
+            uv run --frozen python - \<<'PY'
             import json
             from pathlib import Path
             report = json.loads(Path('artifacts/publication-security/security-inventory.json').read_text())
