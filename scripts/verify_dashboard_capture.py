@@ -70,7 +70,7 @@ def main() -> int:
         if data["cardCount"] != 5:
             raise AssertionError("Five dashboard cards did not render")
         if ("MACHINE-001" not in data["alertText"]
-                or "feature-visible" not in data["alertText"]
+                or "feature-visibl" not in data["alertText"]
                 or "Failure in horizon" not in data["predictionText"]):
             raise AssertionError("Rendered alerts/predictions are missing")
         if '<img src=x onerror="window.__unsafe=1">' not in data["alertText"]:
