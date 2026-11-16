@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "source_commit": "4bcc55ec470a752bac59dfa45f561dad0261d95e",
+  "workflow_id": "a1ff1428-da21-4550-afe2-8a7dc55d055c",
+  "job_id": "424ad872-14fc-4952-ba99-970ee84cf7d7",
+  "state": "unverified_historical_claims_are_not_sha256_lengths_65_65_65_66;_original_bytes_required_to_pin_correct_values",
+  "reported_invalid_digest_text": {
+    "run-receipt.json": "78b45855d20b1ab5c6784f59eff21dd8e42f2c0dedc345f8383cfc19312d148a9",
+    "final-verification.json": "5026ba8908142f6e21ca83a1ff2a03be6be63d9df3bb6f348a02723463d4383dd",
+    "lifecycle-assertions.json": "c9d805ba5503796db98a688e9b593de147744d2019455fe11b8d659811eb3c0de",
+    "recovery-assertions.json": "66589288bdba4bb79b6068baab056fa822fa1545df851779f407ce62e7ec42512e"
+  },
+  "expected_sha256": {}
+}
