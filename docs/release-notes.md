@@ -1,6 +1,6 @@
 # Prepared notes for v0.1.0-rc.1
 
-This is the private review candidate for an executable synthetic maintenance workflow.
+This is a **public source reference** for an executable synthetic maintenance workflow; the release candidate has not been tagged or published as a GitHub release.
 The notes are prepared for release review; no `v0.1.0-rc.1` tag or GitHub release has
 been published. [PR #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2),
 [follow-up PR #3](https://github.com/mehdisafer/industrial-streaming-mlops/pull/3)
@@ -70,20 +70,17 @@ commit for code that was actually executed.
   No quota purchase, Actions rerun or billing change is required.
 - **Databricks remains open.** It needs an authorized workspace, existing compute
   and storage, reachable Kafka and trusted artifacts, with a bounded run budget.
-- **Browser presentation remains open.** Chromium startup was blocked by an
-  environment Unix-socket restriction. No screenshot or layout acceptance is claimed.
-- The owner must select the repository license. No owner-approved LICENSE exists;
-  third-party components retain their own licenses. The repository remains private,
-  and public visibility requires its separate owner decision.
+- **Bounded browser presentation succeeded in CircleCI.** The [dashboard-browser job](https://app.circleci.com/workflow/3db01d8e-aad5-403c-ab43-d3a3bc6b8629/job/60e9d9c5-f51b-49fd-aed3-f4c474095c48) reported success on exact main commit `f83bec3` with synthetic Chrome desktop/narrow/outage views. The earlier local Chromium Unix-socket failure remains historical. Original screenshots have not been independently reviewed here, and live-stream UI acceptance is distinct.
+- GitHub reports the source repository **public as of 16 November 2026**. The owner has not selected a repository licence; public visibility does not confer an open-source reuse grant. Third-party components retain their own licences. Anonymous access and an accepted GitHub release remain separate verification gates.
 - Repository readbacks show description `null` and topics `[]`. The available
   integration exposes no supported metadata or release mutation tools, so the
   proposed settings and these release notes remain prepared material.
-- The rulesets endpoint returned HTTP 403 with an upgrade-or-public-visibility
-  requirement. The main-branch protection endpoint separately returned HTTP 403
-  because the resource was inaccessible to the integration. These are distinct
-  restrictions despite the repository readback showing the user's admin permission.
-  Neither response establishes the cause of the Actions failures. No plan upgrade,
-  public change, protection configuration or release publication is implied.
+- Earlier private-repository ruleset queries returned plan/visibility errors. A fresh
+  16 November GitHub rulesets query returns an empty list; the classic main-branch
+  protection endpoint still returns HTTP 403 for this integration. These observations
+  do not prove whether classic protections are active. Recent hosted GitHub Actions
+  runs have executed successfully after earlier pre-runner failures. No plan upgrade,
+  additional visibility change, protection modification or release publication is implied.
 
 The [original check/API receipts](evidence/checks/README.md) record those observations.
 The PR records the source review and verified merge state. Tag/release publication
