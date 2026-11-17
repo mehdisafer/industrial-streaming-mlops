@@ -16,7 +16,8 @@ import tomllib
 from zipfile import ZipFile
 
 PROJECT = "industrial-streaming-mlops"
-PACKAGE = "industrial_mlops"
+DISTRIBUTION = "industrial_streaming_mlops"  # Wheel/dist-info distribution name
+PACKAGE = "industrial_mlops"  # Importable package name, intentionally different
 TAG = "v0.1.0-rc.1"
 TAG_PATTERN = re.compile(r"^v(\d+\.\d+\.\d+)-rc\.(\d+)$")
 
@@ -74,10 +75,10 @@ def inspect_source(root: Path) -> dict:
 def inspect_wheel(root: Path, wheel: Path) -> dict:
     source = inspect_source(root)
     version = source["version"]
-    if wheel.name != f"{PACKAGE}-{version}-py3-none-any.whl":
+    if wheel.name != f"{DISTRIBUTION}-{version}-py3-none-any.whl":
         raise ValueError(f"unexpected prerelease wheel filename: {wheel.name}")
     data = wheel.read_bytes()
-    dist_info = f"{PACKAGE}-{version}.dist-info"
+    dist_info = f"{DISTRIBUTION}-{version}.dist-info"
     with ZipFile(wheel) as archive:
         names = archive.namelist()
         if len(names) != len(set(names)):

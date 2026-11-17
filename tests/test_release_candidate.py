@@ -10,7 +10,9 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from scripts.check_release_candidate import inspect_source, inspect_wheel  # noqa: E402
+from scripts.check_release_candidate import (  # noqa: E402
+    DISTRIBUTION, PACKAGE, inspect_source, inspect_wheel,
+)
 
 VERSION = "0.1.0rc1"
 TAG = "v0.1.0-rc.1"
@@ -19,8 +21,8 @@ TAG = "v0.1.0-rc.1"
 def fixture_wheel(folder: Path, *, metadata_version: str = VERSION,
                   include_notice: bool = True, notice_override: bytes | None = None) -> Path:
     folder.mkdir(parents=True, exist_ok=True)
-    wheel = folder / f"industrial_mlops-{VERSION}-py3-none-any.whl"
-    prefix = f"industrial_mlops-{VERSION}.dist-info"
+    wheel = folder / f"industrial_streaming_mlops-{VERSION}-py3-none-any.whl"
+    prefix = f"industrial_streaming_mlops-{VERSION}.dist-info"
     with ZipFile(wheel, "w") as archive:
         archive.writestr(
             f"{prefix}/METADATA",
@@ -45,6 +47,11 @@ def fixture_wheel(folder: Path, *, metadata_version: str = VERSION,
                 notice_override if notice_override is not None else (ROOT / "NOTICE").read_bytes(),
             )
     return wheel
+
+
+def test_distribution_and_importable_package_are_distinct() -> None:
+    assert DISTRIBUTION == "industrial_streaming_mlops"
+    assert PACKAGE == "industrial_mlops"
 
 
 def test_source_lock_module_and_prepared_tag_agree() -> None:

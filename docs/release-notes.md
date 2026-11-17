@@ -16,9 +16,10 @@ claim that the release or any PyPI package has already been published.
 
 CircleCI `build-and-test` is configured to run `uv lock --check`, build an
 isolated wheel and inspect its actual package/version metadata, entry point,
-SPDX licence, and exact embedded `LICENSE` and `NOTICE` bytes. The inspected
-wheel is retained as a CI artifact, not automatically published to a package
-index. Verify that the job has actually passed on the reviewed candidate SHA
+SPDX licence, and exact embedded `LICENSE` and `NOTICE` bytes. The expected wheel distribution name is `industrial_streaming_mlops`,
+while the importable package is `industrial_mlops`; CircleCI must check the
+actual built artifact, not a synthetic filename. The inspected wheel is
+retained as a CI artifact, not automatically published to a package index. Verify that the job has actually passed on the reviewed candidate SHA
 before claiming a releasable wheel, and bind any subsequent GitHub prerelease
 to a single reviewed `main` SHA.
 
