@@ -35,7 +35,7 @@ separates the completed local checks from the remaining platform and release gat
 | Area | Current boundary |
 |---|---|
 | Application tests | **355 passed, 0 failures/errors/skips** in original JUnit on RC1 source [`2a75cb05`](docs/evidence/hosted-rc1-2026-11-17/README.md). Older source-specific results remain **333** on `185c415` and **294** on `daaa5b8`. |
-| Native Kafka/Spark/MLflow and recovery | **21 checks passed** on the current reviewed source; [fresh service evidence](docs/evidence/followup/native/qualification.json) |
+| Native Kafka/Spark/MLflow and recovery | **21 native checks passed** on historical source `daaa5b8`; [source-bound receipts](docs/evidence/followup/native/qualification.json). The newer RC1 real Docker protocol has its own independent 6/6 checks at `2a75cb05`. |
 | Restored backlog and new input | **28 checks passed**: retained backlog, fresh input, immutable history and owned-process cleanup; [restoration evidence](docs/evidence/followup/README.md#restored-backlog-and-fresh-input-proof) |
 | Model evaluation | Baseline and candidate met the recorded synthetic holdout gates; [original evaluation](docs/evidence/model/README.md) |
 | Streaming comparison | Four measured variants; exact business-output parity across the three 24-hour variants; [benchmark evidence](docs/evidence/benchmark/README.md) |
@@ -361,8 +361,9 @@ No Databricks execution is claimed from these local tests.
 - [Release preparation and publication decisions](docs/release-notes.md)
 - [Python dependency lock](uv.lock) and [JVM connector lock](config/spark-jars.lock.json)
 
-The next milestones are independent integrity checks of the original hosted Docker
-artifacts, authorized Databricks qualification and broader live-data and
+The next milestones are original **historical CircleCI job #13** artifact-byte
+verification (separate from the now-rehashed RC1 GitHub Actions Docker archives),
+authorized Databricks qualification and broader live-data and
 operator/accessibility review. The
 [original real-Chrome screenshot artifacts](docs/evidence/browser-2026-11-16/README.md)
 from the synthetic desktop/narrow/outage test have been **independently downloaded,
