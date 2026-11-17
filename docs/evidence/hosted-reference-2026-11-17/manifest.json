@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "kind": "original-hosted-artifact-reinspection",
+  "repo": "mehdisafer/industrial-streaming-mlops",
+  "source_commit": "185c41508c937addb39b9c827a817f67e5b8519f",
+  "github_actions_run_id": 43983190446,
+  "workflow": "Verify local reference",
+  "run_conclusion": "success",
+  "run_jobs": [
+    "checks",
+    "real-integration",
+    "Rendered dashboard (real Chrome)"
+  ],
+  "artifacts": {
+    "integration": {
+      "artifact_id": 14283867927,
+      "sha256": "07b68e1d6c9fe4eaa1696ece71711250868885e13882d15c75953b99dee0a229",
+      "downloaded_bytes": 163224,
+      "members": 57,
+      "selected_member_sha256": {
+        "commit.txt": "e67758fe4077c8e836258e2836dfa2ca35692bb037d510b9dc142535cf3e5d01",
+        "run-receipt.json": "281d5f80efba62aa51588678e32d1ca208c0c00011afc30b9fc90c4266773ad6",
+        "final-verification.json": "5fbdee8f4e0bb5a35a3e8a90ee8a1d88d7afc6672fac2097ba80e0f740ce1cd8",
+        "lifecycle-assertions.json": "f7529c451363255756e2606daa26d27e2499f7866511569e2dacec923e2f884e",
+        "recovery-assertions.json": "6abfcc757924350c5704142267ec39ea2ff7a67972f969f032d775188ec50f66",
+        "runtime-inventory-capture.json": "0772c8886cb443ed68b7cd6f27a32542ba95cd692aa2cfdc536d3230b6cc29bc"
+      }
+    },
+    "checks": {
+      "artifact_id": 14284166574,
+      "sha256": "60f13fd0fd7e52209378eed04da295302601fd53c0da0c4a0a46ae4897b09da3",
+      "downloaded_bytes": 14887,
+      "members": 5,
+      "selected_member_sha256": {
+        "commit.txt": "e67758fe4077c8e836258e2836dfa2ca35692bb037d510b9dc142535cf3e5d01",
+        "tests.xml": "1de0f3a522125d1e7ae212cec2bfc221b93c504fa4ac57517a5cd66f49d64952",
+        "security-inventory.json": "a9c16d6b4b1c35effd166908bdf4a8045f2124a4447f2925dd2c24e05b30cd32",
+        "dependency-audit.json": "c3aa64d9fa8ef53f2edcb81997940af9aa60b9c6081112067e26042a1df81b61"
+      }
+    }
+  },
+  "inspection": {
+    "archive_crc_errors": 0,
+    "duplicate_paths": 0,
+    "unsafe_paths": 0,
+    "commit_file_matches_source": true,
+    "tests": {
+      "tests": 333,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "elapsed_seconds": 23.074
+    },
+    "native_docker": {
+      "stage": "complete",
+      "exit_code": 0,
+      "cleanup_exit_code": 0,
+      "runtime_inventory": "complete",
+      "raw_initial": 2317,
+      "raw_new_after_rollback": 196,
+      "raw_final": 2513,
+      "accepted_events": 1249,
+      "labels": 1249,
+      "control": 8,
+      "rejected": 6,
+      "duplicates": 1,
+      "predictions": 1225,
+      "features": 1225,
+      "alerts": 7,
+      "pending_events": 0,
+      "pending_predictions": 0,
+      "business_check_count": 6,
+      "business_checks_all_true": true,
+      "rollback_observed": true,
+      "scored_model_versions": {
+        "1": 84,
+        "2": 1141
+      },
+      "final_kafka_lag_offsets": 0,
+      "named_checks": [
+        "accepted_events_balance",
+        "alerts_have_predictions",
+        "labels_balance",
+        "predictions_have_features",
+        "source_dispositions_balance",
+        "sqlite_integrity"
+      ]
+    },
+    "runtime_inventory": {
+      "all_three_captured_hashes_match": true,
+      "files": {
+        "runtime-inventory/runtime-jars.json": "badfb2f73f4172871878ef69bf56a9acc80804a20bc4532b62c45590881a6caa",
+        "runtime-inventory/os-packages.tsv": "2a1e2811f030f49c8c54852af10b6d6b21b5cff573ff7ab6e69be3456d60b954",
+        "runtime-inventory/java-version.txt": "590eddebecaa429a23d7699fa2106305c1e9ac50424a61a3d8b94f5b14f19e7f"
+      }
+    },
+    "source_security": {
+      "worktree_files_scanned": 351,
+      "reachable_history_blobs_scanned": 462,
+      "scanner_findings": 0,
+      "declared_skipped_overlimit_files": 0,
+      "dependency_audit_entries": 123,
+      "reported_packages_with_advisories": 0,
+      "locked_component_inventory_entries": 126,
+      "not_installed_on_runner": 3,
+      "license_metadata_review_required": [
+        "colorama",
+        "huey",
+        "pywin32",
+        "waitress"
+      ],
+      "installed_license_metadata_review_required": [
+        "huey"
+      ],
+      "strong_copyleft_declarations_observed": 0
+    }
+  },
+  "limitations": [
+    "This is a reinspection of original downloaded GitHub Actions ZIP artifacts, not a rerun of the services.",
+    "CircleCI remains CI of record; the original CircleCI Docker job #13 artifact bytes remain independently unverified.",
+    "One single-host synthetic Kafka/Spark/MLflow Docker reference; not Databricks, distributed capacity or real-plant predictions.",
+    "The initial verification at 2317 raw and final verification at 2513 raw are intentionally different stages; 196 new rollback records explain the difference.",
+    "Pattern-based secret checks and package metadata/known advisory scanning do not certify complete security or license compliance.",
+    "The four historically malformed CircleCI SHA-256 strings remain invalid; this manifest contains SHA-256 of a different original GitHub Actions run.",
+    "Raw ZIP files and potentially sensitive diagnostic logs are not redistributed by this manifest; GitHub Actions retention is separate."
+  ]
+}
