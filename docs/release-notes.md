@@ -72,14 +72,14 @@ commit for code that was actually executed.
 - **Databricks remains open.** It needs an authorized workspace, existing compute
   and storage, reachable Kafka and trusted artifacts, with a bounded run budget.
 - **Bounded browser presentation succeeded in CircleCI** on reviewed source. The original real Chrome 157 desktop/narrow/outage [artifact and its source provenance](evidence/browser-2026-11-16/README.md) were subsequently independently rehashed and the three screenshots visually inspected. Those screenshots use the real application HTML with **synthetic API data**; they do not demonstrate a browser connected directly to live Kafka services.
-- GitHub reports the repository **public and anonymously readable**, with the maintainer-approved **Apache-2.0** recognized by GitHub on `185c415` and present in [LICENSE](../LICENSE), [NOTICE](../NOTICE) and SPDX package metadata. Third-party upstream rights still require separate review. Repository description, topics, `main` protection and a published GitHub Release remain open.
+- GitHub reports the source repository **public as of 16 November 2026**, with independent anonymous repository/README readback. The maintainer has explicitly selected **Apache-2.0** for the original project; the [full license](../LICENSE), [NOTICE](../NOTICE), and package's SPDX metadata are included in this candidate. Third-party components retain their own licences and require a separate notice/compliance review. GitHub's **post-merge licence recognition is now independently observed** as `Apache-2.0` on 17 November 2026. A repository branch ruleset, owner-applied About metadata and a published GitHub release remain separate and **not completed**.
 - Repository readbacks show description `null` and topics `[]`. The available
   integration exposes no supported metadata or release mutation tools, so the
   proposed settings and these release notes remain prepared material.
 - Earlier private-repository ruleset queries returned plan/visibility errors. A fresh
-  16 November GitHub rulesets query returns an empty list; the classic main-branch
-  protection endpoint still returns HTTP 403 for this integration. These observations
-  do not prove whether classic protections are active. Recent hosted GitHub Actions
+  17 November GitHub rulesets query returns an empty list **and** the branch
+  endpoint reports `main.protected=false`. The classic branch-protection details
+  endpoint still returns HTTP 403; no classic protection is inferred as active. Recent hosted GitHub Actions
   runs have executed successfully after earlier pre-runner failures. No plan upgrade,
   additional visibility change, protection modification or release publication is implied.
 
