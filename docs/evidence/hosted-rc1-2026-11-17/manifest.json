@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "kind": "independently-reinspected-original-github-actions-artifacts",
+  "repository": "mehdisafer/industrial-streaming-mlops",
+  "observed_on": "2026-11-17",
+  "source_commit": "2a75cb05c27d3303b90daab8d6424eb2c7a0e2b6",
+  "github_actions_run_id": 44173769693,
+  "workflow": "Verify local reference",
+  "workflow_conclusion": "success",
+  "retention": "downloaded originals kept outside public repository; this manifest preserves original ZIP and selected file SHA-256",
+  "ci_policy": "CircleCI remains the required CI; this GitHub Actions run is supplementary source-bound evidence",
+  "artifacts": {
+    "integration": {
+      "id": 14369341669,
+      "downloaded_zip_bytes": 162345,
+      "original_files": 57,
+      "zip_sha256": "a0a847f9c75c69155d817d51351e29988fde7ca87ca79da3d48887b4ae89ab78",
+      "selected_member_sha256": {
+        "commit.txt": "ac9a953fa6f0363598fd0d325aa96eae7d7433aabe2ea18da465ede7ad91c683",
+        "run-receipt.json": "77061caf6078636c51a541df319ac25db6589b6c061ca5db43bf2dde6b3919da",
+        "verification.json": "34ccd08c732c888edf5b9f3368afad5bac4647a0cd5f330e75399e9a0153b77d",
+        "final-verification.json": "5fbdee8f4e0bb5a35a3e8a90ee8a1d88d7afc6672fac2097ba80e0f740ce1cd8",
+        "rollback-producer.json": "cde94742fd69d69c636dbc44dbf7195da07ae7e0ffe85d6ec80e9d3c714157c0",
+        "lifecycle-assertions.json": "f7529c451363255756e2606daa26d27e2499f7866511569e2dacec923e2f884e",
+        "recovery-assertions.json": "6abfcc757924350c5704142267ec39ea2ff7a67972f969f032d775188ec50f66",
+        "runtime-inventory-capture.json": "0772c8886cb443ed68b7cd6f27a32542ba95cd692aa2cfdc536d3230b6cc29bc"
+      }
+    },
+    "checks": {
+      "id": 14368946478,
+      "downloaded_zip_bytes": 15252,
+      "original_files": 5,
+      "zip_sha256": "e66d38142e99ff0e190d3082b92489e44e9d533715362b3db63be39b5c7592b9",
+      "selected_member_sha256": {
+        "commit.txt": "ac9a953fa6f0363598fd0d325aa96eae7d7433aabe2ea18da465ede7ad91c683",
+        "tests.xml": "2c7ee9e0ae6caf66964d8eb61ca839d97ee5e627287a95e814d8498002b11236",
+        "security-inventory.json": "abef01145b1705b08e14563018c4994a5965bb03c1c091b9888362e281f3cfb0",
+        "dependency-audit.json": "c3aa64d9fa8ef53f2edcb81997940af9aa60b9c6081112067e26042a1df81b61"
+      }
+    },
+    "browser": {
+      "id": 14367949523,
+      "downloaded_zip_bytes": 218952,
+      "original_files": 19,
+      "zip_sha256": "fb1eccb7fc9c869185f4d62ff6fe911c515f431c8c81b0b4d7f3ef1fdcd15e7c",
+      "selected_member_sha256": {
+        "source-commit.txt": "ac9a953fa6f0363598fd0d325aa96eae7d7433aabe2ea18da465ede7ad91c683",
+        "summary.json": "d9d833db8a3e1723ba8339ecb992e611443acdfedc9106be4417c312ac6ebd9f",
+        "healthy-desktop.png": "1787d7001d6f847b7ea1f06086db443f5f23ec3b06f94187848b4261353d31eb",
+        "healthy-narrow.png": "94d8f215a069630fcecec34e862b9afcbc878b1ef10ef76698888cd6399cc1c2",
+        "unavailable-desktop.png": "3041e000638b5974e80f6d40f9f0e4c02c9449213100813a21325ce30175d480"
+      }
+    }
+  },
+  "independent_reinspection": {
+    "zip_crc_errors": 0,
+    "duplicate_member_paths": 0,
+    "unsafe_member_paths": 0,
+    "all_original_commit_markers_match": true,
+    "tests": {
+      "tests": 355,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "original_junit_testcases": 355
+    },
+    "docker": {
+      "stage": "complete",
+      "exit_code": 0,
+      "cleanup_exit_code": 0,
+      "initial_raw": 2317,
+      "rollback_published_raw": 196,
+      "final_raw": 2513,
+      "accepted_sensors": 1249,
+      "labels": 1249,
+      "control": 8,
+      "rejected": 6,
+      "duplicates": 1,
+      "features": 1225,
+      "predictions": 1225,
+      "alerts": 7,
+      "pending_events": 0,
+      "pending_predictions": 0,
+      "named_business_invariants": 6,
+      "invariants_true_initial_and_final": true,
+      "rollback_observed": true,
+      "real_prediction_versions": {
+        "1": 84,
+        "2": 1141
+      },
+      "final_source_lag_offsets": 0,
+      "final_lag_observed_partitions": 3,
+      "runtime_inventory_copies_sha256_match": true,
+      "runtime_inventory_items": 3,
+      "lifecycle_and_service_evidence_copies_match": true
+    },
+    "security": {
+      "source_worktree_files_inspected": 359,
+      "reachable_history_blobs_inspected": 508,
+      "pattern_matched_secrets": 0,
+      "dependency_entries": 123,
+      "published_vulnerability_records": 0,
+      "inventory_components": 126,
+      "metadata_review_required": [
+        "colorama",
+        "huey",
+        "pywin32",
+        "waitress"
+      ],
+      "complete_legal_clearance": false
+    },
+    "chrome": {
+      "real_browser": true,
+      "synthetic_API_fixture": true,
+      "scenarios_passed": 3,
+      "original_images_and_html_sha256_verified": true,
+      "desktop_screenshot_px": [
+        1440,
+        1000
+      ],
+      "narrow_screenshot_px": [
+        600,
+        850
+      ],
+      "unavailable_screenshot_px": [
+        1440,
+        1000
+      ],
+      "no_document_horizontal_overflow": true,
+      "no_header_overlap": true
+    }
+  },
+  "limitations": [
+    "This is a read-only original ZIP reinspection; Kafka/Spark/MLflow were executed by the recorded hosted job, not rerun by the auditor.",
+    "The original CircleCI reference-containers job #13 artifacts remain unauthenticated; newer GHA ZIPs do not retroactively authenticate those bytes.",
+    "CircleCI stays required CI. The source-bound 355-test original JUnit does not prove production or provider acceptance.",
+    "Neither the original CI security JSON nor dependency inventory certifies the absence of unknown secrets or vulnerabilities, or full third-party redistribution rights.",
+    "The GHA checks archive does not include the separate CircleCI compressed-evidence inventory JSON from PR #20.",
+    "The browser evidence uses real Chrome with synthetic API snapshots, not browser-to-Kafka end-to-end integration.",
+    "Databricks/Unity Catalog, multi-host HA, industrial production, and maintainer/third-party independent sign-off remain unqualified.",
+    "Original ZIP files and raw service logs are not committed to this public repository."
+  ]
+}
