@@ -88,6 +88,11 @@ jobs:
             python -m pip install --disable-pip-version-check uv==0.13.6
             uv sync --frozen --all-extras --python 3.11
       - run:
+          name: Inventory tracked archives and scan compressed evidence
+          command: |
+            uv run --frozen python -m scripts.repository_archive_inventory \
+              --output artifacts/publication-security/archive-inventory.json
+      - run:
           name: Scan sources, history and installed license declarations
           command: |
             uv run --frozen python scripts/security_inventory.py --scan-history --output artifacts/publication-security/security-inventory.json
