@@ -4,11 +4,16 @@ from __future__ import annotations
 import gzip
 import hashlib
 from pathlib import Path
+import sys
 
-from scripts.repository_archive_inventory import (
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from scripts.repository_archive_inventory import (  # noqa: E402
     TrackedBlob,
     git_blob_oid,
     inspect_tracked_archives,
+    parse_git_tree,
 )
 
 
@@ -97,3 +102,11 @@ def test_compressed_file_with_unreviewed_extension_is_rejected(tmp_path: Path) -
     result = inspect_tracked_archives(tmp_path, [blob])
     assert result["status"] == "failed"
     assert result["errors"][0]["reason"] == "unreviewed_compressed_path_or_mode"
+
+
+def test_git_ls_tree_parser_handles_padded_sizes() -> None:
+    oid = "a" * 40
+    entry = f"100644 blob {oid}       14\\tdocs/evidence/a.log.gz\\0".encode()
+    assert parse_git_tree(entry) == [
+        TrackedBlob("docs/evidence/a.log.gz", oid, 14)
+    ]
