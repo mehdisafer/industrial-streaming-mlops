@@ -14,14 +14,24 @@ Python distribution version is **`0.1.0rc1`** (PEP 440). `pyproject.toml`,
 intentionally use the Python form. The GitHub tag is a repository label, not a
 claim that the release or any PyPI package has already been published.
 
-CircleCI `build-and-test` is configured to run `uv lock --check`, build an
-isolated wheel and inspect its actual package/version metadata, entry point,
-SPDX licence, and exact embedded `LICENSE` and `NOTICE` bytes. The expected wheel distribution name is `industrial_streaming_mlops`,
-while the importable package is `industrial_mlops`; CircleCI must check the
-actual built artifact, not a synthetic filename. The inspected wheel is
-retained as a CI artifact, not automatically published to a package index. Verify that the job has actually passed on the reviewed candidate SHA
-before claiming a releasable wheel, and bind any subsequent GitHub prerelease
-to a single reviewed `main` SHA.
+CircleCI `build-and-test` runs `uv lock --check`, builds a real wheel
+and inspects its exact package/version metadata, Apache-2.0 expression,
+embedded `LICENSE`/`NOTICE` bytes and CLI entry point. The wheel distribution
+name is `industrial_streaming_mlops`, distinct from the importable package
+`industrial_mlops`.
+
+The merged baseline source [`a6b4d97`](https://github.com/mehdisafer/industrial-streaming-mlops/commit/a6b4d972afe141048bf63d931b9582d9b14051c8)
+passed all three CircleCI jobs, with **339 Python tests** and a built
+`industrial_streaming_mlops-0.1.0rc1-py3-none-any.whl`. These are source-bound
+observations, not a new Docker or Databricks run.
+
+The hardened RC inspector additionally compares **every packaged Python module**
+byte-for-byte with the checked-out source, checks the complete PEP 427
+`RECORD` SHA-256/size inventory, rejects unsafe or unexpected archive members,
+and parses the console entry point strictly. These additional checks require
+their own passing CircleCI run on the final candidate SHA before publication.
+The wheel and JSON inspection are CI artifacts, not automatically published
+packages. Bind any subsequent GitHub prerelease to one reviewed `main` SHA.
 
 ## Intended outcome and changes
 
