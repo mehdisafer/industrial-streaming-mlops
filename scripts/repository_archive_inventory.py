@@ -33,18 +33,15 @@ class TrackedBlob:
     mode: str = "100644"
 
 
-def tracked_blobs(root: Path) -> list[TrackedBlob]:
-    """Read exact Git HEAD blob records, including original Git object IDs."""
-    listing = subprocess.check_output(
-        ["git", "-C", str(root), "ls-tree", "-r", "-l", "-z", "HEAD"],
-        stderr=subprocess.PIPE,
-    )
+def parse_git_tree(listing: bytes) -> list[TrackedBlob]:
+    """Parse padded git ls-tree -l records without assuming single spaces."""
     result: list[TrackedBlob] = []
     for record in listing.split(b"\0"):
         if not record:
             continue
         metadata, raw_path = record.split(b"\t", 1)
-        mode, kind, oid, size = metadata.split(b" ")
+        # Git right-aligns object sizes: whitespace is not a single ASCII space.
+        mode, kind, oid, size = metadata.split()
         if kind != b"blob":
             continue
         result.append(
@@ -52,6 +49,15 @@ def tracked_blobs(root: Path) -> list[TrackedBlob]:
                         int(size), mode.decode("ascii"))
         )
     return result
+
+
+def tracked_blobs(root: Path) -> list[TrackedBlob]:
+    """Read exact Git HEAD blob records, including original Git object IDs."""
+    listing = subprocess.check_output(
+        ["git", "-C", str(root), "ls-tree", "-r", "-l", "-z", "HEAD"],
+        stderr=subprocess.PIPE,
+    )
+    return parse_git_tree(listing)
 
 
 def git_blob_oid(payload: bytes) -> str:
