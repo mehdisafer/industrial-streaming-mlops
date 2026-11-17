@@ -7,7 +7,26 @@ Its Python unit lane and separate Docker reference job succeeded on specified
 source commits, but Docker artifact byte verification remains open. All fleet data is
 synthetic. No industrial production reliability or distributed capacity is claimed.
 
-## Source-bound hosted evidence — 17 November 2026
+## Current RC1 source-bound original hosted evidence — 17 November 2026
+
+The current [original run 44173769693 audit](hosted-rc1-2026-11-17/README.md)
+is bound to executable source `2a75cb05`, which already declares Python
+`0.1.0rc1`. All **three original GitHub Actions ZIPs** were downloaded and
+rehashed: 57-file real Docker integration, 5-file Python/security receipt and
+19-file real Chrome presentation. Original JUnit has **355 passing tests**.
+The real Kafka/Spark/HTTP MLflow Docker receipts verify **6/6 business checks**,
+2,513 final raw records, 1,225 predictions, seven alerts, rollback, zero final
+lag across three partitions, and cleanup exit code 0. Original security scans
+recorded no pattern matches in their scoped checks and no published advisories
+among 123 dependency entries. The exact archive and selected file SHA-256 values
+are [versioned](hosted-rc1-2026-11-17/manifest.json); raw logs remain outside
+this public repository.
+
+This is additional GHA evidence, **not** a replacement for CircleCI's required
+CI or for historical job #13 original artifact bytes. Live Databricks remains
+unqualified, and complete binary redistribution clearance remains open.
+
+## Earlier licensed-source hosted evidence — 17 November 2026
 
 The [licensed-main original artifact audit](hosted-reference-2026-11-17/README.md)
 independently rehashed original GitHub Actions archives from source `185c415`:
@@ -40,7 +59,7 @@ delivery. They are not relabelled with the new execution commit or timing.
 
 | Scope | Observed result | Original evidence |
 | --- | --- | --- |
-| Current application correctness | 333 tests passed on `185c415`; earlier 294 tests passed on `daaa5b8` | [Original hosted JUnit and file hashes](hosted-reference-2026-11-17/README.md), [earlier local suite](followup/README.md) |
+| Latest RC1 application correctness | **355 tests passed** on `2a75cb05`; earlier 333 on `185c415` and 294 on `daaa5b8` remain source-bound | [RC1 original XML and hashes](hosted-rc1-2026-11-17/README.md), [earlier licensed source](hosted-reference-2026-11-17/README.md), [native suite](followup/README.md) |
 | Current native recovery and rollback | 21 checks passed on reviewed source `daaa5b8` | [Fresh native receipts](followup/native/qualification.json) |
 | Restored retained backlog and fresh input | 28 checks passed; 303 retained + 303 fresh records, 1,965 final predictions | [Restoration receipts](followup/restore/restore-qualification.json) |
 | Original application checks | 110 tests passed; Ruff passed | [Historical checks and JUnit](checks/README.md) |
@@ -51,7 +70,7 @@ delivery. They are not relabelled with the new execution commit or timing.
 | Current dependency review | 123 dependency entries audited on `185c415` with no known advisories reported; four licence metadata flags have version-bound upstream source review but no complete distribution clearance | [Original checks archive](hosted-reference-2026-11-17/README.md), [four upstream licence sources](third-party-licensing-2026-11-17/README.md), [prior 15 November audit](followup/checks/dependency-audit.json) |
 | Earlier failures | Original failed/intermediate attempts and corrective scope retained | [Attempt history](attempts/README.md) |
 | CircleCI Python unit CI | `build-and-test` succeeded on `579cbc5` and `ce7674c`; CI JUnit assertion counts not independently read | [CircleCI #5](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/5?useNewPipelines=false), [#7](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/7?useNewPipelines=false), [PR #4](https://github.com/mehdisafer/industrial-streaming-mlops/pull/4) |
-| Docker container qualification | CircleCI `reference-containers` succeeded on `4bcc55e`; separate real GitHub Actions Docker integration succeeded on `185c415` with **original ZIP bytes rehashed** | [Current-source original Docker receipts](hosted-reference-2026-11-17/README.md); [historical CircleCI artifact boundary](circleci/README.md) remains unverified |
+| Docker container qualification | Original **real GHA Docker Kafka–Spark–MLflow** on RC1 `2a75cb05` passed with archive bytes independently rehashed; historical CircleCI Docker #13 succeeded on `4bcc55e` but original bytes remain unauthenticated | [RC1 original ZIP receipts](hosted-rc1-2026-11-17/README.md), [earlier GHA source](hosted-reference-2026-11-17/README.md), [CircleCI artifact boundary](circleci/README.md) |
 | Historical GitHub Actions (non-gating) | Runner ID 0, no steps; maintainer reports quota exhausted. CircleCI replaces it for P03 acceptance; provider annotation was not independently retrieved | [Original runner evidence](checks/README.md#ci-helpers-and-hosted-execution) |
 | Databricks | Bundle and adapter prepared; no authorized provider run | [Provider prerequisites](../databricks.md) |
 
