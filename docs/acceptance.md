@@ -53,6 +53,10 @@ The default CircleCI workflow additionally defines a small `publication-security
 
 **Evidence boundary:** a successful CI status is not an independent inspection of raw JSON. The scanner reports but does not inspect oversized/binary files, unreachable Git objects, opaque compressed contents or external services. Compare its skipped list with the separately retained decompressed-evidence review. The maintainer selected **Apache-2.0** for original project source and documentation; third-party dependencies retain separate rights, and the scanner is not legal clearance. Public visibility and licensing do not establish provider or production acceptance.
 
+## Version-bound upstream licence metadata review — 17 November 2026
+
+Four package metadata flags from the licensed-main [source-security inventory](evidence/hosted-reference-2026-11-17/README.md) have a [bounded upstream provenance review](evidence/third-party-licensing-2026-11-17/README.md) using original version-tagged license files and Git blob hashes: `huey==3.5.4` (installed, upstream MIT-style terms), `colorama==0.4.6` (not installed, BSD-style three clauses), `waitress==3.0.2` (not installed, ZPL 2.1), and `pywin32==312` (not installed, several component licence files). No vendored binary/archive extensions were present in the checked P03 source tree. This narrows the four **metadata exceptions**, but does **not** complete notice review for built wheels, container images, JVM artifacts or all transitive licenses. Public source licensing remains Apache-2.0; no provider acceptance is inferred.
+
 ## Hosted CircleCI unit verification — 15 November 2026
 
 | Lane | Observed result | Boundary |

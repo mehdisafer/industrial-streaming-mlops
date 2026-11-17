@@ -383,8 +383,10 @@ licensed under the [Apache License, Version 2.0](LICENSE) (SPDX:
 Third-party dependencies, JVM libraries, images and services retain their own
 licenses and notices; the Apache-2.0 project license does **not** relicense those
 separate components. Dependency versions are retained in [uv.lock](uv.lock) and
-[the JVM lock](config/spark-jars.lock.json). The source-only security/licence
-inventory is a review input, not a legal compliance certification.
+[the JVM lock](config/spark-jars.lock.json). The [targeted upstream licence
+provenance review](docs/evidence/third-party-licensing-2026-11-17/README.md)
+records four flagged Python dependencies at version-pinned sources; it is **not**
+a complete licence-compliance certification for distributed wheels or images.
 
 No client code, identifiers or data are used. The synthetic generator has no
 third-party dataset dependency. Repository administration, releases, Databricks
