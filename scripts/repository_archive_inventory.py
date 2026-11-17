@@ -111,7 +111,8 @@ def inspect_tracked_archives(
             decoded = decoded_bytes.decode("utf-8")
         except (OSError, EOFError, UnicodeError, ValueError) as exc:
             # Preserve reason category, never raw compressed data or secret values.
-            reason = str(exc) if isinstance(exc, ValueError) else type(exc).__name__
+            # UnicodeDecodeError is also a ValueError; never emit raw decoding excerpts.
+            reason = str(exc) if type(exc) is ValueError else type(exc).__name__
             errors.append({"path": path, "reason": reason})
             continue
 
