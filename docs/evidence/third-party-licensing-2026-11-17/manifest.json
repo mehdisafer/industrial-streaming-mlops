@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "repo": "mehdisafer/industrial-streaming-mlops",
+  "observed_on": "2026-11-17",
+  "source_lock": "uv.lock",
+  "source_commit": "185c41508c937addb39b9c827a817f67e5b8519f",
+  "newer_main_commit_at_review": "0166edb790941b6a15f8e2d33cb8ebf14fdff719",
+  "scan_source": "GitHub Actions checks artifact 14284166574, run 43983190446",
+  "scope": "Four packages flagged for missing SPDX/license metadata on a Python 3.11 Linux runner; upstream license source review only",
+  "declared_binaries_committed_to_repo": 0,
+  "scanned_binary_patterns": [
+    ".jar",
+    ".whl",
+    ".so",
+    ".dll",
+    ".exe",
+    ".zip",
+    ".tar",
+    ".gz"
+  ],
+  "package_flags": [
+    {
+      "name": "huey",
+      "locked_version": "3.5.4",
+      "installed_on_runner": true,
+      "upstream": "coleifer/huey",
+      "upstream_ref": "3.5.4",
+      "upstream_license_path": "LICENSE",
+      "git_blob": "6bd3561c694aa763d0f6527726d524305b4f46a5",
+      "observed_license": "MIT-style permissive grant",
+      "review_status": "upstream license located; original installed dist metadata lacks declaration"
+    },
+    {
+      "name": "colorama",
+      "locked_version": "0.4.6",
+      "installed_on_runner": false,
+      "upstream": "tartley/colorama",
+      "upstream_ref": "0.4.6",
+      "upstream_license_path": "LICENSE.txt",
+      "git_blob": "3105888ec149d10cad51c11d332779e94b548661",
+      "observed_license": "BSD three-clause style redistribution and attribution conditions",
+      "review_status": "upstream license located; optional/platform package not installed on this runner"
+    },
+    {
+      "name": "waitress",
+      "locked_version": "3.0.2",
+      "installed_on_runner": false,
+      "upstream": "Pylons/waitress",
+      "upstream_ref": "v3.0.2",
+      "upstream_license_path": "LICENSE.txt",
+      "git_blob": "e1f9ad7b3b48377bfbfaa1b380c384ddea24060f",
+      "observed_license": "Zope Public License Version 2.1",
+      "review_status": "upstream license located; optional/platform package not installed on this runner"
+    },
+    {
+      "name": "pywin32",
+      "locked_version": "312",
+      "installed_on_runner": false,
+      "upstream": "mhammond/pywin32",
+      "upstream_ref": "b312",
+      "upstream_license_path": "win32/License.txt",
+      "git_blob": "8971178abbb3dbef40e1f723476127d3bd86b1e5",
+      "additional_license_paths": [
+        {
+          "path": "com/License.txt",
+          "git_blob": "d8f3c9484922bf935c4c4810c971df69bd8674d4"
+        }
+      ],
+      "observed_license": "Multiple copyright owners and BSD-style component permissions; not one project-wide SPDX conclusion",
+      "review_status": "component licenses located; package not installed on this Linux runner; review all bundled Windows components separately if distributing Windows binary"
+    }
+  ],
+  "notes": [
+    "Upstream source license files have been fetched and their exact Git blob hashes recorded at version-matched tags.",
+    "A missing installed-distribution license field is not proof of an incompatible license.",
+    "The checked repository tree had no tracked files matching selected vendored binary/archive extensions; this does not describe future built wheels or Docker image layers.",
+    "Apache-2.0 licenses P03's original work only; third-party attributions and image/JVM license obligations stay with upstream components.",
+    "This is bounded technical source provenance, not a legal clearance or permission to redistribute third-party binaries."
+  ]
+}
