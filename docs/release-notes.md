@@ -6,6 +6,22 @@ been published. [PR #2](https://github.com/mehdisafer/industrial-streaming-mlops
 [follow-up PR #3](https://github.com/mehdisafer/industrial-streaming-mlops/pull/3)
 and the [acceptance register](acceptance.md) track review and outstanding gates.
 
+## Release candidate identity and wheel qualification
+
+The planned GitHub pre-release tag is **`v0.1.0-rc.1`**. The equivalent canonical
+Python distribution version is **`0.1.0rc1`** (PEP 440). `pyproject.toml`,
+`industrial_mlops.__version__` and the editable project entry in `uv.lock`
+intentionally use the Python form. The GitHub tag is a repository label, not a
+claim that the release or any PyPI package has already been published.
+
+CircleCI `build-and-test` is configured to run `uv lock --check`, build an
+isolated wheel and inspect its actual package/version metadata, entry point,
+SPDX licence, and exact embedded `LICENSE` and `NOTICE` bytes. The inspected
+wheel is retained as a CI artifact, not automatically published to a package
+index. Verify that the job has actually passed on the reviewed candidate SHA
+before claiming a releasable wheel, and bind any subsequent GitHub prerelease
+to a single reviewed `main` SHA.
+
 ## Intended outcome and changes
 
 I built this reference so that a maintenance warning can be traced from Kafka

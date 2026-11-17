@@ -34,6 +34,18 @@ jobs:
           command: circleci testsuite run "python-unit"
       - store_test_results:
           path: test-results
+      - run:
+          name: Verify RC lock, build wheel and inspect Apache-2.0 metadata
+          command: |
+            uv lock --check
+            mkdir -p artifacts/release-candidate
+            uv build --wheel --out-dir artifacts/release-candidate
+            uv run --frozen python scripts/check_release_candidate.py \
+              --wheel-dir artifacts/release-candidate \
+              --output artifacts/release-candidate/inspection.json
+      - store_artifacts:
+          path: artifacts/release-candidate
+          destination: release-candidate
   dashboard-browser:
     machine:
       image: ubuntu-2404:2026.10.1

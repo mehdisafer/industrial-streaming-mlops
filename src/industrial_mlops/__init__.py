@@ -6,4 +6,4 @@ import os
 # set this explicitly so server/UI and child workers inherit the same policy.
 os.environ.setdefault("MLFLOW_DISABLE_TELEMETRY", "true")
 
-__version__ = "0.1.0"
+__version__ = "0.1.0rc1"
