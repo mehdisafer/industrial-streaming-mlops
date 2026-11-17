@@ -33,6 +33,13 @@ their own passing CircleCI run on the final candidate SHA before publication.
 The wheel and JSON inspection are CI artifacts, not automatically published
 packages. Bind any subsequent GitHub prerelease to one reviewed `main` SHA.
 
+A source-tree review also corrected the earlier no-`.gz` assertion: the exact
+`0166edb` tree held 68 compressed evidence files under `docs/evidence/`,
+not zero. A dedicated CircleCI check now inventories tracked software archives,
+checks the Git-blob identity and bounded UTF-8 decompression of compressed
+fixtures, and applies configured secret patterns. This is not a full third-party
+binary or legal review, and the new job must pass on the final release SHA.
+
 ## Intended outcome and changes
 
 I built this reference so that a maintenance warning can be traced from Kafka

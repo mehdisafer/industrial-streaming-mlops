@@ -7,7 +7,6 @@
   "newer_main_commit_at_review": "0166edb790941b6a15f8e2d33cb8ebf14fdff719",
   "scan_source": "GitHub Actions checks artifact 14284166574, run 43983190446",
   "scope": "Four packages flagged for missing SPDX/license metadata on a Python 3.11 Linux runner; upstream license source review only",
-  "declared_binaries_committed_to_repo": 0,
   "scanned_binary_patterns": [
     ".jar",
     ".whl",
@@ -73,8 +72,33 @@
   "notes": [
     "Upstream source license files have been fetched and their exact Git blob hashes recorded at version-matched tags.",
     "A missing installed-distribution license field is not proof of an incompatible license.",
-    "The checked repository tree had no tracked files matching selected vendored binary/archive extensions; this does not describe future built wheels or Docker image layers.",
+    "The original no-.gz observation was incorrect: 68 compressed .jsonl.gz/.log.gz/.csv.gz evidence files were tracked at 0166edb; zero .jar/.whl/.so/.dll/.exe/.zip/.tar suffix matches were seen. Path classification does not establish content safety or future distribution rights.",
     "Apache-2.0 licenses P03's original work only; third-party attributions and image/JVM license obligations stay with upstream components.",
     "This is bounded technical source provenance, not a legal clearance or permission to redistribute third-party binaries."
-  ]
+  ],
+  "git_tree_archive_recheck": {
+    "tree_commit": "0166edb790941b6a15f8e2d33cb8ebf14fdff719",
+    "method": "GitHub recursive Git tree; count tracked blob paths by filename suffix only",
+    "tracked_tree_entries": 397,
+    "tracked_software_archive_suffix_matches": {
+      ".jar": 0,
+      ".whl": 0,
+      ".so": 0,
+      ".dll": 0,
+      ".exe": 0,
+      ".zip": 0,
+      ".tar": 0
+    },
+    "tracked_gzip_paths": 68,
+    "tracked_gzip_git_blobs_distinct": 59,
+    "tracked_gzip_compressed_total_bytes": 1294667,
+    "gzip_extensions": {
+      ".jsonl.gz": 39,
+      ".log.gz": 28,
+      ".csv.gz": 1
+    },
+    "gzip_location": "All 68 paths under docs/evidence/",
+    "important_limit": "Filename and Git blob metadata only; this original tree read did not decompress the 68 files"
+  },
+  "compressed_evidence_scan": "A subsequent PR adds a bounded decompression/secret-pattern check and emits archive-inventory.json as a CircleCI artifact; its outcome must be verified on the exact executing commit."
 }

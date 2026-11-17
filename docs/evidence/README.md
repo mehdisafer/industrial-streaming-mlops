@@ -19,6 +19,10 @@ entries, with four licence metadata flags requiring explicit upstream review.
 This is additional evidence; CircleCI remains the selected CI and its older
 job #13 artifact bytes remain unverified. Databricks remains open.
 
+## Source-tree archive provenance correction — 17 November 2026
+
+The earlier [third-party license review](third-party-licensing-2026-11-17/README.md) incorrectly stated that no `.gz` archive was tracked. A fresh recursive Git tree read of its exact source `0166edb` found **68 compressed evidence files under `docs/evidence/`** (39 `.jsonl.gz`, 28 `.log.gz`, one `.csv.gz`); `.jar`, `.whl`, `.so`, `.dll`, `.exe`, `.zip` and `.tar` suffixes were absent. The correction is recorded in the [version-bound manifest](third-party-licensing-2026-11-17/manifest.json). A new CircleCI archive inventory/decompression/regex check is configured to produce `archive-inventory.json` on its own exact source revision. Its outcome and the retained report must be checked before it is described as a verified scan. Neither inventory constitutes complete third-party binary redistribution clearance.
+
 ## Current follow-up — 15 November 2026
 
 [The follow-up evidence](followup/README.md) binds to source `daaa5b8`: **294 tests**,

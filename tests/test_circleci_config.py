@@ -17,6 +17,8 @@ def test_circleci_security_job_retains_auditable_source_scope() -> None:
         "git fetch --tags origin",
         "git rev-list --all --count",
         "scripts/security_inventory.py --scan-history",
+        "scripts.repository_archive_inventory",
+        "archive-inventory.json",
         "pip-audit --skip-editable",
         "store_artifacts:",
         "path: artifacts/publication-security",
