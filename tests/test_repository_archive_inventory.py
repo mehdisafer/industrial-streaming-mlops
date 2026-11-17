@@ -106,7 +106,7 @@ def test_compressed_file_with_unreviewed_extension_is_rejected(tmp_path: Path) -
 
 def test_git_ls_tree_parser_handles_padded_sizes() -> None:
     oid = "a" * 40
-    entry = f"100644 blob {oid}       14\\tdocs/evidence/a.log.gz\\0".encode()
+    entry = f"100644 blob {oid}       14\tdocs/evidence/a.log.gz\0".encode()
     assert parse_git_tree(entry) == [
         TrackedBlob("docs/evidence/a.log.gz", oid, 14)
     ]
