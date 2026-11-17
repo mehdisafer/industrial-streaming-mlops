@@ -7,6 +7,18 @@ Its Python unit lane and separate Docker reference job succeeded on specified
 source commits, but Docker artifact byte verification remains open. All fleet data is
 synthetic. No industrial production reliability or distributed capacity is claimed.
 
+## Source-bound hosted evidence — 17 November 2026
+
+The [licensed-main original artifact audit](hosted-reference-2026-11-17/README.md)
+independently rehashed original GitHub Actions archives from source `185c415`:
+**333 Python tests passed**, **six persisted business checks passed** on a real
+Docker-hosted Kafka/Spark/MLflow chain, **2,513 raw records, 1,225 predictions,
+7 alerts**, and completed rollback/cleanup. A separate source-security report
+recorded zero matched patterns and zero published vulnerabilities among 123
+entries, with four licence metadata flags requiring explicit upstream review.
+This is additional evidence; CircleCI remains the selected CI and its older
+job #13 artifact bytes remain unverified. Databricks remains open.
+
 ## Current follow-up — 15 November 2026
 
 [The follow-up evidence](followup/README.md) binds to source `daaa5b8`: **294 tests**,
@@ -24,7 +36,7 @@ delivery. They are not relabelled with the new execution commit or timing.
 
 | Scope | Observed result | Original evidence |
 | --- | --- | --- |
-| Current application correctness | 294 tests passed; Ruff passed | [Current checks and JUnit](followup/README.md) |
+| Current application correctness | 333 tests passed on `185c415`; earlier 294 tests passed on `daaa5b8` | [Original hosted JUnit and file hashes](hosted-reference-2026-11-17/README.md), [earlier local suite](followup/README.md) |
 | Current native recovery and rollback | 21 checks passed on reviewed source `daaa5b8` | [Fresh native receipts](followup/native/qualification.json) |
 | Restored retained backlog and fresh input | 28 checks passed; 303 retained + 303 fresh records, 1,965 final predictions | [Restoration receipts](followup/restore/restore-qualification.json) |
 | Original application checks | 110 tests passed; Ruff passed | [Historical checks and JUnit](checks/README.md) |
@@ -35,7 +47,7 @@ delivery. They are not relabelled with the new execution commit or timing.
 | Current dependency review | 122 third-party packages audited; zero known findings; local project explicitly skipped | [15 November 123-entry report](followup/checks/dependency-audit.json) |
 | Earlier failures | Original failed/intermediate attempts and corrective scope retained | [Attempt history](attempts/README.md) |
 | CircleCI Python unit CI | `build-and-test` succeeded on `579cbc5` and `ce7674c`; CI JUnit assertion counts not independently read | [CircleCI #5](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/5?useNewPipelines=false), [#7](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/7?useNewPipelines=false), [PR #4](https://github.com/mehdisafer/industrial-streaming-mlops/pull/4) |
-| Docker container qualification | [CircleCI `reference-containers`](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7) **success** at exact `4bcc55e`; older [#8](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/8?useNewPipelines=false) failed with exit 64 | Four historical reported hashes have invalid 65/65/65/66 hex-character lengths. [Offline artifact intake](circleci/README.md) and [untrusted manifest](circleci/manifest.json); original bytes not independently verified |
+| Docker container qualification | CircleCI `reference-containers` succeeded on `4bcc55e`; separate real GitHub Actions Docker integration succeeded on `185c415` with **original ZIP bytes rehashed** | [Current-source original Docker receipts](hosted-reference-2026-11-17/README.md); [historical CircleCI artifact boundary](circleci/README.md) remains unverified |
 | Historical GitHub Actions (non-gating) | Runner ID 0, no steps; maintainer reports quota exhausted. CircleCI replaces it for P03 acceptance; provider annotation was not independently retrieved | [Original runner evidence](checks/README.md#ci-helpers-and-hosted-execution) |
 | Databricks | Bundle and adapter prepared; no authorized provider run | [Provider prerequisites](../databricks.md) |
 

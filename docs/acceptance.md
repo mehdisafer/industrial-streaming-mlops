@@ -9,7 +9,7 @@ container qualification and Databricks qualification have separate gates.
 
 | Criterion | Observed result | Evidence and limit |
 |---|---|---|
-| Contracts, causal features, delayed labels, sink atomicity, provider guards and monitoring | **294 tests passed in 19.29 s**, zero failures/errors/skips; Ruff passed | [Current receipts](evidence/followup/README.md); named predictor/client doubles are unit evidence |
+| Contracts, causal features, delayed labels, sink atomicity, provider guards and monitoring | **333 Python tests passed** on licensed source `185c415` (0 failures, errors or skips); earlier `daaa5b8` source had 294 passes and Ruff passed | [Rehashed original hosted JUnit](evidence/hosted-reference-2026-11-17/README.md) and [earlier receipts](evidence/followup/README.md); named predictor/client doubles remain unit evidence |
 | Kafka → Spark → MLflow → persisted outputs | Current reviewed source: **all 21 checks passed** in 200.955 s | [Fresh native result](evidence/followup/native/qualification.json); real single-host services at `daaa5b8` |
 | Source reconciliation | 4,380 raw = 2,164 sensors + 2,164 labels + 24 heartbeats + 24 rejects + 4 duplicates | Native receipt; 2,092 features/predictions, 12 alerts, no pending work, zero observed lag in all three partitions |
 | Worker/broker recovery and unavailable model | Before/after-commit recovery, retained pending predictions and active-query broker recovery observed | Broker stop-to-restart interval 15.103 s; active worker consumed 303 new recovery records |
@@ -151,11 +151,19 @@ a DOM-geometry assertion corrected this, and the final captures report
 HTTP snapshot data**. No live Kafka/Spark/MLflow, Databricks, paid provider,
 accessibility conformance or independent human-operator acceptance is inferred.
 
+## Original hosted Docker and checks reinspection — 17 November 2026
+
+A separate [GitHub Actions real-integration run](https://github.com/mehdisafer/industrial-streaming-mlops/actions/runs/43983190446) completed on Apache-2.0 source `185c415`. This is **additional evidence**, not a replacement for CircleCI as the selected CI. The actual **57-file integration ZIP** and **5-file checks ZIP** were downloaded through the authorized repository connector; their original ZIP/member SHA-256 values, source commit and runtime inventory copies were independently recomputed and [recorded](evidence/hosted-reference-2026-11-17/README.md).
+
+The run has **333 successful tests**, and Docker service receipts show **six true persisted-data invariants**, a final **2,513 raw inputs, 1,225 predictions and 7 alerts**, no pending records, zero observed Kafka lag, real model-version rollback, and cleanup exit code zero. Initial `verification.json` contains **2,317 raw records**, while the distinct `final-verification.json` contains **2,513** after **196 additional rollback inputs**. These stage receipts are expected to differ and reconcile. The independent check reports 123 dependency entries without published findings, zero secret patterns in 351 worktree files / 462 reachable blobs, and four licence-metadata review flags (three not installed on the runner). These limits are detailed in the manifest.
+
+The historical **CircleCI job #13 original bytes remain unverified** because raw artifact access requires an authorized token. A successful newer GitHub Actions Docker run and its rehashed original archives do **not** retroactively verify those older CircleCI bytes. Databricks remains a separate provider gate.
+
 ## Open qualification and release gates
 
 | Gate | Current state | Evidence needed to close it |
 |---|---|---|
-| CircleCI container reference | **Job succeeded on source `4bcc55e`**; original bytes require authorized retrieval, and four earlier digest strings are invalid | Use the [token-from-environment downloader](evidence/circleci/README.md) or the original [job artifacts](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7), run the offline verifier, review the actual 64-character hashes and pin an independently accepted baseline |
+| Original Docker evidence | **New source-bound recheck achieved** at `185c415` with exact original [GitHub-hosted Docker ZIP and six business checks](evidence/hosted-reference-2026-11-17/README.md). The older CircleCI job #13 was successful but its original archive bytes remain unaudited. | If CircleCI job #13 provenance is separately required, recover its original bytes via the [token-from-environment downloader](evidence/circleci/README.md); do not substitute the newer GH archive as proof of those original hashes |
 | Databricks | **Open**; no authorized workspace run | Existing authorized compute/storage, Kafka access, provider run IDs, Delta versions and recovery evidence |
 | Browser presentation | **Chrome 157 passed and its 3 original images + JSON receipts were independently inspected** (1440px desktop, 600px responsive, HTTP 503); no horizontal overflow, header badge overlap or external resources after the correction. The blocked local Chrome attempt is historical. | [Artifact / exact SHA manifest](evidence/browser-2026-11-16/README.md); deliberately synthetic snapshot and source HTML, not Kafka-backed UI or independent operator/accessibility acceptance |
 | Release publication | `v0.1.0-rc.1` notes prepared; no tag or GitHub release published | [PR #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2) and [follow-up PR #3](https://github.com/mehdisafer/industrial-streaming-mlops/pull/3) record source review; tag/release publication requires its own verified action |
