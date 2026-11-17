@@ -71,14 +71,14 @@ commit for code that was actually executed.
 - **Databricks remains open.** It needs an authorized workspace, existing compute
   and storage, reachable Kafka and trusted artifacts, with a bounded run budget.
 - **Bounded browser presentation succeeded in CircleCI.** The [dashboard-browser job](https://app.circleci.com/workflow/3db01d8e-aad5-403c-ab43-d3a3bc6b8629/job/60e9d9c5-f51b-49fd-aed3-f4c474095c48) reported success on exact main commit `f83bec3` with synthetic Chrome desktop/narrow/outage views. The earlier local Chromium Unix-socket failure remains historical. Original screenshots have not been independently reviewed here, and live-stream UI acceptance is distinct.
-- GitHub reports the source repository **public as of 16 November 2026**, with independent anonymous repository/README readback. The maintainer has explicitly selected **Apache-2.0** for the original project; the [full license](../LICENSE), [NOTICE](../NOTICE), and package's SPDX metadata are included in this candidate. Third-party components retain their own licences and require a separate notice/compliance review. GitHub's post-merge licence recognition, available branch protections and a published GitHub Release still require their own evidence.
+- GitHub reports the source repository **public as of 16 November 2026**, with independent anonymous repository/README readback. The maintainer has explicitly selected **Apache-2.0** for the original project; the [full license](../LICENSE), [NOTICE](../NOTICE), and package's SPDX metadata are included in this candidate. Third-party components retain their own licences and require a separate notice/compliance review. GitHub's **post-merge licence recognition is now independently observed** as `Apache-2.0` on 17 November 2026. A repository branch ruleset, owner-applied About metadata and a published GitHub release remain separate and **not completed**.
 - Repository readbacks show description `null` and topics `[]`. The available
   integration exposes no supported metadata or release mutation tools, so the
   proposed settings and these release notes remain prepared material.
 - Earlier private-repository ruleset queries returned plan/visibility errors. A fresh
-  16 November GitHub rulesets query returns an empty list; the classic main-branch
-  protection endpoint still returns HTTP 403 for this integration. These observations
-  do not prove whether classic protections are active. Recent hosted GitHub Actions
+  17 November GitHub rulesets query returns an empty list **and** the branch
+  endpoint reports `main.protected=false`. The classic branch-protection details
+  endpoint still returns HTTP 403; no classic protection is inferred as active. Recent hosted GitHub Actions
   runs have executed successfully after earlier pre-runner failures. No plan upgrade,
   additional visibility change, protection modification or release publication is implied.
 
