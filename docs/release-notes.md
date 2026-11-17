@@ -28,10 +28,11 @@ observations, not a new Docker or Databricks run.
 The hardened RC inspector additionally compares **every packaged Python module**
 byte-for-byte with the checked-out source, checks the complete PEP 427
 `RECORD` SHA-256/size inventory, rejects unsafe or unexpected archive members,
-and parses the console entry point strictly. These additional checks require
-their own passing CircleCI run on the final candidate SHA before publication.
-The wheel and JSON inspection are CI artifacts, not automatically published
-packages. Bind any subsequent GitHub prerelease to one reviewed `main` SHA.
+and parses the console entry point strictly. **All three CircleCI contexts passed
+on the reviewed RC1 execution SHA `2a75cb05`**; the build job includes the
+real wheel integrity checker. The wheel and JSON inspection are CI artifacts,
+not automatically published packages. Bind any subsequent GitHub prerelease
+to one **freshly verified** `main` SHA.
 
 A source-tree review also corrected the earlier no-`.gz` assertion: the exact
 `0166edb` tree held 68 compressed evidence files under `docs/evidence/`,
@@ -39,6 +40,20 @@ not zero. A dedicated CircleCI check now inventories tracked software archives,
 checks the Git-blob identity and bounded UTF-8 decompression of compressed
 fixtures, and applies configured secret patterns. This is not a full third-party
 binary or legal review, and the new job must pass on the final release SHA.
+
+## New original RC1 integration evidence
+
+The [original run 44173769693](https://github.com/mehdisafer/industrial-streaming-mlops/actions/runs/44173769693)
+and [retained SHA-256 manifest](evidence/hosted-rc1-2026-11-17/README.md)
+prove a separate **source-bound real Docker Kafka–Spark–MLflow execution on
+`2a75cb05`**, the actual `0.1.0rc1` commit: **355 original pytest cases passed**,
+6/6 persisted business checks true, 2,513 final raw records, 1,225 features/
+predictions, seven alerts, observed model rollback, zero final lag, and cleanup
+exit 0. Three original Chrome screenshots passed bounded synthetic-API-fixture
+rendering checks. These are original rehashed files, not inferred solely from
+green job badges. GitHub Actions remains **supplementary**, CircleCI remains
+required CI, and original historical CircleCI Docker job #13 receipt bytes
+remain unaudited.
 
 ## Intended outcome and changes
 
@@ -67,7 +82,7 @@ eventual delayed label. It includes:
 
 | Evidence | Observed result |
 |---|---|
-| [Current application checks](evidence/hosted-reference-2026-11-17/README.md) | 333 Python tests passed, zero failures/errors/skips on `185c415`; original GitHub Actions JUnit XML independently rehashed. Earlier 294-test and 122-package audit results remain [source-bound historical checks](evidence/followup/README.md) |
+| [Current RC1 application and Docker proof](evidence/hosted-rc1-2026-11-17/README.md) | **355 Python tests passed** on `2a75cb05`; original 57-file real Docker Kafka–Spark–MLflow ZIP rehashed, 6/6 persisted checks true, 2,513 raw records, 1,225 predictions, seven alerts, rollback and clean shutdown. Older 333 tests on `185c415`, and 294 on `daaa5b8`, retain separate historical evidence. |
 | [Hosted CircleCI Python CI](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/5?useNewPipelines=false) | **Success** on `579cbc5`, repeated on descendant `ce7674c` in [pipeline #7](https://app.circleci.com/pipelines/circleci/Um5XQQtD4BE9Jcfy4XTzBb/TdzAEfEDkrojS9NSGQ12Uu/7?useNewPipelines=false); merged in [PR #4](https://github.com/mehdisafer/industrial-streaming-mlops/pull/4). Unit lane only; CI JUnit assertion counts not read |
 | [CircleCI Docker job](https://app.circleci.com/workflow/a1ff1428-da21-4550-afe2-8a7dc55d055c/job/424ad872-14fc-4952-ba99-970ee84cf7d7) | **Success** on `4bcc55e`; its four historical malformed SHA-256 values remain invalid and the original CircleCI artifacts have not been rehashed |
 | [Original licensed-main Docker artifacts](evidence/hosted-reference-2026-11-17/README.md) | Separate real Docker Kafka/Spark/MLflow run on `185c415` with rehashed original 57-file integration archive: 6 persisted checks true, 2,513 raw, 1,225 predictions, 7 alerts, rollback and clean shutdown. Original checks archive contains 333 successful tests. GitHub Actions remains supplementary evidence, not a required CI gate |
