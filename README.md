@@ -45,6 +45,7 @@ separates the completed local checks from the remaining platform and release gat
 | CI policy | **CircleCI is the acceptance CI** for Python, browser and separate Docker reference gates. Earlier GitHub Actions runs failed before runner assignment; more recent PR runs executed successfully. Provider-specific results stay source-bound. |
 | Databricks | **Open**: implementation prepared; no authorized workspace run |
 | Public source | **Public and anonymously readable**; the maintainer approved **Apache-2.0** for the original project source and documentation ([LICENSE](LICENSE), [NOTICE](NOTICE)). Repository settings and the `v0.1.0-rc.1` release remain separate. |
+| Release packaging | GitHub tag `v0.1.0-rc.1` maps to Python `0.1.0rc1`; CircleCI now includes wheel-build and metadata checks. This does **not** mean a tag, GitHub release or PyPI distribution has been published. |
 
 See [scope issue #1](https://github.com/mehdisafer/industrial-streaming-mlops/issues/1),
 [original delivery #2](https://github.com/mehdisafer/industrial-streaming-mlops/pull/2),
