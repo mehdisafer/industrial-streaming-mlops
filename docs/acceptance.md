@@ -201,6 +201,32 @@ Actions runs did execute on PR revisions; this does not establish Docker accepta
 or change CircleCI's role as the designated acceptance CI. No paid runner or cloud resource
 was provisioned or requested.
 
+### PR synchronize scope correction — 23 November 2026
+
+A real temporary Git history reproduced an integration false skip in the prior
+workflow at `50de41e`: a PR changed `src/runtime.py`, then its final push changed
+only `README.md`. The workflow preferred the synchronize event's top-level
+`before` value (the previous PR head), so it returned `integration=false` despite
+the runtime change still being present in the complete PR diff. The official
+[Octokit synchronize schema](https://github.com/octokit/webhooks/blob/main/payload-schemas/api.github.com/pull_request/synchronize.schema.json)
+includes the top-level `before` and `after` fields. The earlier scheduling checks
+above did not cover this event sequence.
+
+The [production selector](../scripts/ci_scope.py) now reads the event payload and
+uses the PR base/head for every PR action. Branch pushes retain their complete
+before/after range; absent metadata, unavailable refs and inconsistent PR heads
+request full integration. NUL-separated, non-rename Git output also preserves a
+runtime input removed by moving it into a documentation path. The complete
+selection and actual checkout SHA are saved as `evidence/ci/scope.json`.
+
+Eight [regression tests](../tests/test_ci_scope.py) executed successfully against
+real temporary Git histories with the production selector: runtime followed by
+docs on a synchronized PR, truly docs-only PR, multi-commit push, inconsistent PR
+head, unknown/zero/invalid refs, manual/missing metadata, runtime-to-docs rename,
+and workflow changes. This is a local scheduling result. Full hosted checks and
+Docker integration on the changed source remain separate evidence, as do the
+live Databricks and historical CircleCI #13 artifact gates.
+
 ## Prioritized follow-up
 
 1. Obtain the original CircleCI Docker artifacts from source `4bcc55e`;

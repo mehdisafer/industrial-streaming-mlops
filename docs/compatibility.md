@@ -147,7 +147,14 @@ The workflow uses full commits verified from the action owners' release pages:
 CI uses read-only repository permissions and does not deploy Databricks resources.
 Unit checks run on every change. Real service integration is selected for source,
 test, configuration, dependency and infrastructure changes, or manual dispatch.
-Documentation-only changes do not trigger the heavier service exercise.
+The [scope selector](../scripts/ci_scope.py) compares the complete PR base-to-head
+range on every pull-request event, including `synchronize`. A documentation-only
+follow-up push cannot hide an earlier runtime change in that PR. Push events use
+their complete before/after range. Unknown references or unavailable event metadata
+request full integration; genuinely documentation-only ranges stay lightweight.
+The original decision, compared source SHAs, changed paths and checked-out SHA are
+retained in `evidence/ci/scope.json` with the checks artifact. A selection requests
+execution and does not certify the outcome of that execution.
 
 ## Third-party rights and inventory
 
