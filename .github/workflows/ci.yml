@@ -26,25 +26,7 @@ jobs:
           persist-credentials: false
       - name: Select meaningful integration changes
         id: scope
-        env:
-          BASE_SHA: ${{ github.event.before || github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-          EVENT_NAME: ${{ github.event_name }}
-        run: |
-          python - <<'PY'
-          import os, subprocess
-          base = os.environ.get('BASE_SHA', '')
-          head = os.environ.get('HEAD_SHA', 'HEAD')
-          if not base or set(base) == {'0'} or os.environ['EVENT_NAME'] == 'workflow_dispatch':
-              run = True
-          else:
-              paths = subprocess.check_output(['git', 'diff', '--name-only', base, head], text=True).splitlines()
-              exact = {'pyproject.toml', 'uv.lock', 'compose.yaml', 'databricks.yml', '.dockerignore'}
-              prefixes = ('src/', 'tests/', 'config/', 'schemas/', 'scripts/', 'infra/', 'databricks/', 'resources/', '.github/workflows/')
-              run = any(path in exact or path.startswith(prefixes) for path in paths)
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
-              output.write('integration=' + str(run).lower() + '\n')
-          PY
+        run: python3 scripts/ci_scope.py
       - name: Install pinned tooling and locked Python environment
         run: |
           # CircleCI's Actions runner can expose an externally managed Python.
